@@ -54,7 +54,7 @@ Closed-loop란 원하는 상태 유지를 위해 별도 사람의 개입없이 �
 ## 1.2 Examples
 
 
-<center><img src="" width="60%" height="60%"></center>
+<center><img src="https://user-images.githubusercontent.com/127359789/224031332-538f3656-899a-4de9-9851-be81fa0cc7d5.jpg" width="60%" height="60%"></center>
 <center><span style="font-size:80%">https://opentutorials.org/course/4548/28949</span> </center>
 
 인간은 운동, 게임, 일 등 어떤 행동을 하던간에 반복적으로 수행하고 경험할수록 수행능력이과 판단력이 향상된다. 다음의 예제는 게이머가 게임을 하는 상황을 보여준다. 게이머는 현재의 화면을 보고 상태(환경)과 상/벌(보상)을 관찰한다. 해당 관찰의 내용을 통해 우리의 뇌는 더 높은 보상을 얻을 수 있도록 판단을 하게되고 행동으로 옮겨지게 된다. 그로 인해 게임의 상황은 게이머가 수행한 행동으로 인해 변하게 되고 우리는 다시 바뀐 환경을 관찰하고 다음 행동을 선택하는 과정을 반복하면서 학습한다. 
@@ -88,7 +88,7 @@ agent가 행동하는 방식을 정의하며, state에서 취해야 할 action�
 <br/>
 
 
-<center><img src="" width="60%" height="60%"></center>
+<center><img src="https://user-images.githubusercontent.com/127359789/224031342-da896ded-e6d4-4c4e-8dd6-3e9fac93f856.jpg" width="60%" height="60%"></center>
 <center><span style="font-size:80%">https://opentutorials.org/course/4548/28949</span> </center>
 
 위에서 보았던 예제를 새롭게 정의된 단어들로 표현했다; 게임 → 환경(env), 게이머 → 학습자(agent), 게임화면 → 상태(state), 게이머의 조작 → 행동(action), 상과 벌 → 보상(reward), 게이머의 판단력 → 정책(policy). agent는 env로부터 state와 reward를 얻게되고 policy는 그에 대한 매핑으로 action을 선택한다. action에 따라 env가 바뀌게 되고 또 다시 state와 reward를 관찰하는 과정을 반복하는 과정에서 policy가 학습하고 value function을 최대화 하는 action을 선택하게 된다. 
