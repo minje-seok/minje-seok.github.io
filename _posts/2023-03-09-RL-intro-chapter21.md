@@ -27,15 +27,13 @@ sidebar:
 
 ## 2.1 An n-Armed Bandit Problem
 
-<center><img src="https://user-images.githubusercontent.com/127359789/224034422-6d5ce4e2-d930-4924-a84a-34e578010d41.jpg" width="60%" height="60%"></center>
-<center><span style="font-size:80%">http://sanghyukchun.github.io/96/</span> </center>
-
 해당 문제에서는 $n$개의 슬롯머신이 있고, 한번의 action 선택으로 잭팟을 터뜨리면 지급되는 reward를 위해 슬롯머신 중 하나의 레버를 선택해 플레이하는 것이다. 당신은 반복되는 action 선택을 통해 최상의 레버에 action을 집중하여 상금을 최대화할 수 있다. 어떤 action을 선택하는 것이 최고의 기대되는 reward을 가질 수 있는지 알아보자. 
 
 
 이러한 문제는 다음과 같이 일반화가 가능하다. $n$개의 다른 action 중 하나를 선택해야 하는 상황에 반복적으로 노출되며, 하나의 action 선택 후 그에 따라 stationary probability distribution에서 선택한 수치의 reward을 받는다. 사용자는 일정 기간 혹은 일정 횟수의 action 선택 동안 예상되는 총 reward을 최대화 하는 것이 목표이다. 각 action은 기대되거나 평균적인 reward를 가지게 되는데 이는 action의 value라고 할 수 있고 지난 챕터에서 언급한 강화학습 요소인 value function과 연결된다. 
 
-<br/>
+<center><img src="https://user-images.githubusercontent.com/127359789/224034422-6d5ce4e2-d930-4924-a84a-34e578010d41.jpg" width="60%" height="60%"></center>
+<center><span style="font-size:80%">http://sanghyukchun.github.io/96/</span> </center>
 
 만약 확실하지는 않아도 각 action의 value estimate를 알고 있다면, 우리는 value가 가장 높은 action을 선택할 것이다. 이러한 행위를 'greedy action'이라고 부른다. 이는 action의 value에 대한 현재 지식을 exploit하고 있다고 말할 수 있다. 대신 action의 value estimate를 향상 시키기 위해 다른 action을 선택한다면 explore하고 있다고 말할 수 있다. 
 
@@ -59,7 +57,7 @@ $$ Q_t(a) = \cfrac{R_1 + R_2 + \cdots + R_{N_t(a)}}{N_t(a)} \tag{1} $$
 
 ### 2.2.2 Action-Value Selection: greedy
 
-가장 단순하게 action을 선택하는 방법은 가장 높은 estimated action-value $A^*_t$를 선택하는 것이다. $Q_t(A^*_t) = \max_a Q_t(a)$. 이러한 greedy action 선택은 $(2)$와 같이 쓸 수 있다. 여기서 $\arg\max_a$는 다음 표현식이 최대화 되는 $a$의 값을 의미한다. 여기서 중요한 점은 greedy 방식은 현재 지식을 활용하여 즉각적인 보상을 극대화하며, 실제로 더 나은지 확인하기 위해 열등한 action을 샘플링하는데 시간을 소비하지 않는다. 즉, exploit로만 action을 선택하고 explore를 진행하지 않는다. 
+가장 단순하게 action을 선택하는 방법은 가장 높은 estimated action-value $A^{*}_t$를 선택하는 것이다. $Q_t(A^{*}_t) = \max_a Q_t(a)$. 이러한 greedy action 선택은 $(2)$와 같이 쓸 수 있다. 여기서 $\arg\max_a$는 다음 표현식이 최대화 되는 $a$의 값을 의미한다. 여기서 중요한 점은 greedy 방식은 현재 지식을 활용하여 즉각적인 보상을 극대화하며, 실제로 더 나은지 확인하기 위해 열등한 action을 샘플링하는데 시간을 소비하지 않는다. 즉, exploit로만 action을 선택하고 explore를 진행하지 않는다. 
 
 
 $$ A_t = \arg\max_a Q_t(a) \tag{2} $$
