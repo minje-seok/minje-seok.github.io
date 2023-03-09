@@ -59,7 +59,7 @@ $$ \Pr \{ {A_t = a} \} = \cfrac{e^{H_t(a)}}{\sum^n_{b=1}e^{H_t(b)}} = \pi_t(a) \
 
 이에 대한 stochastic gradient ascent에 기반한 알고리즘이 존재한다. 매 step에서 action  $A_t$를 선택한 후, reward $R_t$를 받은 뒤에 preference는 $(10)$과 같이 update된다. 이 때 $\alpha > 0$는 step-size, $\bar R_t\in \mathbb R$은 section 2.3에서 정의했던  incrementally implementation하게 계산 가능한 time $t$까지의 rewards의 평균이다. 
 
-$$ \begin{align*} H_{t+1}(A_t) &= H_t(A_t) + \alpha(R_t-\bar R_t)(1-\pi_t(A)t)), \, and\\
+$$ \begin{align*} H_{t+1}(A_t) &= H_t(A_t) + \alpha(R_t-\bar R_t)(1-\pi_t(A_t)), \, and\\
 H_{t+1}(a) &= H_t(a) - \alpha(R_t-\bar R_t)\pi_t(a), \quad\quad\quad \forall a \ne A_t \tag{10}\end{align*} $$
 
 
