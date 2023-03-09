@@ -107,3 +107,7 @@ value function을 사용하지는 않지만 evolutionary 방법에는 속하지 
 ## 1.5 Summary
 
 강화학습은 모범적인 감독이나 완전한 model에 의존하지 않고, agent가 env와의 직접적인 상호작용을 통해 학습하며 expected cumulative reward를 최대화 하는 것을 목적으로 하는 머신러닝 방법이다. 강화학습은 state, action, reward 측면에서 agent와 env 간의 상호작용을 정의하는 프레임워크를 사용하고 이는 인공지능 문제의 필수 기능을 나타낸다. 이는 원인과 결과에 대한 감각, 불확실성과 비결정론에 대한 감각, 명확한 목표의 존재와 같은 특징을 내포한다. 앞으로 더 구체적으로 공부하게 될 value function은 강화학습 방법의 핵심으로, policy 학습을 위해 매우 중요하게 사용될 것이다.
+
+<br/>
+
+
