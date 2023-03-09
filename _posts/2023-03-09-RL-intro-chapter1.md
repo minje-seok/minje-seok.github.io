@@ -61,7 +61,6 @@ Closed-loop란 원하는 상태 유지를 위해 별도 사람의 개입없이 �
 <center><img src="https://user-images.githubusercontent.com/127359789/224031332-538f3656-899a-4de9-9851-be81fa0cc7d5.jpg" width="60%" height="60%"></center>
 <center><span style="font-size:80%">https://opentutorials.org/course/4548/28949</span> </center>
 
-<br>
 
 이러한 과정은 모두 능동적인 의사 결정과 학습자와 환경과의 상호 작용을 포함하며, 학습자는 환경에 대한 불확실성에도 불구하고 목표를 달성하려고 한다. 학습자와 환경이라는 단어에 의해 고정관념을 가진 경우가 있는데, 학습자는 반드시 전체 로봇이나 유기체가 아닌 그 하위 집합일수도, 환경은 외부가 아닌 내부일 수도 있는 추상적인 개념이므로 주의해야 한다. 
 
