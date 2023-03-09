@@ -29,6 +29,7 @@ sidebar:
 
 해당 문제에서는 $n$개의 슬롯머신이 있고, 한번의 action 선택으로 잭팟을 터뜨리면 지급되는 reward를 위해 슬롯머신 중 하나의 레버를 선택해 플레이하는 것이다. 당신은 반복되는 action 선택을 통해 최상의 레버에 action을 집중하여 상금을 최대화할 수 있다. 어떤 action을 선택하는 것이 최고의 기대되는 reward을 가질 수 있는지 알아보자. 
 
+<br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224034422-6d5ce4e2-d930-4924-a84a-34e578010d41.jpg" width="60%" height="60%"></center>
 <center><span style="font-size:80%">http://sanghyukchun.github.io/96/</span> </center>
@@ -50,6 +51,7 @@ exploit는 해당 step에서 기대되는 보상을 최대화할 수 있지만 e
 
 $$ Q_t(a) = \cfrac{R_1 + R_2 + \cdots + R_{N_t(a)}}{N_t(a)} \tag{1} $$ 
 
+<br/>
 
 만약 $N_t(a) = 0$이면, $Q_t(a)$는 $Q_1(a) = 0$으로 정의한다. 대수의 법칙에 따라 $N_t(a)$ $\to$ $\infty$이므로 $Q_t(a)$는 $q(a)$로 수렴한다. 각 estimate가 해당 action에 대한 reward sample들의 단순 평균이기 때문에 이를 action-value 추정을 위한 'sample average' 방법이라 부른다. 해당 방식 외에도 value를 측정하는 방식은 다양하지만 설명을 위해서 이번 챕터에서는 estimate 계산을 위해 사용한다. 
 
@@ -77,10 +79,13 @@ exploit만 진행하는 greedy 방식에서 explore 하기 위한 간단한 대�
 
 무작위로 생성된 2000번의 10-Armed Bandit 문제; 10-armed testbed를 통해 greedy와 $\epsilon$-greedy의 실용적 관점에서의 상대적 효과를 평가해보자. 각 bandit에 대해,  $a = 1 , \ldots , 10$인 action-values $q(a)$는 standard normal(gaussian) distribution($\mu = 0, \sigma = 1$)에 의해 선택되었다. $t$th time step에서 true reward $R_t$는 선택된 action인 $A_t$에 대한 $q(A_t)$에 gaussian noise를 더한 것이다. 
 
+<br/>
+
 
 아래 그래프는 greedy($\epsilon = 0$), $\epsilon$-greedy($\epsilon = 0.01, \epsilon = 0.1$)의 sample average로 측정한 action-value estimate를 보여준다. 위 그래프는 experience를 통한 expected reward를, 아래 그래프는 optimal action을 선택한 비율을 의미한다. 
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224034888-80066f9d-d4a3-481f-aaa2-41e82a2489d3.png" width="60%" height="60%"></center>
+
 
 greedy 방식보다 $\epsilon$-greedy$(\epsilon$값이 클수록) 좋은 성능을 보이고 있다. 이는 $\epsilon$ 값의 존재로 인해 agent가 exploit하게만 동작하는 것이 아니라, 적은 확률로 랜덤하게 action을 선택하는 explore를 진행하여 suboptimal action-value에 머물지 않고 optimal action-value를 찾아가기 때문이다. 그래프에는 step이 1000까지만 표기되었지만 계속 진행해보면, $\epsilon = 0.01$ 방식이 느리게 향상되지만 두 성능 측정 모두에서 $\epsilon = 0.1$보다 더 나은 성능을 보인다. 결과적으로, $\epsilon$ 값은 조절이 성능에 영향을 미치고, 나중에는 constant 값이 아닌 시간이 지남에 따라 $\epsilon$값을 줄이는 방식을 택하기도 한다. 
 
@@ -114,6 +119,7 @@ $$  \begin{align*}
  &= \cfrac{1}{k}(R_k + (k-1)Q_k + Q_k - Q_k) \\
  &= \cfrac{1}{k}(R_k + kQ_k - Q_k) = Q_k + \cfrac{1}{k}[R_k - Q_k]  \end{align*} \tag{3} $$
 
+<br/>
 
 이를 조금 쉽게 표현하자면, $(4)$와 같다. 여기서 $[Target - OldEstimate]$는 traget과 estimate의 error를 의미한다. 이는 올바른 방향으로 이끄는 $Target$을 향해 $StepSize$만큼 error를 감소시킨다. $(3)$에서의 target은 $k$th reward이고 step-size는 time step마다  변경되는 $\frac{1}{k}$의 step-size를 사용한다. 해당 교재에서는 일반적으로 step-size를 $\alpha$ 혹은 일반적으로 $\alpha_t(a)$로 표기한다. 
 
