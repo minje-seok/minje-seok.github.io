@@ -85,6 +85,7 @@ agent가 행동하는 방식을 정의하며, state에서 취해야 할 action�
 
 실제 env의 동작을 모방하거나 일반적으로 환경이 동작하는 방식에 대한 추론을 가능하게 한다. 예를 들어, state와 action이 주어지면 model을 통해 결과로 나타나는 next state와 reward를 예측할 수 있다. model은 추후 model-based method에서 언급될 planning에 사용되며 실제 상호작용 없이도 미래 상황을 고려하여 action을 선택할 수 있다. 
 
+<br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224031342-da896ded-e6d4-4c4e-8dd6-3e9fac93f856.jpg" width="60%" height="60%"></center>
 <center><span style="font-size:80%">https://opentutorials.org/course/4548/28949</span> </center>
