@@ -154,12 +154,12 @@ $(6)$을 보면 reward $R_i$에게 적용되는 weight인 $\alpha(1-\alpha)^{k-i
 
 $\alpha_k(a)$가 action $a$의 $k$th 선택 이후의 step-size라고 할 때, 경우에 따라 step-size를 변경하는 것이 더 좋다. 이전의 sample average 방법에서 사용했던 step-size인 $\alpha_k(a) = \frac{1}{k}$ 같은 경우, 대수의 법칙에 의해 true action-values로 수렴하도록 보장된다. 그러나 모든 sequence $\alpha_k(a)$의 모든 선택에 의해 수렴이 보장되는 것은 아니다. 
 
-<br/>
-
 아래는 stochastic approximation theory에서 근거한 확률 1로 수렴하는데 필요한 조건이다. 전자는 step-size가 초기 조건이나 무작위 변동을 극복할 수 있을 만큼 충분히 크다는 것을, 후자는 결국 수렴을 보장할 수 있을만큼 step-size가 작아지는 것을 보장한다. 
 
 
 $$ \sum^\infty_{k=1}\alpha_k(a) = \infty \quad and\quad \sum^\infty_{k=1}\alpha^2_k(a) < \infty \tag{7}$$
+
+<br/>
 
 sample average case에서는 이를 만족하나 step-size가 constant한 case에서는 후자의 조건을 충족하지 못한다. 이로인해 constant case의 경우, estimate가 완전히 수렴되지는 않고 가장 최근에 받은 reward에 의해 달라진다. 결국, 이와 같은 방법들이 등장한 이유는 사실상 강화학습의 표준인 non-stationary env를 고려하기 위함이고 $(7)$를 충족하는 step-size sequence는 매우 느린 수렴 혹은 상당한 조정이 요구된다. 참고로, step-size sequence는 응용 및 실제 연구보다는 이론 작업에서 주로 사용된다. 
 
