@@ -78,12 +78,10 @@ exploit만 진행하는 greedy 방식에서 explore 하기 위한 간단한 대�
 무작위로 생성된 2000번의 10-Armed Bandit 문제; 10-armed testbed를 통해 greedy와 $\epsilon$-greedy의 실용적 관점에서의 상대적 효과를 평가해보자. 각 bandit에 대해,  $a = 1 , \ldots , 10$인 action-values $q(a)$는 standard normal(gaussian) distribution($\mu = 0, \sigma = 1$)에 의해 선택되었다. $t$th time step에서 true reward $R_t$는 선택된 action인 $A_t$에 대한 $q(A_t)$에 gaussian noise를 더한 것이다. 
 
 
-아래 그래프는 greedy($\epsilon = 0$), $\epsilon$-greedy($\epsilon = 0.01, \epsilon = 0.1$)의 sample average로 측정한 action-value estimate를 보여준다. 위 그래프는 experience를 통한 expected reward를, 아래 그래프는 optimal action을 선택한 비율을 의미한다. 
+아래 그래프는 greedy($\epsilon = 0$), $\epsilon$-greedy($\epsilon = 0.01, \epsilon = 0.1$)의 sample average로 측정한 action-value estimate를 보여준다. 위 그래프는 experience를 통한 expected reward를, 아래 그래프는 optimal action을 선택한 비율을 의미한다. greedy 방식보다 $\epsilon$-greedy$(\epsilon$값이 클수록) 좋은 성능을 보이고 있다. 이는 $\epsilon$ 값의 존재로 인해 agent가 exploit하게만 동작하는 것이 아니라, 적은 확률로 랜덤하게 action을 선택하는 explore를 진행하여 suboptimal action-value에 머물지 않고 optimal action-value를 찾아가기 때문이다. 그래프에는 step이 1000까지만 표기되었지만 계속 진행해보면, $\epsilon = 0.01$ 방식이 느리게 향상되지만 두 성능 측정 모두에서 $\epsilon = 0.1$보다 더 나은 성능을 보인다. 결과적으로, $\epsilon$ 값은 조절이 성능에 영향을 미치고, 나중에는 constant 값이 아닌 시간이 지남에 따라 $\epsilon$값을 줄이는 방식을 택하기도 한다.
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224034888-80066f9d-d4a3-481f-aaa2-41e82a2489d3.png" width="60%" height="60%"></center>
 
-
-greedy 방식보다 $\epsilon$-greedy$(\epsilon$값이 클수록) 좋은 성능을 보이고 있다. 이는 $\epsilon$ 값의 존재로 인해 agent가 exploit하게만 동작하는 것이 아니라, 적은 확률로 랜덤하게 action을 선택하는 explore를 진행하여 suboptimal action-value에 머물지 않고 optimal action-value를 찾아가기 때문이다. 그래프에는 step이 1000까지만 표기되었지만 계속 진행해보면, $\epsilon = 0.01$ 방식이 느리게 향상되지만 두 성능 측정 모두에서 $\epsilon = 0.1$보다 더 나은 성능을 보인다. 결과적으로, $\epsilon$ 값은 조절이 성능에 영향을 미치고, 나중에는 constant 값이 아닌 시간이 지남에 따라 $\epsilon$값을 줄이는 방식을 택하기도 한다. 
 
 <br/>
 
@@ -91,6 +89,7 @@ greedy 방식보다 $\epsilon$-greedy$(\epsilon$값이 클수록) 좋은 성능�
 
 구체적으로 살펴보자면, $\epsilon$-greedy 방식의 장점은 task에 따라 다르다. 예를 들어, reward distrbution의 variance가 1이 아니라 10인 경우와 같이 노이즈가 많은 reward에서는 optimal action-value를 찾기위해 더 많은 explore가 필요하며  $\epsilon$-greedy는 greedy 방식보다 훨씬 더 잘 작동한다. 그러나 만약 reward distribution이 0이라면 greedy 방식은 한번만 시도한 후에 true action-value를 알 수 있기 때문에 가장 잘 작동할수 있다. 
 
+<br/>
 
 deterministic case에서도 다른 가정을 약화시키면 exploration이 큰 이점이 있다. bandit task가 non-stationray; true-action value가 시간에 따라 변경되었다고 가정해보자. 이 경우 suboptimal action-value를 가진 action이 현재 greedy action인 optimal action-value보다 낫도록 변경되지 않았는지 확인하기 위해서는 determinisitc한 경우에도 exploration이 필요하다. 쉽게 말하면, true-action value가 현재 action을 진행하고 변하기 때문에, action을 value에 따라 고정적으로 선택되어오던 case에서도 action-value에 대한 새로운 측정이 요구된다.
 
