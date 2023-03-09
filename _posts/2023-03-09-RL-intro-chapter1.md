@@ -7,10 +7,9 @@ sidebar:
   nav: layouts
 ---
 
-
 > 강화학습의 바이블이라고 불리는 Richard S. Sutton의 Reinforcement Learning: An Introduction을 공부하고 필자가 이해한 내용과 추가 정보들을 예제와 함께 간략하고 쉽게(?) 설명하는 방식으로 정리해봅니다. 용어 같은 경우, 원문 그대로 사용하겠지만 혹시 모를 번역 오류 및 잘못된 설명에 대한 지적과 보충 환영합니다. 
 
-# 1\. The Reinforcement Learning Problem
+# 1. The Reinforcement Learning Problem
 
 ## 1.1 Reinforcement Learning
 
@@ -18,15 +17,15 @@ sidebar:
 
 ### 1.1.1 Characteristics of Reinforcement Learning Problem 
 
-**\- Closed-loop이다.** 
+**- Closed-loop이다.** 
 
 Closed-loop란 사람의 개입없이 원하는 상태 유지를 위해 시스템을 자동으로 조절하는 방식을 의미한다. 강화학습은 본질적으로 사람과의 상호작용이 없을 뿐더러 학습자의 동작 이후의 결과만이 입력에 영향을 미치게 된다. 
 
-**\- 학습자에게 직접적인 지침이 주어지지 않는다.** 
+**- 학습자에게 직접적인 지침이 주어지지 않는다.** 
 
 학습자는 상호작용 속에서 수치적 보상 신호를 최대화 하기 위해 현재의 환경에서 어떤 행동을 수행해야하는지 배워야 한다. 이 때, 학습자는 trial & error 방식으로 즉, 여러 시행착오를 통해 어떤 행동이 가장 큰 보상을 얻을 수 있는지 발견한다.
 
-**\- 보상 신호를 포함한 행동의 결과가 장기간에 걸쳐 나타난다.** 
+**- 보상 신호를 포함한 행동의 결과가 장기간에 걸쳐 나타난다.** 
 
 행동에 대한 보상은 즉각적인 보상뿐만 아니라 다음 상황과 그로 발생하는 모든 후속 보상에 영향을 미칠 수 있다. 추후 고려하겠지만, 이러한 특성으로 인해 학습자는 다음 1-step 뒤의 즉각적인 보상만을 목적하기도, 혹은 n-step 뒤의 장기적인 보상을 목적할 수도 있다. 
 
@@ -56,19 +55,19 @@ Closed-loop란 사람의 개입없이 원하는 상태 유지를 위해 시스�
 
 수식적인 부분과 원리는 뒤에서 설명하겠지만, 강화학습에서 사용되는 요소에 대해 개념적으로 짚어본다. 이제부터는 이해를 돕기 위해 학습자라고 불렀던 학습 주체를 agent로, 환경을 env로 표현하겠다. state는 현재로써는 agent 시점에서 관찰된 env라고 이해하면 된다. 궁극적으로 강화학습의 최종 목표는 주어진 요소들을 사용하여 action을 수행했을 때의 장기적 관점에서의 보상을 최대화할 수 있도록 agent를 학습시키는 것이다. 
 
-**\- policy: agent's behavior function; mapping from state to action.**
+**- policy: agent's behavior function; mapping from state to action.**
 
 agent가 행동하는 방식을 정의하며, 관찰된 state에서 취해야 할 action으로의 매핑이다. policy는 단순한 function이나 table일 수도 혹은 매우 큰 계산이 요구되는 black-box function일 수도 있다. 일반적으로 stochastic하지만 deterministic한 경우도 존재한다. 
 
-**\- reward: immediate(short-term) scalar feedback signal.**
+**- reward: immediate(short-term) scalar feedback signal.**
 
 강화학습 문제의 최종 목표를 구성하며 즉각적인 의미에서의 보상을 정의한다. 각 time-step에서 env는 policy에 따라 action을 수행한 agent에게 scalar number인 reward를 보내면 해당 action의 바람직함을 판단한다. reward는 일반적으로 수행한 action과 state에 따른 stochastic function일 수 있다. 
 
-**\- value function: expected cumulative(long-term) reward from state.**
+**- value function: expected cumulative(long-term) reward from state.**
 
 강화학습 문제의 최대화 하려는 궁극적인 목표이며 장기적인 의미에서의 가치를 정의한다. agent가 해당 state에서 시작하여 미래에 누적될 것으로 예상되는 총 reward; 즉 현 state에서의 총 reward 예측값을 의미하며 장기적인 바람직함을 의미한다. 추후 Bellman equation과 함께 언급하겠지만 value function은 결국 일련의 reward summation의 expectation으로 표현되며 시작되는 state가 다르면 값이 달라질 수 있다. 결과적으로 우리는 action의 단기적관점의 reward 보다는 장기적 관점에서의 value function을 통해 가치판단을 하게 된다. 
 
-**\- model: duplication of env which generate the next state and reward.**
+**- model: duplication of env which generate the next state and reward.**
 
 실제 env의 동작을 모방하거나 일반적으로 환경이 동작하는 방식에 대한 추론을 가능하게 하는 요소를 정의한다. state와 action이 주어지면 model을 통해 결과로 나타나는 next state와 reward를 예측할 수 있다. model은 추후 model-based method에서 언급될 planning에 사용되며 실제 상호작용 없이도 미래 상황을 고려하여 action을 선택할 수 있다. 
 
