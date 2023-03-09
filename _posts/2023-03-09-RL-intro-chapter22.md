@@ -75,7 +75,7 @@ $\bar R_t$는 reward가 비교되는 baseline 역할을 수행하고, 만약 rew
 
 아래 그래프는 $\mu=4$인 normal distribution에서의 10-armed testbed 결과를 보여준다. reward의 전반적인 상승이 있었지만 reward baseline의 사용으로 인해 gradient-bandit 알고리즘에 전혀 영향을 주지 않는다. 그러나 baseline을 생략하면($\bar R_t = 0$), 성능이 크게 저하된다. 
 
-<center><img src="" width="60%" height="60%"></center>
+<center><img src="https://user-images.githubusercontent.com/127359789/224055619-8935787a-c513-4d28-856a-0cf8ce94a358.PNG" width="60%" height="60%"></center>
 
 <br/>
 
@@ -107,7 +107,7 @@ associative search는 optimal action을 search하는 형태에서의 trial-and-e
 
 최종적으로 아래 그래프는 10-armed testbed에서 매개변수 값에 따른 성능 비교를 보여준다. 전체적으로 U자 모양을 그리며 매개변수의 중간 값에서 잘 작동하며 UCB가 가장 성능이 좋았다. $n$-armed bandit 문제를 푸는 이외에도 많은 알고리즘들이 있지만 고려하는 강화학습 문제 정의에는 포함되지 못했고, 살펴본 방법들은 exploration과 exploitation의 균형 문제에 대한 완전히 만족스러운 해결책은 아니었다.  
 
-<center><img src="" width="60%" height="60%"></center>
+<center><img src="https://user-images.githubusercontent.com/127359789/224055717-b414ca86-e7da-4cbc-86f9-cb1e110c72c3.PNG" width="60%" height="60%"></center>
 
 <br/>
 
