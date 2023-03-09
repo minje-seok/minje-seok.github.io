@@ -23,15 +23,15 @@ sidebar:
 
 취해진 action과 관계없이, 궁극적으로 취해야 할 올바른 action을 나타내는 feedback.
 
+<br/>
 
 ## 2.1 An n-Armed Bandit Problem
 
 해당 문제에서는 $n$개의 슬롯머신이 있고, 한번의 action 선택으로 잭팟을 터뜨리면 지급되는 reward를 위해 슬롯머신 중 하나의 레버를 선택해 플레이하는 것이다. 당신은 반복되는 action 선택을 통해 최상의 레버에 action을 집중하여 상금을 최대화할 수 있다. 어떤 action을 선택하는 것이 최고의 기대되는 reward을 가질 수 있는지 알아보자. 
 
 
-<center><img src="" width="60%" height="60%"></center>
-<center>http://sanghyukchun.github.io/96/</center>
-
+<center><img src="" width="60%" height="60%">https://user-images.githubusercontent.com/127359789/224034422-6d5ce4e2-d930-4924-a84a-34e578010d41.jpg</center>
+<center><span style="font-size:80%">http://sanghyukchun.github.io/96/</span> </center>
 
 이러한 문제는 다음과 같이 일반화가 가능하다. $n$개의 다른 action 중 하나를 선택해야 하는 상황에 반복적으로 노출되며, 하나의 action 선택 후 그에 따라 stationary probability distribution에서 선택한 수치의 reward을 받는다. 사용자는 일정 기간 혹은 일정 횟수의 action 선택 동안 예상되는 총 reward을 최대화 하는 것이 목표이다. 각 action은 기대되거나 평균적인 reward를 가지게 되는데 이는 action의 value라고 할 수 있고 지난 챕터에서 언급한 강화학습 요소인 value function과 연결된다. 
 
@@ -40,6 +40,7 @@ sidebar:
 
 exploit는 해당 step에서 기대되는 보상을 최대화할 수 있지만 explore는 불확실성 속에서 장기적으로 더 큰 총 보상을 만들어낼 수 있다. 그렇다고 explore을 많이하면 총 보상이 무조건적으로 늘어난다고 단언할 수도 없고 일반적인 문제에서 시간 혹은 선택이 제한되어있다는 것 또한 고려해야 한다. 단일 action 선택으로는 결국 exploration과 exploitation을 동시에 수행하는 것은 불가능해 충돌이 발생하게 된다. 이번 챕터에서는 exploration과 exploitation의 균형을 맞추는 방법과 그 적절성을 보여준다. 
 
+<br/>
 
 ## 2.2 Action-Value methods
 ### 2.2.1 Action-Value Estimation: sample average
@@ -52,6 +53,7 @@ $$ Q_t(a) = \cfrac{R_1 + R_2 + \cdots + R_{N_t(a)}}{N_t(a)} \tag{1} $$
 
 만약 $N_t(a) = 0$이면, $Q_t(a)$는 $Q_1(a) = 0$으로 정의한다. 대수의 법칙에 따라 $N_t(a)$ $\to$ $\infty$이므로 $Q_t(a)$는 $q(a)$로 수렴한다. 각 estimate가 해당 action에 대한 reward sample들의 단순 평균이기 때문에 이를 action-value 추정을 위한 'sample average' 방법이라 부른다. 해당 방식 외에도 value를 측정하는 방식은 다양하지만 설명을 위해서 이번 챕터에서는 estimate 계산을 위해 사용한다. 
 
+<br/>
 
 ### 2.2.2 Action-Value Selection: greedy
 
@@ -60,6 +62,7 @@ $$ Q_t(a) = \cfrac{R_1 + R_2 + \cdots + R_{N_t(a)}}{N_t(a)} \tag{1} $$
 
 $$ A_t = \arg\max_a Q_t(a) \tag{2} $$
 
+<br/>
 
 ### 2.2.3 Action-Value Selection: $\epsilon$-greedy
 
@@ -68,18 +71,20 @@ exploit만 진행하는 greedy 방식에서 explore 하기 위한 간단한 대�
 
 이러한 방법은 재생 횟수가 증가하는 한도 내에서 모든 action이 무한 횟수로 샘플링되어 모든 $a$에 대해 $N_t(a)$ $\to$ $\infty$를 보장하고 따라 모든 $Q_t(a)$가 $q(a)$로 수렴하게 된다. 이는 물론 optimal action을 선택할 확률이 $1-\epsilon$보다 크게, 즉 거의 확실하게 수렴한다는 것을 의미하지만 이는 점근적인 보장임을 상기해야 한다. 
 
+<br/>
 
 ### 2.2.4 Comparision between greedy and $\epsilon$-greedy
 
 무작위로 생성된 2000번의 10-Armed Bandit 문제; 10-armed testbed를 통해 greedy와 $\epsilon$-greedy의 실용적 관점에서의 상대적 효과를 평가해보자. 각 bandit에 대해,  $a = 1 , \ldots , 10$인 action-values $q(a)$는 standard normal(gaussian) distribution($\mu = 0, \sigma = 1$)에 의해 선택되었다. $t$th time step에서 true reward $R_t$는 선택된 action인 $A_t$에 대한 $q(A_t)$에 gaussian noise를 더한 것이다. 
 
 
-아래 figure는 greedy($\epsilon = 0$), $\epsilon$-greedy($\epsilon = 0.01, \epsilon = 0.1$)의 sample average로 측정한 action-value estimate를 보여준다. 위 그래프는 experience를 통한 expected reward를, 아래 그래프는 optimal action을 선택한 비율을 의미한다. 
+아래 그래프는 greedy($\epsilon = 0$), $\epsilon$-greedy($\epsilon = 0.01, \epsilon = 0.1$)의 sample average로 측정한 action-value estimate를 보여준다. 위 그래프는 experience를 통한 expected reward를, 아래 그래프는 optimal action을 선택한 비율을 의미한다. 
 
-<center><img src="" width="60%" height="60%"></center>
+<center><img src="" width="60%" height="60%">https://user-images.githubusercontent.com/127359789/224034888-80066f9d-d4a3-481f-aaa2-41e82a2489d3.png</center>
 
 greedy 방식보다 $\epsilon$-greedy$(\epsilon$값이 클수록) 좋은 성능을 보이고 있다. 이는 $\epsilon$ 값의 존재로 인해 agent가 exploit하게만 동작하는 것이 아니라, 적은 확률로 랜덤하게 action을 선택하는 explore를 진행하여 suboptimal action-value에 머물지 않고 optimal action-value를 찾아가기 때문이다. 그래프에는 step이 1000까지만 표기되었지만 계속 진행해보면, $\epsilon = 0.01$ 방식이 느리게 향상되지만 두 성능 측정 모두에서 $\epsilon = 0.1$보다 더 나은 성능을 보인다. 결과적으로, $\epsilon$ 값은 조절이 성능에 영향을 미치고, 나중에는 constant 값이 아닌 시간이 지남에 따라 $\epsilon$값을 줄이는 방식을 택하기도 한다. 
 
+<br/>
 
 ### 2.2.5 Pros and Cons of $\epsilon$-greedy and Usefulness
 
@@ -90,11 +95,13 @@ deterministic case에서도 다른 가정을 약화시키면 exploration이 큰 
 
 non-stationary는 강화학습에서 일반적으로 발생하는 현상이며 action이 stationary 및 deterministic한 경우라도 agent는 학습 프로세스로 인해 시간이 지남에 따라 action-value가 변경될 수 있다. 다시한번 강조하지만, 강화학습에서는 explore과 exploit의 균형이 매우 중요하다. 
 
+<br/>
 
 ## 2.3 Incremental Implementation
 
 지금까지 사용했던 sample average 방식의 action-value 측정 $(1)$은 구현 상, 각 action 선택에 따른 모든 reward 기록을 유지하고 계산하는 것이 일차원적인 방식이나 메모리와 계산 요구 사항이 제한없이 증가하게 되는 문제가 발생한다. 따라서 새로운 reward 처리를 위한 작고 지속적인 계산 방식을 고안한다. 
 
+<br/>
 
 ### 2.3.1 Increment Update Rule at stationary env: sample average
 
@@ -113,11 +120,13 @@ $$  \begin{align*}
 
 $$ NewEstimate \leftarrow OldEstimate + StepSize[Target - OldEstimate] \tag{4} $$
 
+<br/>
 
 ## 2.4 Tracking a Non-stationary Problem
 
 sample average 방법은 stationary env에서는 적절하지만, non-stationary env에서는 적합하지 않다. 이러한 경우, 오래 전 reward보다는 최근 reward에 더 큰 가중치를 부여하는 것이 좋다. 여기서 말하는 가중치는 곧 step-size를 의미하고 incremental update rule은 $(5)$와 같이 수정된다. 
 
+<br/>
 
 ### 2.4.1 Increment Update Rule at non-stationary env: recency weighted average
 
@@ -135,6 +144,7 @@ $$  \begin{align*}
 
 $(6)$을 보면 reward $R_i$에게 적용되는 weight인 $\alpha(1-\alpha)^{k-i}$는 rewards가 얼마나 오래 되었는지인 $k-i$ 즉, time step에 종속된다. $1-\alpha$는 1보다 작은 값이며, $R_i$에 적용되는 weight는 rewards의 수가 증가할수록 exponential하게 값이 작아진다. 만약 $1-\alpha=0$이면 모든 weight는 $0^0=1$이라는 관례 때문에 맨 마지막 reward인 $R_k$만 계산된다. 이는 'exponential' 혹은 'recency weighted average'라고 불린다. 
 
+<br/>
 
 ### 2.4.2 Guarantee True Value by changing step-size
 
@@ -148,5 +158,5 @@ $$ \sum^\infty_{k=1}\alpha_k(a) = \infty \quad and\quad \sum^\infty_{k=1}\alpha^
 
 sample average case에서는 이를 만족하나 step-size가 constant한 case에서는 후자의 조건을 충족하지 못한다. 이로인해 constant case의 경우, estimate가 완전히 수렴되지는 않고 가장 최근에 받은 reward에 의해 달라진다. 결국, 이와 같은 방법들이 등장한 이유는 사실상 강화학습의 표준인 non-stationary env를 고려하기 위함이고 $(7)$를 충족하는 step-size sequence는 매우 느린 수렴 혹은 상당한 조정이 요구된다. 참고로, step-size sequence는 응용 및 실제 연구보다는 이론 작업에서 주로 사용된다. 
 
-
+<br/>
 
