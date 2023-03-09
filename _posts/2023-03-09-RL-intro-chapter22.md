@@ -63,7 +63,7 @@ $$ \begin{align*} H_{t+1}(A_t) &= H_t(A_t) + \alpha(R_t-\bar R_t)(1-\pi_t(A_t)),
 H_{t+1}(a) &= H_t(a) - \alpha(R_t-\bar R_t)\pi_t(a), \quad\quad\quad \forall a \ne A_t \tag{10}\end{align*} $$
 
 
-$\bar R_t$는 reward가 비교되는 baseline 역할을 수행하고, 만약 reward $R_t$가 더 높은 경우에 미래에 $A_t$를 취하는 probability $\pi_t$가 증가하고, 낮은 경우에는 감소한다. 선택되지 않은 action들은 반대쪽으로 이동한다. action-value estimate가 아닌 preference라는 수치를 통해 action을 취할 확률이 결과로 나오게 되어 이를 update 한다는 차이가 있다. 
+$\bar R_t$는 reward가 비교되는 baseline 역할을 수행하고, 만약 reward $R_t$가 더 높은 경우에 미래에 $A_t$를 취하는 probability $\pi_t$가 증가하고, 낮은 경우에는 감소한다. 선택되지 않은 action들은 반대쪽으로 이동한다. 이전과는 다르게 action-value estimate가 아닌 preference라는 수치를 통해 action을 취할 확률이 결과로 나오게 되어 이를 update 한다. 
 
 
 아래 그래프는 $\mu=4$인 normal distribution에서의 10-armed testbed 결과를 보여준다. reward의 전반적인 상승이 있었지만 reward baseline의 사용으로 인해 gradient-bandit 알고리즘에 전혀 영향을 주지 않는다. 그러나 baseline을 생략하면($\bar R_t = 0$), 성능이 크게 저하된다. 
