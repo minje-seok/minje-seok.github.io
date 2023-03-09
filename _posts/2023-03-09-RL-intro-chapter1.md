@@ -90,7 +90,7 @@ agent가 행동하는 방식을 정의하며, state에서 취해야 할 action�
 <center><img src="https://user-images.githubusercontent.com/127359789/224031342-da896ded-e6d4-4c4e-8dd6-3e9fac93f856.jpg" width="60%" height="60%"></center>
 <center><span style="font-size:80%">https://opentutorials.org/course/4548/28949</span> </center>
 
-위에서 보았던 예제를 새롭게 정의된 단어들로 표현했다; 게임 → 환경(env), 게이머 → 학습자(agent), 게임화면 → 상태(state), 게이머의 조작 → 행동(action), 상과 벌 → 보상(reward), 게이머의 판단력 → 정책(policy). agent는 env로부터 state와 reward를 얻게되고 policy는 그에 대한 매핑으로 action을 선택한다. action에 따라 env가 바뀌게 되고 또 다시 state와 reward를 관찰하는 과정을 반복하는 과정에서 policy가 학습하고 value function을 최대화 하는 action을 선택하게 된다. 
+위에서 보았던 예제를 새롭게 정의된 단어들로 표현하면 다음과 같이 쓸 수 있다; 게임 → 환경(env), 게이머 → 학습자(agent), 게임화면 → 상태(state), 게이머의 조작 → 행동(action), 상과 벌 → 보상(reward), 게이머의 판단력 → 정책(policy). agent는 env로부터 state와 reward를 얻게되고 policy는 그에 대한 매핑으로 action을 선택한다. action에 따라 env가 바뀌게 되고 또 다시 state와 reward를 관찰하는 과정을 반복하는 과정에서 policy가 학습하고 value function을 최대화 하는 action을 선택하게 된다. 
 
 <br/>
 
