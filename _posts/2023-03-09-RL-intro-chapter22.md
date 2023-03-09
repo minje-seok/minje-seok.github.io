@@ -15,6 +15,7 @@ sidebar:
 
 그동안 initial action-value estimates $Q_1(a)$ 값에 의존해왔다. 우리는 맨 처음 설정된 초기 action-value function에 의해 동작하게 되며 이는 곧 편향됨을 의미한다. sample average 방법의 경우에는 모든 action이 한번 이상 선택되면 편향이 사라지지만, constant $\alpha$를 사용하는 경우 시간이 지남에 따라 감소하지만 편향은 사라지지않는다. initial action-value의 편향은 예상되는 reward 수준에 대한 사전 지식을 제공하기도 하지만, 이 또한 사용자가 설정하는 파라미터로 취급될 수도 있다는 단점이 존재한다. 
 
+<br/>
 
 ### 2.5.1 Using Initial Action Value to Exploration 
 
@@ -23,10 +24,11 @@ sidebar:
 
 아래 그래프는 모든 $a$에 대해 $Q_1(a) = +5$를 사용하는 greedy 방법과 $Q_1(a) = 0$인 $\epsilon$-greedy를 비교한 10-armed bandit testbed의 성능을 보여준다. 
 
-<center><img src="" width="60%" height="60%"></center>
+<center><img src="https://user-images.githubusercontent.com/127359789/224050454-b7e7ac79-3d78-479b-aca5-b37fe80582ca.png" width="60%" height="60%"></center>
 
 초기 optimistic 방법이 더 많이 explore 하기 때문에 성능이 좋지 않지만 시간이 지남에 따라 explore이 어 $\epsilon$-greedy보다도 성능이 더 좋아진다. 한눈에 보기에는 매우 좋은 방법처럼 보일 수 있으나 이는 stationary 문제에만 적용이 가능하다. 즉, action-value가 변경되는 non-stationary env에서는 적합하지 않다. 이러한 관점은 모든 후속 rewards를 동일하게 평균화하는 sample average 방법에도 동일하게 적용된다. 그럼에도 불구하고 이를 기반으로 한 방법들은 매우 단순하면서도 종종 적합한 경우도 있다. 
 
+<br/>
 
 ## 2.6 Upper-Confidence-Bound Action Selection
 
@@ -38,14 +40,17 @@ action value estimate의 부정확함으로 인해 exploration이 더 필요하�
 
 $$ A_t = \arg\max_a \left[ {Q_t(a) + c\sqrt{\cfrac{\ln t}{N_t(a)}}} \, \right ] \tag{8}$$
 
+<br/>
+
 upper confidence bound(UCB)의 아이디어는 불확실성 또는 variance의 척도를 의미하는 squae-root 항을 사용하여 $a$의 action-value estimate를 표현하자는 것이다. 따라서 해당 action value가 최대가 되는 값은 신뢰 수준을 결정하는 $c$와 함께 action $a$의 가능한 true value에 대한 upper bound이다. 
 
 특정 action $a$가 선택됨에 따라, $a$가 선택된 횟수인 $N_t(a)$는 증가하고 이는 불확실성 항의 분모에 나타나므로 항은 감소한다. 반면에 다른 $a$가 선택될 때마다 $t$는 증가하고 이는 분자에 나타나므로 불확실성 추정치가 증가한다. 결과적으로 $a$가 선택될 때마다 불확실성은 감소할 것이다. natural logrithm의 사용은 증가폭이 시간이 지남에 따라 작아지지만 제한이 없음을 의미한다. 결국 모든 action이 선택되지만 시간이 지남에 따라 estimate가 낮거나 이미 더 많이 선택된 action의 경우 대기 시간이 길어지고 선택 빈도가 낮아지게 된다.
 
-<center><img src="" width="60%" height="60%"></center>
+<center><img src="https://user-images.githubusercontent.com/127359789/224050461-b89bf748-346b-46c5-960e-abacadcbabcd.png" width="60%" height="60%"></center>
 
 10-armed testbed에서 UCB를 사용한 결과이다. UCB는 종종 잘 수행되지만 bandit 문제 이외에서는 강화학습에서 일반적인 설정이 아닌 stationary env 성질로 인해 다른 문제들로의 확장은 어렵다. 또한 나중에 배우게 될 large state space, 특히 function approximation에서의 적용도 어렵다. 이러한 고급 설정에서는 UCB 아이디어를 활용하는 실용적인 방법은 존재하지 않는다고 한다. 
 
+<br/>
 
 ## 2.7 Gradient Bandits
 
@@ -54,6 +59,7 @@ upper confidence bound(UCB)의 아이디어는 불확실성 또는 variance의 �
 
 $$ \Pr \{ {A_t = a} \} = \cfrac{e^{H_t(a)}}{\sum^n_{b=1}e^{H_t(b)}} = \pi_t(a) \tag{9}$$
 
+<br/>
 
 ### 2.7.1 How to Update Preference $H_t(a)$
 
@@ -62,26 +68,38 @@ $$ \Pr \{ {A_t = a} \} = \cfrac{e^{H_t(a)}}{\sum^n_{b=1}e^{H_t(b)}} = \pi_t(a) \
 $$ \begin{align*} H_{t+1}(A_t) &= H_t(A_t) + \alpha(R_t-\bar R_t)(1-\pi_t(A_t)), \, and\\
 H_{t+1}(a) &= H_t(a) - \alpha(R_t-\bar R_t)\pi_t(a), \quad\quad\quad \forall a \ne A_t \tag{10}\end{align*} $$
 
+<br/>
 
 $\bar R_t$는 reward가 비교되는 baseline 역할을 수행하고, 만약 reward $R_t$가 더 높은 경우에 미래에 $A_t$를 취하는 probability $\pi_t$가 증가하고, 낮은 경우에는 감소한다. 선택되지 않은 action들은 반대쪽으로 이동한다. 이전과는 다르게 action-value estimate가 아닌 preference라는 수치를 통해 action을 취할 확률이 결과로 나오게 되어 이를 update 한다. 
 
 
 아래 그래프는 $\mu=4$인 normal distribution에서의 10-armed testbed 결과를 보여준다. reward의 전반적인 상승이 있었지만 reward baseline의 사용으로 인해 gradient-bandit 알고리즘에 전혀 영향을 주지 않는다. 그러나 baseline을 생략하면($\bar R_t = 0$), 성능이 크게 저하된다. 
 
+<center><img src="" width="60%" height="60%"></center>
+
+<br/>
+
 ### 2.7.2 Stochastic Approximation in Graient Ascent 
 
 해당 알고리즘을 gradient ascent에 대한 stochastic approximation의 측면에서 이해해보자. gradient ascent에서 각 preference $H_t(a)$는 성능에 대한 증가의 효과에 비례하여 증가한다. 이 때, 성능의 평가는 expected reward $\mathbb{E}[R_t] = \sum_b\pi_t(b)q(b)$로 이루어진다. 
 
 $$ H_{t+1}(a) = H_t(a)+\alpha \cfrac{\delta \mathbb E[R_t]}{\delta H_t(a)} \tag{11} $$
+
+<br/>
+
 물론 우리는 정확한 true $q(b)$를 알 수 없기 때문에, 정확한 gradient ascent 구현은 불가능하지만 알고리즘의 expected update와 gradient of expected reward는 거의 유사함을 보인다.
 
 따라 gradient bandit 알고리즘은 stochastic gradient ascent의 instance이며 강력한 수렴 성질을 지닌다. reward baseline는 선택된 action이 아닌 다른 action에 의존하므로 update시 딱히 필요하지 않아 이는 어떤 값이든 상관없다. 그러나 알고리즘의 expected update에 영향을 미치지는 않지만 update의 분산과 수렴 속도에 영향을 미친다. reward 평균으로 동작하는 것은 suboptimal일지도 모르나 잘 작동한다고 한다. 
+
+<br/>
 
 ## 2.8 Associative Search (Contextual Bandits)
 
 지금까지는 서로 다른 action을 서로 다른 situation와 연결할 필요 없는 non-associative task만 고려했다. 즉, 항상 같은 situation에서 action을 선택했으나 일반적인 강화학습에는 하나 이상의 situation에서 policy의 학습을 원한다. 즉 전체 문제에 대한 단계 설정을 위해서는 각 situation에서 가장 optimal action으로의 매핑 즉, associative 설정으로 전환해야 한다. 
 
 associative search는 optimal action을 search하는 형태에서의 trial-and-error 학습과 situation에 optimal하게 action을 association하는 형태를 모두 포함한다. associative search는 n-armed bandit 문제와 전체 강화학습 문제 사이의 중간이다. 그들은 policy 학습을 포함한다는 점에서 전체 강화학습과 비슷하지만, 각 action이 즉각적인 reward에만 영향을 미친다는 점(stationary)에서 n-armed bandit 문제와 비슷하다. action가 다음 situation과 reward에 영향을 미치도록(non-stationary) 허용되면 완전한 강화학습 문제가 발생된다. 이제부터는 이러한 문제를 제시하고 결과를 고려하게 된다. 
+
+<br/>
 
 ## 2.9 Summary
 
@@ -90,3 +108,6 @@ associative search는 optimal action을 search하는 형태에서의 trial-and-e
 <center><img src="" width="60%" height="60%"></center>
 
 위 그래프는 10-armed testbed에서 매개변수 값에 따른 성능 비교를 보여준다. 전체적으로 U자 모양을 그리며 매개변수의 중간 값에서 잘 작동하며 UCB가 가장 성능이 좋았다. $n$-armed bandit 문제를 푸는 이외에도 많은 알고리즘들이 있지만 고려하는 강화학습 문제 정의에는 포함되지 못했고, 살펴본 방법들은 exploration과 exploitation의 균형 문제에 대한 완전히 만족스러운 해결책은 아니었다.  
+
+<br/>
+
