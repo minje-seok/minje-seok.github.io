@@ -35,6 +35,7 @@ sidebar:
 
 이러한 문제는 다음과 같이 일반화가 가능하다. $n$개의 다른 action 중 하나를 선택해야 하는 상황에 반복적으로 노출되며, 하나의 action 선택 후 그에 따라 stationary probability distribution에서 선택한 수치의 reward을 받는다. 사용자는 일정 기간 혹은 일정 횟수의 action 선택 동안 예상되는 총 reward을 최대화 하는 것이 목표이다. 각 action은 기대되거나 평균적인 reward를 가지게 되는데 이는 action의 value라고 할 수 있고 지난 챕터에서 언급한 강화학습 요소인 value function과 연결된다. 
 
+<br/>
 
 만약 확실하지는 않아도 각 action의 value estimate를 알고 있다면, 우리는 value가 가장 높은 action을 선택할 것이다. 이러한 행위를 'greedy action'이라고 부른다. 이는 action의 value에 대한 현재 지식을 exploit하고 있다고 말할 수 있다. 대신 action의 value estimate를 향상 시키기 위해 다른 action을 선택한다면 explore하고 있다고 말할 수 있다. 
 
@@ -80,8 +81,6 @@ exploit만 진행하는 greedy 방식에서 explore 하기 위한 간단한 대�
 
 
 아래 그래프는 greedy($\epsilon = 0$), $\epsilon$-greedy($\epsilon = 0.01, \epsilon = 0.1$)의 sample average로 측정한 action-value estimate를 보여준다. 위 그래프는 experience를 통한 expected reward를, 아래 그래프는 optimal action을 선택한 비율을 의미한다. 
-
-<br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224034888-80066f9d-d4a3-481f-aaa2-41e82a2489d3.png" width="60%" height="60%"></center>
 
@@ -157,13 +156,12 @@ $(6)$을 보면 reward $R_i$에게 적용되는 weight인 $\alpha(1-\alpha)^{k-i
 
 $\alpha_k(a)$가 action $a$의 $k$th 선택 이후의 step-size라고 할 때, 경우에 따라 step-size를 변경하는 것이 더 좋다. 이전의 sample average 방법에서 사용했던 step-size인 $\alpha_k(a) = \frac{1}{k}$ 같은 경우, 대수의 법칙에 의해 true action-values로 수렴하도록 보장된다. 그러나 모든 sequence $\alpha_k(a)$의 모든 선택에 의해 수렴이 보장되는 것은 아니다. 
 
+<br/>
 
 아래는 stochastic approximation theory에서 근거한 확률 1로 수렴하는데 필요한 조건이다. 전자는 step-size가 초기 조건이나 무작위 변동을 극복할 수 있을 만큼 충분히 크다는 것을, 후자는 결국 수렴을 보장할 수 있을만큼 step-size가 작아지는 것을 보장한다. 
 
 
 $$ \sum^\infty_{k=1}\alpha_k(a) = \infty \quad and\quad \sum^\infty_{k=1}\alpha^2_k(a) < \infty \tag{7}$$
-
-<br/>
 
 sample average case에서는 이를 만족하나 step-size가 constant한 case에서는 후자의 조건을 충족하지 못한다. 이로인해 constant case의 경우, estimate가 완전히 수렴되지는 않고 가장 최근에 받은 reward에 의해 달라진다. 결국, 이와 같은 방법들이 등장한 이유는 사실상 강화학습의 표준인 non-stationary env를 고려하기 위함이고 $(7)$를 충족하는 step-size sequence는 매우 느린 수렴 혹은 상당한 조정이 요구된다. 참고로, step-size sequence는 응용 및 실제 연구보다는 이론 작업에서 주로 사용된다. 
 
