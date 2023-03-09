@@ -1,3 +1,13 @@
+---
+layout: article
+title: Chapter 1. The Reinforcement Learning Problem
+aside:
+  toc: true
+sidebar:
+  nav: layouts
+---
+
+
 > 강화학습의 바이블이라고 불리는 Richard S. Sutton의 Reinforcement Learning: An Introduction을 공부하고 필자가 이해한 내용과 추가 정보들을 예제와 함께 간략하고 쉽게(?) 설명하는 방식으로 정리해봅니다. 용어 같은 경우, 원문 그대로 사용하겠지만 혹시 모를 번역 오류 및 잘못된 설명에 대한 지적과 보충 환영합니다. 
 
 # 1\. The Reinforcement Learning Problem
