@@ -27,12 +27,11 @@ sidebar:
 
 ## 2.1 An n-Armed Bandit Problem
 
-해당 문제에서는 $n$개의 슬롯머신이 있고, 한번의 action 선택으로 잭팟을 터뜨리면 지급되는 reward를 위해 슬롯머신 중 하나의 레버를 선택해 플레이하는 것이다. 당신은 반복되는 action 선택을 통해 최상의 레버에 action을 집중하여 상금을 최대화할 수 있다. 어떤 action을 선택하는 것이 최고의 기대되는 reward을 가질 수 있는지 알아보자. 
-
-<br/>
-
 <center><img src="https://user-images.githubusercontent.com/127359789/224034422-6d5ce4e2-d930-4924-a84a-34e578010d41.jpg" width="60%" height="60%"></center>
 <center><span style="font-size:80%">http://sanghyukchun.github.io/96/</span> </center>
+
+해당 문제에서는 $n$개의 슬롯머신이 있고, 한번의 action 선택으로 잭팟을 터뜨리면 지급되는 reward를 위해 슬롯머신 중 하나의 레버를 선택해 플레이하는 것이다. 당신은 반복되는 action 선택을 통해 최상의 레버에 action을 집중하여 상금을 최대화할 수 있다. 어떤 action을 선택하는 것이 최고의 기대되는 reward을 가질 수 있는지 알아보자. 
+
 
 이러한 문제는 다음과 같이 일반화가 가능하다. $n$개의 다른 action 중 하나를 선택해야 하는 상황에 반복적으로 노출되며, 하나의 action 선택 후 그에 따라 stationary probability distribution에서 선택한 수치의 reward을 받는다. 사용자는 일정 기간 혹은 일정 횟수의 action 선택 동안 예상되는 총 reward을 최대화 하는 것이 목표이다. 각 action은 기대되거나 평균적인 reward를 가지게 되는데 이는 action의 value라고 할 수 있고 지난 챕터에서 언급한 강화학습 요소인 value function과 연결된다. 
 
@@ -79,10 +78,10 @@ exploit만 진행하는 greedy 방식에서 explore 하기 위한 간단한 대�
 
 무작위로 생성된 2000번의 10-Armed Bandit 문제; 10-armed testbed를 통해 greedy와 $\epsilon$-greedy의 실용적 관점에서의 상대적 효과를 평가해보자. 각 bandit에 대해,  $a = 1 , \ldots , 10$인 action-values $q(a)$는 standard normal(gaussian) distribution($\mu = 0, \sigma = 1$)에 의해 선택되었다. $t$th time step에서 true reward $R_t$는 선택된 action인 $A_t$에 대한 $q(A_t)$에 gaussian noise를 더한 것이다. 
 
-<br/>
-
 
 아래 그래프는 greedy($\epsilon = 0$), $\epsilon$-greedy($\epsilon = 0.01, \epsilon = 0.1$)의 sample average로 측정한 action-value estimate를 보여준다. 위 그래프는 experience를 통한 expected reward를, 아래 그래프는 optimal action을 선택한 비율을 의미한다. 
+
+<br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224034888-80066f9d-d4a3-481f-aaa2-41e82a2489d3.png" width="60%" height="60%"></center>
 
@@ -148,6 +147,8 @@ $$  \begin{align*}
   &= (1-\alpha)^k Q_1 + \sum^k_{i=1} \alpha(1-\alpha)^{k-i} R_i \tag{6}
   \end{align*} $$
 
+<br/>
+
 $(6)$을 보면 reward $R_i$에게 적용되는 weight인 $\alpha(1-\alpha)^{k-i}$는 rewards가 얼마나 오래 되었는지인 $k-i$ 즉, time step에 종속된다. $1-\alpha$는 1보다 작은 값이며, $R_i$에 적용되는 weight는 rewards의 수가 증가할수록 exponential하게 값이 작아진다. 만약 $1-\alpha=0$이면 모든 weight는 $0^0=1$이라는 관례 때문에 맨 마지막 reward인 $R_k$만 계산된다. 이는 'exponential' 혹은 'recency weighted average'라고 불린다. 
 
 <br/>
@@ -161,6 +162,8 @@ $\alpha_k(a)$가 action $a$의 $k$th 선택 이후의 step-size라고 할 때, �
 
 
 $$ \sum^\infty_{k=1}\alpha_k(a) = \infty \quad and\quad \sum^\infty_{k=1}\alpha^2_k(a) < \infty \tag{7}$$
+
+<br/>
 
 sample average case에서는 이를 만족하나 step-size가 constant한 case에서는 후자의 조건을 충족하지 못한다. 이로인해 constant case의 경우, estimate가 완전히 수렴되지는 않고 가장 최근에 받은 reward에 의해 달라진다. 결국, 이와 같은 방법들이 등장한 이유는 사실상 강화학습의 표준인 non-stationary env를 고려하기 위함이고 $(7)$를 충족하는 step-size sequence는 매우 느린 수렴 혹은 상당한 조정이 요구된다. 참고로, step-size sequence는 응용 및 실제 연구보다는 이론 작업에서 주로 사용된다. 
 
