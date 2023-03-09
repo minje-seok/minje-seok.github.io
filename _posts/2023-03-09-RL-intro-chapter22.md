@@ -77,13 +77,13 @@ $$ H_{t+1}(a) = H_t(a)+\alpha \cfrac{\delta \mathbb E[R_t]}{\delta H_t(a)} \tag{
 
 따라 gradient bandit 알고리즘은 stochastic gradient ascent의 instance이며 강력한 수렴 성질을 지닌다. reward baseline는 선택된 action이 아닌 다른 action에 의존하므로 update시 딱히 필요하지 않아 이는 어떤 값이든 상관없다. 그러나 알고리즘의 expected update에 영향을 미치지는 않지만 update의 분산과 수렴 속도에 영향을 미친다. reward 평균으로 동작하는 것은 suboptimal일지도 모르나 잘 작동한다고 한다. 
 
-## Associative Search (Contextual Bandits)
+## 2.8 Associative Search (Contextual Bandits)
 
 지금까지는 서로 다른 action을 서로 다른 situation와 연결할 필요 없는 non-associative task만 고려했다. 즉, 항상 같은 situation에서 action을 선택했으나 일반적인 강화학습에는 하나 이상의 situation에서 policy의 학습을 원한다. 즉 전체 문제에 대한 단계 설정을 위해서는 각 situation에서 가장 optimal action으로의 매핑 즉, associative 설정으로 전환해야 한다. 
 
 associative search는 optimal action을 search하는 형태에서의 trial-and-error 학습과 situation에 optimal하게 action을 association하는 형태를 모두 포함한다. associative search는 n-armed bandit 문제와 전체 강화학습 문제 사이의 중간이다. 그들은 policy 학습을 포함한다는 점에서 전체 강화학습과 비슷하지만, 각 action이 즉각적인 reward에만 영향을 미친다는 점(stationary)에서 n-armed bandit 문제와 비슷하다. action가 다음 situation과 reward에 영향을 미치도록(non-stationary) 허용되면 완전한 강화학습 문제가 발생된다. 이제부터는 이러한 문제를 제시하고 결과를 고려하게 된다. 
 
-## Summary
+## 2.9 Summary
 
 이번 챕터에서는 exploration과 exploitation의 균형을 맞추는 몇가지 방법을 제안했다. $\epsilon$-greedy 방법은 시간의 매우 작은 부분을 무작위로 선택하는 반면, UCB 방법은 deterministic하게 선택하지만 더 적은 수의 sample을 받은 action을 선호하여 선택한다. Gradient-Bandit 알고리즘은 action-value가 아닌  action preference를 추정하고 softmax distribution을 사용하여 확률적 방식으로 선호하는 action을 파악한다. 별개로, 특정 값으로의 estimate 초기화한 상태로의 greedy 방법 또한 살펴보았다. 
 
