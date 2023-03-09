@@ -22,11 +22,9 @@ sidebar:
 편향성을 지닌 initial action-value는 exploration은 장려하는 방식으로 사용될 수 있다. 10-armed testbed에서 initial action-value를 0으로 설정하는 대신 +5로 설정했다고 가정한다. 이 문제의 $q(a)$는 $\mu=0, \sigma=1$인 starnard distribution이었는데, 따라 initial estimate는 optimistic하다고 여겨지고 action-value를 explore하도록 권장한다. 어떤 action을 선택해도 reward는 initial action value보다 적기 때문에 agent는 더 나은 action을 선택하려고 한다. 결과적으로 estimate가 수렴하기 전에 모든 action이 여러번 시도되며 greedy action이 매번 선택되더라도 agent는 상당한 exploration을 수행하게 된다. 
 
 
-아래 그래프는 모든 $a$에 대해 $Q_1(a) = +5$를 사용하는 greedy 방법과 $Q_1(a) = 0$인 $\epsilon$-greedy를 비교한 10-armed bandit testbed의 성능을 보여준다. 
+아래 그래프는 모든 $a$에 대해 $Q_1(a) = +5$를 사용하는 greedy 방법과 $Q_1(a) = 0$인 $\epsilon$-greedy를 비교한 10-armed bandit testbed의 성능을 보여준다. 초기 optimistic 방법이 더 많이 explore 하기 때문에 성능이 좋지 않지만 시간이 지남에 따라 explore이 어 $\epsilon$-greedy보다도 성능이 더 좋아진다. 한눈에 보기에는 매우 좋은 방법처럼 보일 수 있으나 이는 stationary 문제에만 적용이 가능하다. 즉, action-value가 변경되는 non-stationary env에서는 적합하지 않다. 이러한 관점은 모든 후속 rewards를 동일하게 평균화하는 sample average 방법에도 동일하게 적용된다. 그럼에도 불구하고 이를 기반으로 한 방법들은 매우 단순하면서도 종종 적합한 경우도 있다. 
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224050454-b7e7ac79-3d78-479b-aca5-b37fe80582ca.png" width="60%" height="60%"></center>
-
-초기 optimistic 방법이 더 많이 explore 하기 때문에 성능이 좋지 않지만 시간이 지남에 따라 explore이 어 $\epsilon$-greedy보다도 성능이 더 좋아진다. 한눈에 보기에는 매우 좋은 방법처럼 보일 수 있으나 이는 stationary 문제에만 적용이 가능하다. 즉, action-value가 변경되는 non-stationary env에서는 적합하지 않다. 이러한 관점은 모든 후속 rewards를 동일하게 평균화하는 sample average 방법에도 동일하게 적용된다. 그럼에도 불구하고 이를 기반으로 한 방법들은 매우 단순하면서도 종종 적합한 경우도 있다. 
 
 <br/>
 
@@ -46,9 +44,11 @@ upper confidence bound(UCB)의 아이디어는 불확실성 또는 variance의 �
 
 특정 action $a$가 선택됨에 따라, $a$가 선택된 횟수인 $N_t(a)$는 증가하고 이는 불확실성 항의 분모에 나타나므로 항은 감소한다. 반면에 다른 $a$가 선택될 때마다 $t$는 증가하고 이는 분자에 나타나므로 불확실성 추정치가 증가한다. 결과적으로 $a$가 선택될 때마다 불확실성은 감소할 것이다. natural logrithm의 사용은 증가폭이 시간이 지남에 따라 작아지지만 제한이 없음을 의미한다. 결국 모든 action이 선택되지만 시간이 지남에 따라 estimate가 낮거나 이미 더 많이 선택된 action의 경우 대기 시간이 길어지고 선택 빈도가 낮아지게 된다.
 
-<center><img src="https://user-images.githubusercontent.com/127359789/224050461-b89bf748-346b-46c5-960e-abacadcbabcd.png" width="60%" height="60%"></center>
+<br/>
 
-10-armed testbed에서 UCB를 사용한 결과이다. UCB는 종종 잘 수행되지만 bandit 문제 이외에서는 강화학습에서 일반적인 설정이 아닌 stationary env 성질로 인해 다른 문제들로의 확장은 어렵다. 또한 나중에 배우게 될 large state space, 특히 function approximation에서의 적용도 어렵다. 이러한 고급 설정에서는 UCB 아이디어를 활용하는 실용적인 방법은 존재하지 않는다고 한다. 
+아래 그래프는 10-armed testbed에서 UCB를 사용한 결과이다. UCB는 종종 잘 수행되지만 bandit 문제 이외에서는 강화학습에서 일반적인 설정이 아닌 stationary env 성질로 인해 다른 문제들로의 확장은 어렵다. 또한 나중에 배우게 될 large state space, 특히 function approximation에서의 적용도 어렵다. 이러한 고급 설정에서는 UCB 아이디어를 활용하는 실용적인 방법은 존재하지 않는다고 한다. 
+
+<center><img src="https://user-images.githubusercontent.com/127359789/224050461-b89bf748-346b-46c5-960e-abacadcbabcd.png" width="60%" height="60%"></center>
 
 <br/>
 
@@ -105,9 +105,9 @@ associative search는 optimal action을 search하는 형태에서의 trial-and-e
 
 이번 챕터에서는 exploration과 exploitation의 균형을 맞추는 몇가지 방법을 제안했다. $\epsilon$-greedy 방법은 시간의 매우 작은 부분을 무작위로 선택하는 반면, UCB 방법은 deterministic하게 선택하지만 더 적은 수의 sample을 받은 action을 선호하여 선택한다. Gradient-Bandit 알고리즘은 action-value가 아닌  action preference를 추정하고 softmax distribution을 사용하여 확률적 방식으로 선호하는 action을 파악한다. 별개로, 특정 값으로의 estimate 초기화한 상태로의 greedy 방법 또한 살펴보았다. 
 
-<center><img src="" width="60%" height="60%"></center>
+최종적으로 아래 그래프는 10-armed testbed에서 매개변수 값에 따른 성능 비교를 보여준다. 전체적으로 U자 모양을 그리며 매개변수의 중간 값에서 잘 작동하며 UCB가 가장 성능이 좋았다. $n$-armed bandit 문제를 푸는 이외에도 많은 알고리즘들이 있지만 고려하는 강화학습 문제 정의에는 포함되지 못했고, 살펴본 방법들은 exploration과 exploitation의 균형 문제에 대한 완전히 만족스러운 해결책은 아니었다.  
 
-위 그래프는 10-armed testbed에서 매개변수 값에 따른 성능 비교를 보여준다. 전체적으로 U자 모양을 그리며 매개변수의 중간 값에서 잘 작동하며 UCB가 가장 성능이 좋았다. $n$-armed bandit 문제를 푸는 이외에도 많은 알고리즘들이 있지만 고려하는 강화학습 문제 정의에는 포함되지 못했고, 살펴본 방법들은 exploration과 exploitation의 균형 문제에 대한 완전히 만족스러운 해결책은 아니었다.  
+<center><img src="" width="60%" height="60%"></center>
 
 <br/>
 
