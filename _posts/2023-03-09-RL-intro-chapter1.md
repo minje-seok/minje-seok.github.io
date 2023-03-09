@@ -1,88 +1,91 @@
 ---
 layout: article
-title: Chapter 1. The Reinforcement Learning Problem
+title: Chapter 2. Multi-arm Bandits (2)
 aside:
   toc: true
 sidebar:
   nav: layouts
 ---
 
-> 강화학습의 바이블이라고 불리는 Richard S. Sutton의 Reinforcement Learning: An Introduction을 공부하고 필자가 이해한 내용과 추가 정보들을 예제와 함께 간략하고 쉽게(?) 설명하는 방식으로 정리해봅니다. 용어 같은 경우, 원문 그대로 사용하겠지만 혹시 모를 번역 오류 및 잘못된 설명에 대한 지적과 보충 환영합니다. 
+> 강화학습의 바이블이라고 불리는 Richard S. Sutton의 Reinforcement Learning: An Introduction을 공부하고 필자가 이해한 내용과 추가 정보들을 예제와 함께 간략하고 쉽게(?) 설명하는 방식으로 정리해봅니다. 용어 같은 경우, 원문 그대로 사용하겠지만 혹시 모를 번역 오류 및 잘못된 설명에 대한 지적과 보충 환영합니다. 
 
-# 1. The Reinforcement Learning Problem
+# 2. Multi-arm Bandits (2)
 
-## 1.1 Reinforcement Learning
+## 2.5 Optimistic Initial Values
 
-머신러닝은 지도학습(Supervised), 비지도학습(Unsupervised), 강화학습(Reinforced) 크게 세 가지로 분류된다. 일반적으로 지도학습은 결과를 예측(Regression, Classification), 비지도 학습은 데이터의 본질적 패턴을 발견(Association, Clustering)하는 것을 목적으로 한다. 강화학습은 환경과의 상호작용을 통해 얻은 보상을 통해 행동을 학습하는 것을 목적한다. 행동에 대한 결과와 보상의 경험은 궁극적인 목표를 달성하기 위한 정보를 포함하며, 이를 통해 환경이 자신의 행동에 대해 어떻게 변화하는지 학습할 수 있다. 상호작용이란 강화학습에서 모든 학습 이론의 기반이 되는 기본 아이디어라고 할 수 있다. 
+그동안 initial action-value estimates $Q_1(a)$ 값에 의존해왔다. 우리는 맨 처음 설정된 초기 action-value function에 의해 동작하게 되며 이는 곧 편향됨을 의미한다. sample average 방법의 경우에는 모든 action이 한번 이상 선택되면 편향이 사라지지만, constant $\alpha$를 사용하는 경우 시간이 지남에 따라 감소하지만 편향은 사라지지않는다. initial action-value의 편향은 예상되는 reward 수준에 대한 사전 지식을 제공하기도 하지만, 이 또한 사용자가 설정하는 파라미터로 취급될 수도 있다는 단점이 존재한다. 
 
-### 1.1.1 Characteristics of Reinforcement Learning Problem 
 
-**- Closed-loop이다.** 
+### 2.5.1 Using Initial Action Value to Exploration 
 
-Closed-loop란 원하는 상태 유지를 위해 별도 사람의 개입없이 시스템이 자체적으로 조절하는 방식을 의미한다. 강화학습은 본질적으로 사람과의 상호작용이 없을 뿐더러 학습자의 동작 이후의 결과만이 다음 입력에 영향을 미치게 된다. 
+편향성을 지닌 initial action-value는 exploration은 장려하는 방식으로 사용될 수 있다. 10-armed testbed에서 initial action-value를 0으로 설정하는 대신 +5로 설정했다고 가정한다. 이 문제의 $q(a)$는 $\mu=0, \sigma=1$인 starnard distribution이었는데, 따라 initial estimate는 optimistic하다고 여겨지고 action-value를 explore하도록 권장한다. 어떤 action을 선택해도 reward는 initial action value보다 적기 때문에 agent는 더 나은 action을 선택하려고 한다. 결과적으로 estimate가 수렴하기 전에 모든 action이 여러번 시도되며 greedy action이 매번 선택되더라도 agent는 상당한 exploration을 수행하게 된다. 
 
-**- 학습자에게 직접적인 지침이 주어지지 않는다.** 
 
-학습자는 상호작용 속에서 수치적 보상 신호를 최대화 하기 위해 현재의 환경에서 어떤 행동을 해야할지 배워야 한다. 이 때, 학습자는 trial-and-error 방식 즉, 여러 시행착오를 통해 어떤 행동이 가장 큰 보상을 얻을 수 있는지 발견한다.
-
-**- 보상 신호를 포함한 행동의 결과가 장기간에 걸쳐 나타난다.** 
-
-행동에 대한 보상은 즉각적인 보상뿐만 아니라 다음 상황과 그로 발생하는 모든 후속 보상에 영향을 미칠 수 있다. 추후 고려하겠지만, 이러한 특성으로 인해 학습자는 특정 파라미터 조절을 통해 다음 1-step 뒤의 즉각적인 보상만을 목적하기도, 혹은 n-step 뒤의 장기적인 보상을 목적할 수도 있다. 
-
-### 1.1.2 Exploration vs. Exploitation
-
-강화학습에서 발생하는 문제는 exploration(탐색)과 exploitation(착취) 간의 균형이다. 학습자는 본인이 과거에 시도했던 높은 보상을 생성하는 행동을 선호해야 하는데, 이러한 행동을 발견하기 위해서는 이전에 선택하지 않았던 행동을 시도해야한다. 학습자는 이전에 알고있던 보상 정보를 exploit해야 하지만, 더 나은 보상의 행동 선택을 하기 위해 explore 해야하는 딜레마에 빠지게 된다. 
-
-### 1.1.3 Characteristics of Reinforcement Learning
-
-강화학습은 불확실한 환경에서도 문제의 목표를 명시적으로 고려한다. 학습자는 명확한 목표를 가지고 전체 환경을 고려할 수 없더라도 동작한다고 가정된다. 가령, 어떤 하위 문제로부터 결과가 도출되었는지 확인하기 위한 연구에서는 환경 전체와 완전하게 상호 작용하며 목표를 추구하는 에이전트 내에서 명확한 자신의 역할을 수행하는 하위 문제가 필요하다. 이미 유용한 결과를 산출한 문제라도 그 하위 문제에 초점을 맞추려면 이를 고립시켜야 하는데, 강화학습은 하위 문제에서도 명시적으로 특정 목표를 위해 동작하므로 연구에 적합하다. 
-
-### 1.1.4 Trends in Reinforcement Learning
-
-강화학습은 엔지니어링 및 과학 분야에서 유익한 상호작용을 거치며 발전해 나가고 있다. 통계, 최적화와 같은 수학적 주제를 넘어 매개변수화된 근사기의 적용과 같은 융합은 여러 패러다임을 열며 모델들의 성능을 향상시켰다. 그러나 과거로부터의 이러한 발전은 각 도메인에 치중하여 많은 특수 절차 및 휴리스틱을 가정했고 이는 일반적인 원칙을 찾지 않아왔다. 최신 AI는 이제 학습과 의사결정의 일반 원칙을 찾고 도메인 지식을 통합하기 위한 노력을 하고 있다. 
-
-## 1.2 Examples
-
+아래 그래프는 모든 $a$에 대해 $Q_1(a) = +5$를 사용하는 greedy 방법과 $Q_1(a) = 0$인 $\epsilon$-greedy를 비교한 10-armed bandit testbed의 성능을 보여준다. 
 
 <center><img src="" width="60%" height="60%"></center>
-<center>https://opentutorials.org/course/4548/28949</center>
 
-인간은 운동, 게임, 일 등 어떤 행동을 하던간에 반복적으로 수행하고 경험할수록 수행능력이과 판단력이 향상된다. 다음의 예제는 게이머가 게임을 하는 상황을 보여준다. 게이머는 현재의 화면을 보고 상태(환경)과 상/벌(보상)을 관찰한다. 해당 관찰의 내용을 통해 우리의 뇌는 더 높은 보상을 얻을 수 있도록 판단을 하게되고 행동으로 옮겨지게 된다. 그로 인해 게임의 상황은 게이머가 수행한 행동으로 인해 변하게 되고 우리는 다시 바뀐 환경을 관찰하고 다음 행동을 선택하는 과정을 반복하면서 학습한다. 
+초기 optimistic 방법이 더 많이 explore 하기 때문에 성능이 좋지 않지만 시간이 지남에 따라 explore이 어 $\epsilon$-greedy보다도 성능이 더 좋아진다. 한눈에 보기에는 매우 좋은 방법처럼 보일 수 있으나 이는 stationary 문제에만 적용이 가능하다. 즉, action-value가 변경되는 non-stationary env에서는 적합하지 않다. 이러한 관점은 모든 후속 rewards를 동일하게 평균화하는 sample average 방법에도 동일하게 적용된다. 그럼에도 불구하고 이를 기반으로 한 방법들은 매우 단순하면서도 종종 적합한 경우도 있다. 
 
-이러한 과정은 모두 능동적인 의사 결정과 학습자와 환경과의 상호 작용을 포함하며, 학습자는 환경에 대한 불확실성에도 불구하고 목표를 달성하려고 한다. 학습자와 환경이라는 단어에 의해 고정관념을 가진 경우가 있는데, 학습자는 반드시 전체 로봇이나 유기체가 아닌 그 하위 집합일수도, 환경은 외부가 아닌 내부일 수도 있는 추상적인 개념이므로 주의해야 한다. 
 
-목표를 향한 올바른 행동 선택에는 간접적이고 지연된 결과를 고려해야 하고 환경의 미래 상태에 영향을 미치므로 이는 완전히 예측할 수 없기 때문에 많은 정보 획득을 위해서 잦은 환경 모니터링과 그에 따른 적절한 대응이 필요하다. 결과적으로, 행동 선택과 환경과의 반복적 상호작용으로 얻은 경험을 사용하여 학습자는 시간이 지남에 따라 학습하게 된다. 학습자가 관찰할 수 있는 것을 기반으로 목표를 향한 진행 상황을 판단할 수 있다는 점에서 명시적인 목표가 포함된다. 
+## 2.6 Upper-Confidence-Bound Action Selection
 
-## 1.3 Elements of Reinforcement Learning
+action value estimate의 부정확함으로 인해 exploration이 더 필요하다. $\epsilon$-greedy를 수행할수도 있지만 이는 불확실한 action에 대한 preference 없이 무차별적으로 시도된다. 우리는 estimate가 maximal과 얼마나 가까운지와 estimate의 불확실성을 모두 고려하여 실제로 optimal일 가능성에 따라 non-greedy action 중에서 선택하는 것이 바람직하다. 
 
-기본적인 강화학습에서 사용되는 네가지 요소에 대해 개념적으로 짚어본다. 이제부터는 이해를 돕기 위해 학습자라고 불렀던 학습 주체를 agent로, 환경을 env로 표현하겠다. state는 현재로써는 agent 시점에서 관찰된 env 혹은 situation으로 이해하면 된다. 강화학습의 최종 목표는 주어진 요소들을 사용하여 action을 수행했을 때의 장기적 관점에서의 보상을 최대화할 수 있도록 agent를 학습시키는 것이다. 
 
-**- policy: agent's behavior function; mapping from state to action.**
+이를 효과적으로 수행하기 위해서는 action을 다음과 같이 선택한다. 여기서 $\ln t$는 $t$($e \approx 2.71828$)의 natural logarithm를 나타내며 $c > 0$는 exploration 정도를 제어한다. 만약 $N_t(a) =0$이면, $a$는 maximizing action이라고 간주된다. 
 
-agent가 행동하는 방식을 정의하며, state에서 취해야 할 action으로의 매핑이다. policy는 단순한 function이나 table일수도 혹은 매우 큰 계산이 요구되는 black-box function일 수도 있다. 일반적으로 stochastic하지만 deterministic한 경우도 존재한다. 
 
-**- reward: immediate(short-term) scalar feedback signal.**
+$$ A_t = \arg\max_a \left[ {Q_t(a) + c\sqrt{\cfrac{\ln t}{N_t(a)}}} \, \right ] \tag{8}$$
 
-강화학습 문제의 목표를 구성하며 즉각적인 의미에서의 보상을 정의한다. 각 time-step에서 env는 policy에 따라 action을 수행한 agent에게 scalar number인 reward를 보내면 해당 action의 바람직함을 판단할 수 있다. reward는 일반적으로 수행한 action과 state에 따른 stochastic function일 수 있다. 
+upper confidence bound(UCB)의 아이디어는 불확실성 또는 variance의 척도를 의미하는 squae-root 항을 사용하여 $a$의 action-value estimate를 표현하자는 것이다. 따라서 해당 action value가 최대가 되는 값은 신뢰 수준을 결정하는 $c$와 함께 action $a$의 가능한 true value에 대한 upper bound이다. 
 
-**- value function: expected cumulative(long-term) reward from state.**
-
-강화학습 문제의 최대화 하려는 궁극적인 목표이며 장기적인 의미에서의 가치를 정의한다. agent가 해당 state에서 시작하여 미래에 누적될 것으로 예상되는 총 expected cumulative reward; 즉 현 state에서의 총 reward 예측값을 의미하며 장기적인 바람직함을 의미한다. Bellman equation과 함께 언급하겠지만 value function은 결국 일련의 reward summation의 expectation으로 표현되며 시작되는 state가 다르면 값이 달라질 수 있다. 결과적으로 우리는 action의 단기적관점의 reward 보다는 장기적 관점에서의 value function을 통해 가치판단을 하게 된다. 
-
-**- model: duplication of env which generate the next state and reward.**
-
-실제 env의 동작을 모방하거나 일반적으로 환경이 동작하는 방식에 대한 추론을 가능하게 한다. 예를 들어, state와 action이 주어지면 model을 통해 결과로 나타나는 next state와 reward를 예측할 수 있다. model은 추후 model-based method에서 언급될 planning에 사용되며 실제 상호작용 없이도 미래 상황을 고려하여 action을 선택할 수 있다. 
-
+특정 action $a$가 선택됨에 따라, $a$가 선택된 횟수인 $N_t(a)$는 증가하고 이는 불확실성 항의 분모에 나타나므로 항은 감소한다. 반면에 다른 $a$가 선택될 때마다 $t$는 증가하고 이는 분자에 나타나므로 불확실성 추정치가 증가한다. 결과적으로 $a$가 선택될 때마다 불확실성은 감소할 것이다. natural logrithm의 사용은 증가폭이 시간이 지남에 따라 작아지지만 제한이 없음을 의미한다. 결국 모든 action이 선택되지만 시간이 지남에 따라 estimate가 낮거나 이미 더 많이 선택된 action의 경우 대기 시간이 길어지고 선택 빈도가 낮아지게 된다.
 
 <center><img src="" width="60%" height="60%"></center>
-<center>https://opentutorials.org/course/4548/28949</center>
 
-위에서 보았던 예제를 새롭게 정의된 단어들로 표현했다; 게임 → 환경(env), 게이머 → 학습자(agent), 게임화면 → 상태(state), 게이머의 조작 → 행동(action), 상과 벌 → 보상(reward), 게이머의 판단력 → 정책(policy). agent는 env로부터 state와 reward를 얻게되고 policy는 그에 대한 매핑으로 action을 선택한다. action에 따라 env가 바뀌게 되고 또 다시 state와 reward를 관찰하는 과정을 반복하는 과정에서 policy가 학습하고 value function을 최대화 하는 action을 선택하게 된다. 
+10-armed testbed에서 UCB를 사용한 결과이다. UCB는 종종 잘 수행되지만 bandit 문제 이외에서는 강화학습에서 일반적인 설정이 아닌 stationary env 성질로 인해 다른 문제들로의 확장은 어렵다. 또한 나중에 배우게 될 large state space, 특히 function approximation에서의 적용도 어렵다. 이러한 고급 설정에서는 UCB 아이디어를 활용하는 실용적인 방법은 존재하지 않는다고 한다. 
 
-## 1.4 Limitations and Scope
 
-최대화하려는 요소인 value function을 사용해야만 문제를 해결할 수 있는 것은 아니다. 강화학습 문제에 이를 사용하지 않는 genetic programming, genetic algorithms, simulated annealing와 같은 evolutionary 방법들 또한 존재한다. 이러한 방식들 또한 env의 특색에 맞게 강점이 존재하나 강화학습 문제의 유용한 구조를 일반적으로 무시하므로 인해 강화학습 방법에는 포함시키지 않는다. 그 중 value function을 사용하지는 않지만 evolutionary 방법에는 속하지 않는, agent가 또 다른 estimate를 생성하는 policy gradient method는 포함된다. optimization는 강화학습과 동일하게 reward를 최대화하는 목표를 가지고 있으나, 강화학습에서는 agent가 받는 보상의 양을 늘리려고 매 env마다 노력하고 최대값이 존재하더라도 달성하지 못할 수도 있다는 차이점이 존재한다. 즉, optimization은 optimality와 같다고 볼 수 없다.  
+## 2.7 Gradient Bandits
 
-## 1.5 Summary
+여태까지는 action-value를 추정하고 해당 estimate를 사용하여 action을 선택하는 방법을 고려했으나, 각 action $a$에 대한 numerical preference $H_t(a)$ 학습을 고려해본다. preference가 클수록 해당 action이 더 자주 수행되지만 preference는 reward 측면에서 해석되지 않고 오직 한 action이 다른 action보다 상대적으로 preference 되는 것 만을 고려한다. 모든 preference에 1000을 추가하면 *(1000이 어느정도의 수치인지는 모르겠다)* softmax distribution(i.e. Gibbs or Boltzmann distribution)에 따라 결정되는 action probability에 영향을 미치지 않는다고 하는데 수식은 $(9)$와 같다. 여기서 $\pi_t(a)$는 time $t$에 action $a$를 수행할 확률을 의미한다. 초기 모든 preferences는 같다(e.g. $H_1(a) = 0, \forall a$). 
 
-강화학습은 모범적인 감독이나 완전한 model에 의존하지 않고, agent가 env와의 직접적인 상호작용을 통해 학습하며 expected cumulative reward를 최대화 하는 것을 목적으로 하는 머신러닝 방법이다. 강화학습은 state, action, reward 측면에서 agent와 env 간의 상호작용을 정의하는 프레임워크를 사용하고 이는 인공지능 문제의 필수 기능을 나타낸다. 일련의 상호작용 과정의 반복을 통해 agent는 reward가 높은 action을 선택하도록 policy를 학습한다. 이러한 프레임워크는 원인과 결과에 대한 감각, 불확실성과 비결정론에 대한 감각, 명확한 목표의 존재와 같은 특징을 내포한다. 앞으로 더 구체적으로 공부하게 될 value function은 강화학습 방법의 핵심으로, policy 학습을 위해 매우 중요하게 사용될 것이다.
+
+$$ \Pr \{ {A_t = a} \} = \cfrac{e^{H_t(a)}}{\sum^n_{b=1}e^{H_t(b)}} = \pi_t(a) \tag{9}$$
+
+
+### 2.7.1 How to Update Preference $H_t(a)$
+
+이에 대한 stochastic gradient ascent에 기반한 알고리즘이 존재한다. 매 step에서 action  $A_t$를 선택한 후, reward $R_t$를 받은 뒤에 preference는 $(10)$과 같이 update된다. 이 때 $\alpha > 0$는 step-size, $\bar R_t\in \mathbb R$은 section 2.3에서 정의했던  incrementally implementation하게 계산 가능한 time $t$까지의 rewards의 평균이다. 
+
+$$ \begin{align*} H_{t+1}(A_t) &= H_t(A_t) + \alpha(R_t-\bar R_t)(1-\pi_t(A)t)), \, and\\
+H_{t+1}(a) &= H_t(a) - \alpha(R_t-\bar R_t)\pi_t(a), \quad\quad\quad \forall a \ne A_t \tag{10}\end{align*} $$
+
+
+$\bar R_t$는 reward가 비교되는 baseline 역할을 수행하고, 만약 reward $R_t$가 더 높은 경우에 미래에 $A_t$를 취하는 probability $\pi_t$가 증가하고, 낮은 경우에는 감소한다. 선택되지 않은 action들은 반대쪽으로 이동한다. 
+
+아래 그래프는 $\mu=4$인 normal distribution에서의 10-armed testbed 결과를 보여준다. reward의 전반적인 상승이 있었지만 reward baseline의 사용으로 인해 gradient-bandit 알고리즘에 전혀 영향을 주지 않는다. 그러나 baseline을 생략하면($\bar R_t = 0$), 성능이 크게 저하된다. 
+
+### 2.7.2 Stochastic Approximation in Graient Ascent 
+
+해당 알고리즘을 gradient ascent에 대한 stochastic approximation의 측면에서 이해해보자. gradient ascent에서 각 preference $H_t(a)$는 성능에 대한 증가의 효과에 비례하여 증가한다. 이 때, 성능의 평가는 expected reward $\mathbb{E}[R_t] = \sum_b\pi_t(b)q(b)$로 이루어진다. 
+
+$$ H_{t+1}(a) = H_t(a)+\alpha \cfrac{\delta \mathbb E[R_t]}{\delta H_t(a)} \tag{11} $$
+물론 우리는 정확한 true $q(b)$를 알 수 없기 때문에, 정확한 gradient ascent 구현은 불가능하지만 알고리즘의 expected update와 gradient of expected reward는 거의 유사함을 보인다.
+
+따라 gradient bandit 알고리즘은 stochastic gradient ascent의 instance이며 강력한 수렴 성질을 지닌다. reward baseline는 선택된 action이 아닌 다른 action에 의존하므로 update시 딱히 필요하지 않아 이는 어떤 값이든 상관없다. 그러나 알고리즘의 expected update에 영향을 미치지는 않지만 update의 분산과 수렴 속도에 영향을 미친다. reward 평균으로 동작하는 것은 suboptimal일지도 모르나 잘 작동한다고 한다. 
+
+## Associative Search (Contextual Bandits)
+
+지금까지는 서로 다른 action을 서로 다른 situation와 연결할 필요 없는 non-associative task만 고려했다. 즉, 항상 같은 situation에서 action을 선택했으나 일반적인 강화학습에는 하나 이상의 situation에서 policy의 학습을 원한다. 즉 전체 문제에 대한 단계 설정을 위해서는 각 situation에서 가장 optimal action으로의 매핑 즉, associative 설정으로 전환해야 한다. 
+
+associative search는 optimal action을 search하는 형태에서의 trial-and-error 학습과 situation에 optimal하게 action을 association하는 형태를 모두 포함한다. associative search는 n-armed bandit 문제와 전체 강화학습 문제 사이의 중간이다. 그들은 policy 학습을 포함한다는 점에서 전체 강화학습과 비슷하지만, 각 action이 즉각적인 reward에만 영향을 미친다는 점(stationary)에서 n-armed bandit 문제와 비슷하다. action가 다음 situation과 reward에 영향을 미치도록(non-stationary) 허용되면 완전한 강화학습 문제가 발생된다. 이제부터는 이러한 문제를 제시하고 결과를 고려하게 된다. 
+
+## Summary
+
+이번 챕터에서는 exploration과 exploitation의 균형을 맞추는 몇가지 방법을 제안했다. $\epsilon$-greedy 방법은 시간의 매우 작은 부분을 무작위로 선택하는 반면, UCB 방법은 deterministic하게 선택하지만 더 적은 수의 sample을 받은 action을 선호하여 선택한다. Gradient-Bandit 알고리즘은 action-value가 아닌  action preference를 추정하고 softmax distribution을 사용하여 확률적 방식으로 선호하는 action을 파악한다. 별개로, 특정 값으로의 estimate 초기화한 상태로의 greedy 방법 또한 살펴보았다. 
+
+<center><img src="" width="60%" height="60%"></center>
+
+위 그래프는 10-armed testbed에서 매개변수 값에 따른 성능 비교를 보여준다. 전체적으로 U자 모양을 그리며 매개변수의 중간 값에서 잘 작동하며 UCB가 가장 성능이 좋았다. $n$-armed bandit 문제를 푸는 이외에도 많은 알고리즘들이 있지만 고려하는 강화학습 문제 정의에는 포함되지 못했고, 살펴본 방법들은 exploration과 exploitation의 균형 문제에 대한 완전히 만족스러운 해결책은 아니었다.  
