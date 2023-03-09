@@ -85,10 +85,16 @@ agent가 행동하는 방식을 정의하며, state에서 취해야 할 action�
 
 실제 env의 동작을 모방하거나 일반적으로 환경이 동작하는 방식에 대한 추론을 가능하게 한다. 예를 들어, state와 action이 주어지면 model을 통해 결과로 나타나는 next state와 reward를 예측할 수 있다. model은 추후 model-based method에서 언급될 planning에 사용되며 실제 상호작용 없이도 미래 상황을 고려하여 action을 선택할 수 있다. 
 
+<br/>
+
+
 <center><img src="" width="60%" height="60%"></center>
 <center><span style="font-size:80%">https://opentutorials.org/course/4548/28949</span> </center>
 
 위에서 보았던 예제를 새롭게 정의된 단어들로 표현했다; 게임 → 환경(env), 게이머 → 학습자(agent), 게임화면 → 상태(state), 게이머의 조작 → 행동(action), 상과 벌 → 보상(reward), 게이머의 판단력 → 정책(policy). agent는 env로부터 state와 reward를 얻게되고 policy는 그에 대한 매핑으로 action을 선택한다. action에 따라 env가 바뀌게 되고 또 다시 state와 reward를 관찰하는 과정을 반복하는 과정에서 policy가 학습하고 value function을 최대화 하는 action을 선택하게 된다. 
+
+<br/>
+
 
 ## 1.4 Limitations and Scope
 
