@@ -57,7 +57,6 @@ Closed-loop란 원하는 상태 유지를 위해 별도 사람의 개입없이 �
 <center><img src="" width="60%" height="60%"></center>
 <center><span style="font-size:80%">https://opentutorials.org/course/4548/28949</span> </center>
 
-
 인간은 운동, 게임, 일 등 어떤 행동을 하던간에 반복적으로 수행하고 경험할수록 수행능력이과 판단력이 향상된다. 다음의 예제는 게이머가 게임을 하는 상황을 보여준다. 게이머는 현재의 화면을 보고 상태(환경)과 상/벌(보상)을 관찰한다. 해당 관찰의 내용을 통해 우리의 뇌는 더 높은 보상을 얻을 수 있도록 판단을 하게되고 행동으로 옮겨지게 된다. 그로 인해 게임의 상황은 게이머가 수행한 행동으로 인해 변하게 되고 우리는 다시 바뀐 환경을 관찰하고 다음 행동을 선택하는 과정을 반복하면서 학습한다. 
 
 이러한 과정은 모두 능동적인 의사 결정과 학습자와 환경과의 상호 작용을 포함하며, 학습자는 환경에 대한 불확실성에도 불구하고 목표를 달성하려고 한다. 학습자와 환경이라는 단어에 의해 고정관념을 가진 경우가 있는데, 학습자는 반드시 전체 로봇이나 유기체가 아닌 그 하위 집합일수도, 환경은 외부가 아닌 내부일 수도 있는 추상적인 개념이므로 주의해야 한다. 
@@ -70,31 +69,21 @@ Closed-loop란 원하는 상태 유지를 위해 별도 사람의 개입없이 �
 
 기본적인 강화학습에서 사용되는 네가지 요소에 대해 개념적으로 짚어본다. 이제부터는 이해를 돕기 위해 학습자라고 불렀던 학습 주체를 agent로, 환경을 env로 표현하겠다. state는 현재로써는 agent 시점에서 관찰된 env 혹은 situation으로 이해하면 된다. 강화학습의 최종 목표는 주어진 요소들을 사용하여 action을 수행했을 때의 장기적 관점에서의 보상을 최대화할 수 있도록 agent를 학습시키는 것이다. 
 
-<br/>
-
 **- policy: agent's behavior function; mapping from state to action.**
 
 agent가 행동하는 방식을 정의하며, state에서 취해야 할 action으로의 매핑이다. policy는 단순한 function이나 table일수도 혹은 매우 큰 계산이 요구되는 black-box function일 수도 있다. 일반적으로 stochastic하지만 deterministic한 경우도 존재한다. 
-
-<br/>
 
 **- reward: immediate(short-term) scalar feedback signal.**
 
 강화학습 문제의 목표를 구성하며 즉각적인 의미에서의 보상을 정의한다. 각 time-step에서 env는 policy에 따라 action을 수행한 agent에게 scalar number인 reward를 보내면 해당 action의 바람직함을 판단할 수 있다. reward는 일반적으로 수행한 action과 state에 따른 stochastic function일 수 있다. 
 
-<br/>
-
 **- value function: expected cumulative(long-term) reward from state.**
 
 강화학습 문제의 최대화 하려는 궁극적인 목표이며 장기적인 의미에서의 가치를 정의한다. agent가 해당 state에서 시작하여 미래에 누적될 것으로 예상되는 총 expected cumulative reward; 즉 현 state에서의 총 reward 예측값을 의미하며 장기적인 바람직함을 의미한다. Bellman equation과 함께 언급하겠지만 value function은 결국 일련의 reward summation의 expectation으로 표현되며 시작되는 state가 다르면 값이 달라질 수 있다. 결과적으로 우리는 action의 단기적관점의 reward 보다는 장기적 관점에서의 value function을 통해 가치판단을 하게 된다. 
 
-<br/>
-
 **- model: duplication of env which generate the next state and reward.**
 
 실제 env의 동작을 모방하거나 일반적으로 환경이 동작하는 방식에 대한 추론을 가능하게 한다. 예를 들어, state와 action이 주어지면 model을 통해 결과로 나타나는 next state와 reward를 예측할 수 있다. model은 추후 model-based method에서 언급될 planning에 사용되며 실제 상호작용 없이도 미래 상황을 고려하여 action을 선택할 수 있다. 
-
-<br/>
 
 <center><img src="" width="60%" height="60%"></center>
 <center><span style="font-size:80%">https://opentutorials.org/course/4548/28949</span> </center>
