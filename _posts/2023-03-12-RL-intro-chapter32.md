@@ -69,13 +69,13 @@ $$ \pi(a_1|s_1)*(0.1 + 0.3 + 0.6)+\pi(a_2|s_1)*(0.2 + 0.4 + 0.4) =1$$
 
 state $s$에서 action $a$를 수행했을 때, reward(*return 아님*)
 
-$$ r(s,a) = \mathbb E[R_{t+1} | S_t=s, A_t=a] = \sum_{r \in \mathcal{R}}r \sum_{s' \in \mathcal{S}}p(s',r|s,a) \tag{10} $$
+$$ r(s,a) = \mathbb E[R_{t+1} | S_t=s, A_t=a] = \sum_{r \in \mathcal{R}}r \sum_{s' \in \mathcal{S}}p(s',r|s,a) \tag{10}$$
 
 <br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224637088-e85d4eba-0055-4509-9231-04895824608b.png" width="50%" height="50%"></center>
 
-$$ r(s_1,a_1) = \mathbb{E} [R_{t+1} | S_t=s_1, A_t=a_1] = \pi(a_1|s_1) \* (0.1*r_{11} +0.3*r_{12} + 0.6 \* r_{13}) $$
+$$ r(s_1,a_1) = \mathbb E \left [R_{t+1} | S_t=s_1, A_t=a_1 \right ] = \pi(a_1|s_1)*(0.1*r_{11} +0.3*r_{12} + 0.6 * r_{13}) $$
 
 <br/>
 
@@ -84,13 +84,13 @@ $$ r(s_1,a_1) = \mathbb{E} [R_{t+1} | S_t=s_1, A_t=a_1] = \pi(a_1|s_1) \* (0.1*r
 
 state $s$에서 action $a$를 수행했을 때, 전자는 term은 될수있는 모든 reward $r$의 summation이고, 후자는 nest state $s'$에서 reward $r$를 받을 probability / next state $s'$으로 이동할 probability이다.
 
-$$ r(s, a, s') = \mathbb E [R_{t+1} | S_t=s, A_t=a, S_{t+1} = s'] = \sum_{r \in \mathcal R}r\cfrac{p(s',r|s,a)}{p(s'|s,a)} \tag{11} $$ 
+$$ r(s, a, s') = \mathbb E[R_{t+1} | S_t=s, A_t=a, S_{t+1} = s'] = \sum_{r \in \mathcal R}r\cfrac{p(s',r|s,a)}{p(s'|s,a)} \tag{11} $$ 
 
 <br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224637267-167f1061-60a8-4d5e-bc04-f1bb32232c7a.png" width="50%" height="50%"></center>
 
-$$ r(s_1,a_1, s_2) = \mathbb{E} [R_{t+1} | S_t=s_1, A_t=a_1, S_{t+1} = s_2] = \pi(a_1|s_1)* \cfrac{0.3*r_{12}+0.6*r_{13}}{0.3+0.6} $$
+$$ r(s_1,a_1, s_2) = \mathbb E[R_{t+1} | S_t=s_1, A_t=a_1, S_{t+1} = s_2] = \pi(a_1|s_1)* \cfrac{0.3*r_{12}+0.6*r_{13}}{ 0.3+0.6 } $$
 <br/>
 
 ## 3.7 Value Function
@@ -101,7 +101,7 @@ value function은 given state-action pair를 수행하는 것이 얼마나 좋�
 ### State-Value Function
 policy $\pi$ 하의 state $s의 value는 $s$에서 시작하여 이후 $\pi$를 따를 때의 expected return이다. MDP의 경우 $v_\pi(s)$는 $v_\pi(s)$는 $(12)$과 같이 정의된다. $\mathbb{E}[\cdot]$는 policy $\pi$를 따르는 random variable의 expected value를 나타낸다. terminal state의 value는 항상 0이다. 이러한 성질의 함수  $v_\pi$를 policy $\pi$에 대한 state-value function이라고 한다. 
 
-$$ \begin{align*}v_\pi(s) &= \mathbb{E} [G_t|S_t=s]  \\ &= \mathbb{E}_\pi \left[ {\sum^\infty_{k=0} \gamma^k R_{t+k+1} }| {S_t=s}\right] \\ &= \mathbb{E}[R_{t+1} + \gamma G_{t+1}|S_t=s] \tag{12} \end{align*} $$
+$$ \begin{align*}v_\pi(s) &= \mathbb{E}[G_t|S_t=s]  \\ &= \mathbb{E}_\pi \left[ {\sum^\infty_{k=0} \gamma^k R_{t+k+1} }| {S_t=s}\right] \\ &= \mathbb{E}[R_{t+1} + \gamma G_{t+1}|S_t=s] \tag{12} \end{align*} $$
 
 <br/>
 
@@ -122,14 +122,14 @@ $(14)$는 state와 successor state 간의 관계를 나타내는 $v_\pi$의 Bell
 
 수식적으로, 각 $a, s', r$에 대해 probability $\pi(a|s)p(s',r|s,a)$를 계산하고 해당 probability로 괄호 안의 값에 weight를 준 다음 모든 probability를 합산하여 expected value를 얻는다. 즉, Bellman equation은 모든 probability에 대해 평균을 내며 발생한 probability에 따라 weight를 부여한다. 그 중, $(14)$의 마지막 term은 $(15)$와 같이 $q_\pi$로 표현되고 있는데 이는 $v_\pi$가 $q_\pi$로 표현될 수 있다는 것을 알 수 있다. 
 
-$$ \begin{align*} v_\pi(s) &= \mathbb{E}_\pi[G_t|S_t=s] \\ &= \mathbb{E}_\pi[\sum^\infty_{k=0} \gamma^k R_{t+k+1}|S_t=s] \\ &= \mathbb{E}_\pi[R_{t+1} + \gamma \sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_t=s] \\ &= \sum_a \pi(a|s) \sum_{s'}\sum_r p(s',r|s,a) \left [r + \gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s' \right ] \right ] \\ &=  \tag{14} \sum_a \pi(a|s)\sum_{s',r}p(s',r|s,a) \left [ r + \gamma v_\pi(s')\right] \\ &= \sum_a \pi(a|s)q_\pi(s,a) \tag{15} \end{align*} $$
+$$ \begin{align*} v_\pi(s) &= \mathbb{E}_\pi[G_t|S_t=s] \\ &= \mathbb{E}_\pi[\sum^\infty_{k=0} \gamma^k R_{t+k+1}|S_t=s] \\ &= \mathbb{E}_\pi[R_{t+1} + \gamma \sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_t=s] \\ &= \sum_a \pi(a|s) \sum_{s'}\sum_r p(s',r|s,a) \left [r + \gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s' \right ] \right ] \\ &=   \sum_a \pi(a|s)\sum_{s',r}p(s',r|s,a) \left [ r + \gamma v_\pi(s') \right] \\ &= \sum_a \pi(a|s)q_\pi(s,a) \tag{15} \end{align*} $$
 
 <br/>
 
 
 ### Bellman Equation for $q_\pi$
 
-$$ \begin{align*}q_\pi(s) &= \mathbb{E}_\pi[G_t|S_t=s, A_t=a] \\ &= \mathbb{E}_\pi[\sum^\infty_{k=0} \gamma^k R_{t+k+1}|S_t=s, A_t=a] \\ &= \mathbb{E}_\pi[R_{t+1} + \gamma \sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_t=s, A_t=a] \\ &= \sum_{a'}\sum_{s'}\sum_r p(s',r|s,a) \left [r + \gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s', A_t=a' \right ] \right ]  \\ &=  \sum_{s', r, a'}p(s',r|s,a) \left [ r + \gamma q_\pi(s',a') \right ] \tag{16}\\ &=   \sum_{s',r}p(s',r|s,a) \left [ r + \gamma v_\pi(s')\right] \tag{17} \end{align*} $$
+$$ \begin{align*}q_\pi(s) &= \mathbb{E}_\pi[G_t|S_t=s, A_t=a] \\ &= \mathbb{E}_\pi[\sum^\infty_{k=0} \gamma^k R_{t+k+1}|S_t=s, A_t=a] \\ &= \mathbb{E}_\pi[R_{t+1} + \gamma \sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_t=s, A_t=a] \\ &= \sum_{a'}\sum_{s'}\sum_r p(s',r|s,a) \left [r + \gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s', A_t=a' \right ] \right ]  \\ &=  \sum_{s', r, a'}p(s',r|s,a) \left [ r + \gamma q_\pi(s',a') \right ] \\ &=   \sum_{s',r}p(s',r|s,a) \left [ r + \gamma v_\pi(s')\right] \tag{17} \end{align*} $$
 
 <br/>
 
