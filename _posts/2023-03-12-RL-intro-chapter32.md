@@ -20,7 +20,7 @@ $$ p(s',r|s,a) = \Pr \{S_{t+1} = s', R_{t+1} = r | S_t = s, A_t = a \} \tag{6} $
 
 <br/>
 
-$(5)$은 finite MDP의 dynamics를 완전히 지정한다. 책의 나머지 부분에서 제시하는 대부분의 이론은 env가 finite MDP라고 암시적으로 가정한다. $(6)$에 지정된 dynamics가 주어지면 state-action pair에 대한 env에 대해 알고 싶은 다른 모든 것들 계산이 가능하다. 다음 식들은 아래 그림의 예제에서 $s \in \{1,2\}, a \in \{1,2\},$ $\pi(a|s)$를 따른다고 가정하고 이해를 돕기위해 설명해본다. 다이어그램에서 열린 원은 state를, 닫힌 원은 state-action pair를 의미하며 앞으로 value function들의 관계를 표시할 때 자주 사용될 것이다. 
+$(5)$은 finite MDP의 dynamics를 완전히 지정한다. 책의 나머지 부분에서 제시하는 대부분의 이론은 env가 finite MDP라고 암시적으로 가정한다. $(6)$에 지정된 dynamics가 주어지면 state-action pair에 대한 env에 대해 알고 싶은 다른 모든 것들 계산이 가능하다. 다음 식들은 아래 그림의 예제에서 $s \in \{1,2\}, a \in \{1,2\},\pi(a|s)$를 따른다고 가정하고 이해를 돕기위해 설명해본다. 다이어그램에서 열린 원은 state를, 닫힌 원은 state-action pair를 의미하며 앞으로 value function들의 관계를 표시할 때 자주 사용될 것이다. 
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224635776-403a3226-30de-4122-9470-3268822b5350.png" width="50%" height="50%"></center>
 
@@ -36,7 +36,7 @@ $$ p(s', r|s,a) = \Pr\{S_{t+1} = s', R_t = r | S_t=s, A_t = a\} \tag{7}$$
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224636513-16a742ae-f734-40e0-9228-6f3b4042d593.png" width="47%" height="52%"></center>
 
-$$ p(s_1, r_{11}|s_1, a_1) = \Pr\{S_{t+1}=s_1, R_t = r_{11}|S_t=s_1, A_t=a_1\} = \pi(a_1|s_1)*0.1 $$
+$$ p(s_1, r_{11}|s_1, a_1) = \Pr\{S_{t+1}=s_1, R_t = r_{11}|S_t=s_1, A_t=a_1\} = \pi(a_1|s_1) \times 0.1 $$
 
 <br/>
 
@@ -48,7 +48,7 @@ $$ p(s'|s,a) = \Pr\{S_{t+1} = s' | S_t=s, A_t = a\} = \sum_{r \in \mathcal{R}}p(
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224636807-d09643a9-440d-4547-a90e-b5cb58ac19a7.png" width="50%" height="50%"></center>
 
-$$ p(s_2|s_1, a_1) = \Pr\{S_{t+1}=s_2|S_t=s_1, A_t=a_1\} =\pi(a_1|s_1)*(0.3 + 0.6)$$
+$$ p(s_2|s_1, a_1) = \Pr\{S_{t+1}=s_2|S_t=s_1, A_t=a_1\} =\pi(a_1|s_1) \times(0.3 + 0.6)$$
 
 <br/>
 
@@ -60,7 +60,7 @@ $$ \sum_{r \in \mathcal{R}} \sum_{s' \in \mathcal{S}}p(s',r|s,a) = 1, \, \forall
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224636908-38c2cbd4-e797-46c4-a54e-2beddfea615a.png" width="50%" height="50%"></center>
 
-$$ \pi(a_1|s_1)*(0.1 + 0.3 + 0.6)+\pi(a_2|s_1)*(0.2 + 0.4 + 0.4) =1$$
+$$ \pi(a_1|s_1)*(0.1 + 0.3 + 0.6)+\pi(a_2|s_1) \times(0.2 + 0.4 + 0.4) =1$$
 
 <br/>
 
@@ -75,7 +75,7 @@ $$ r(s,a) = \mathbb E[R_{t+1} | S_t=s, A_t=a] = \sum_{r \in \mathcal{R}}r \sum_{
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224637088-e85d4eba-0055-4509-9231-04895824608b.png" width="50%" height="50%"></center>
 
-$$ r(s_1,a_1) = \mathbb E \left [R_{t+1} | S_t=s_1, A_t=a_1 \right ] = \pi(a_1|s_1)*(0.1*r_{11} +0.3*r_{12} + 0.6 * r_{13}) $$
+$$ r(s_1,a_1) = \mathbb E \left [R_{t+1} | S_t=s_1, A_t=a_1 \right ] = \pi(a_1|s_1) \times (0.1 \times r_{11} +0.3 \times r_{12} + 0.6 \times r_{13}) $$
 
 <br/>
 
@@ -90,7 +90,7 @@ $$ r(s, a, s') = \mathbb E[R_{t+1} | S_t=s, A_t=a, S_{t+1} = s'] = \sum_{r \in \
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224637267-167f1061-60a8-4d5e-bc04-f1bb32232c7a.png" width="50%" height="50%"></center>
 
-$$ r(s_1,a_1, s_2) = \mathbb E[R_{t+1} | S_t=s_1, A_t=a_1, S_{t+1} = s_2] = \pi(a_1|s_1)* \cfrac{0.3*r_{12}+0.6*r_{13}}{ 0.3+0.6 } $$
+$$ r(s_1,a_1, s_2) = \mathbb E[R_{t+1} | S_t=s_1, A_t=a_1, S_{t+1} = s_2] = \pi(a_1|s_1)\times \cfrac{0.3 \times r_{12} + 0.6 \times r_{13} }{ 0.3 + 0.6 } $$
 <br/>
 
 ## 3.7 Value Function
