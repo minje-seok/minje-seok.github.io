@@ -69,13 +69,13 @@ $$ \pi(a_1|s_1)*(0.1 + 0.3 + 0.6)+\pi(a_2|s_1)*(0.2 + 0.4 + 0.4) =1$$
 
 state $s$에서 action $a$를 수행했을 때, reward(*return 아님*)
 
-$$ r(s,a) = \mathbb E[R_{t+1} | S_t=s, A_t=a] = \sum_{r \in \mathcal{R}}r \sum_{s' \in \mathcal{S}}p(s',r|s,a) \tag{10}$$
+$$ r(s,a) = \mathbb E[R_{t+1} | S_t=s, A_t=a] = \sum_{r \in \mathcal{R}}r \sum_{s' \in \mathcal{S}}p(s',r|s,a) \tag{10} $$
 
 <br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224637088-e85d4eba-0055-4509-9231-04895824608b.png" width="50%" height="50%"></center>
 
-$$ r(s_1,a_1) = \mathbb E[R_{t+1} | S_t=s_1, A_t=a_1] = \pi(a_1|s_1)*(0.1*r_{11} +0.3*r_{12} + 0.6 * r_{13})$$
+$$ r(s_1,a_1) = \mathbb E[R_{t+1} | S_t=s_1, A_t=a_1] = \pi(a_1|s_1)*(0.1*r_{11} +0.3*r_{12} + 0.6 * r_{13}) $$
 
 <br/>
 
@@ -90,7 +90,7 @@ $$ r(s, a, s') = \mathbb E[R_{t+1} | S_t=s, A_t=a, S_{t+1} = s'] = \sum_{r \in \
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224637267-167f1061-60a8-4d5e-bc04-f1bb32232c7a.png" width="50%" height="50%"></center>
 
-$$ r(s_1,a_1, s_2) = \mathbb E[R_{t+1} | S_t=s_1, A_t=a_1, S_{t+1} = s_2] = \pi(a_1|s_1)* \cfrac{0.3*r_{12}+0.6*r_{13}}{0.3+0.6}$$
+$$ r(s_1,a_1, s_2) = \mathbb E[R_{t+1} | S_t=s_1, A_t=a_1, S_{t+1} = s_2] = \pi(a_1|s_1)* \cfrac{0.3*r_{12}+0.6*r_{13}}{0.3+0.6} $$
 <br/>
 
 ## 3.7 Value Function
