@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Chapter 3. Finite Markov Decision Processes
+title: Chapter 3. Finite Markov Decision Processes (2)
 aside:
   toc: true
 sidebar:
