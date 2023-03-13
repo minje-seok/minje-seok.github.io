@@ -75,7 +75,7 @@ $$ r(s,a) = \mathbb E[R_{t+1} | S_t=s, A_t=a] = \sum_{r \in \mathcal{R}}r \sum_{
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224637088-e85d4eba-0055-4509-9231-04895824608b.png" width="50%" height="50%"></center>
 
-$$ r(s_1,a_1) = \mathbb E[R_{t+1} | S_t=s_1, A_t=a_1] = \pi(a_1|s_1)*(0.1*r_{11} +0.3*r_{12} + 0.6 * r_{13}) $$
+$$ r(s_1,a_1) = \mathbb E[R_{t+1} | S_t=s_1, A_t=a_1] = \pi(a_1|s_1) \* (0.1*r_{11} +0.3*r_{12} + 0.6 * r_{13}) $$
 
 <br/>
 
