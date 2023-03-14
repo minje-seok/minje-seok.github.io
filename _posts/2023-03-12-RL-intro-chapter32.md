@@ -20,7 +20,7 @@ $$ p(s',r|s,a) = \Pr \{S_{t+1} = s', R_{t+1} = r | S_t = s, A_t = a \} \tag{6} $
 
 <br/>
 
-$(5)$은 finite MDP의 dynamics를 완전히 지정한다. 책의 나머지 부분에서 제시하는 대부분의 이론은 env가 finite MDP라고 암시적으로 가정한다. $(6)$에 지정된 dynamics가 주어지면 state-action pair에 대한 env에 대해 알고 싶은 다른 모든 것들 계산이 가능하다. 다음 식들은 아래 그림의 예제에서 $s \in \{1,2\}, a \in \{1,2\},\pi(a|s)$를 따른다고 가정하고 이해를 돕기위해 설명해본다. 다이어그램에서 열린 원은 state를, 닫힌 원은 state-action pair를 의미하며 앞으로 value function들의 관계를 표시할 때 자주 사용될 것이다. 
+$(5)$은 finite MDP의 dynamics를 완전히 지정한다. 책의 나머지 부분에서 제시하는 대부분의 이론은 env가 finite MDP라고 암시적으로 가정한다. $(6)$에 지정된 dynamics가 주어지면 state-action pair에 대한 env에 대해 알고 싶은 다른 모든 것들 계산이 가능하다. 다음 식들은 아래 그림의 예제에서 $s \in {1,2}, a \in {1,2},\pi(a|s)$를 따른다고 가정하고 이해를 돕기위해 설명해본다. 다이어그램에서 열린 원은 state를, 닫힌 원은 state-action pair를 의미하며 앞으로 value function들의 관계를 표시할 때 자주 사용될 것이다. 
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224635776-403a3226-30de-4122-9470-3268822b5350.png" width="50%" height="50%"></center>
 
@@ -113,32 +113,50 @@ $$ \begin{align*} q_\pi(s,a) &= \mathbb{E}[G_t|S_t=s, A_t = a] \\ &= \mathbb{E}_
 
 <br/>
 
+## Bellman Equation 
+Bellman equation을 사용하면 강화학습 및 동적 프로그래밍(DP) 전반에 걸쳐 사용되는 value function을 계산하고 value function 간 특정 recursion 관계를 확인할 수 있다. 중요하게 볼 부분은 expected return인 value function이 successor expected return의 합으로 표현된다는 점과 $(14)$와 $(15)$의 마지막 term에서와 같이 $v_\pi$와 $q_\pi$가 서로로 정의할 수 있다는 것이다. 결국 각 state와 action의 가치를 판단할 수 있다. 
 
 ### Bellman Equation for $v_\pi$
 
-강화학습 및 동적 프로그래밍(DP) 전반에 걸쳐 사용되는 value function의 기본 속성은 recursion 관계를 만족한다. $\forall s\in \mathcal{S}, \forall a \in \mathcal{A(s)}, \forall r \in \mathcal{R}$에 대해 $(14)$의 consistency 조건은 state $s$와 next states $s'$ 사이에 유지된다. 
+$(14)$는 state와 successor state 간의 관계를 나타내는 $v_\pi$의 Bellman equation을 나타낸다.
+$\forall s\in \mathcal{S}, \forall a \in \mathcal{A(s)}, \forall r \in \mathcal{R}$에 대해 consistency 조건이 state $s$와 next states $s'$ 사이에 유지된다. start state의 값은 next state의  discounted expected return과 reward를 더한 값과 같다. 
 
-$(14)$는 state와 successor state 간의 관계를 나타내는 $v_\pi$의 Bellman equation을 나타낸다. start state의 값은 next state의  discounted 값과 그 과정에서의 expected reward를 더한 값과 같다. $\left[r+\gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s' \right ] \right]$를 $\left [r+\gamma v_\pi(s') \right ]$로 치환한 과정은 앞으로도 수식 단순화를 위해 많이 쓰이므로 눈에 익혀둬야 한다. 
+수식적으로, 각 $a, s', r$에 대해 probability $\pi(a|s)p(s',r|s,a)$를 계산하고 해당 probability로 괄호 안의 값에 weight를 준 다음 모든 probability를 합산하여 expected value를 얻는다. $\left[r+\gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s' \right ] \right]$를 $\left [r+\gamma v_\pi(s') \right ]$로 치환한 과정은 앞으로도 수식 단순화를 위해 많이 쓰이므로 눈에 익혀둬야 한다. 
 
-수식적으로, 각 $a, s', r$에 대해 probability $\pi(a|s)p(s',r|s,a)$를 계산하고 해당 probability로 괄호 안의 값에 weight를 준 다음 모든 probability를 합산하여 expected value를 얻는다. 즉, Bellman equation은 모든 probability에 대해 평균을 내며 발생한 probability에 따라 weight를 부여한다. 그 중, $(14)$의 마지막 term은 $(15)$와 같이 $q_\pi$로 표현되고 있는데 이는 $v_\pi$가 $q_\pi$로 표현될 수 있다는 것을 알 수 있다. 
 
-$$ \begin{align*} v_\pi(s) &= \mathbb{E}_\pi[G_t|S_t=s] \\ &= \mathbb{E}_\pi[\sum^\infty_{k=0} \gamma^k R_{t+k+1}|S_t=s] \\ &= \mathbb{E}_\pi[R_{t+1} + \gamma \sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_t=s] \\ &= \sum_a \pi(a|s) \sum_{s'}\sum_r p(s',r|s,a) \left [r + \gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s' \right ] \right ] \\ &=   \sum_a \pi(a|s)\sum_{s',r}p(s',r|s,a) \left [ r + \gamma v_\pi(s') \right] \\ &= \sum_a \pi(a|s)q_\pi(s,a) \tag{15} \end{align*} $$
+$$ \begin{align*} v_\pi(s) &= \mathbb{E}_\pi\left [G_t|S_t=s \right] \\ &= \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+1}|S_t=s \right ] \\ &= \mathbb{E}_\pi \left [R_{t+1} + \gamma \sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_t=s \right ] \\ &= \sum_a \pi(a|s) \sum_{s'}\sum_r p(s',r|s,a) \left [r + \gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s' \right ] \right ] \\ &=   \sum_a \pi(a|s)\sum_{s',r}p(s',r|s,a) \left [ r + \gamma v_\pi(s') \right ] \\ &= \sum_a \pi(a|s)q_\pi(s,a) \tag{14} \end{align*} $$
 
 <br/>
 
 
 ### Bellman Equation for $q_\pi$
 
-$$ \begin{align*}q_\pi(s) &= \mathbb{E}_\pi[G_t|S_t=s, A_t=a] \\ &= \mathbb{E}_\pi[\sum^\infty_{k=0} \gamma^k R_{t+k+1}|S_t=s, A_t=a] \\ &= \mathbb{E}_\pi[R_{t+1} + \gamma \sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_t=s, A_t=a] \\ &= \sum_{a'}\sum_{s'}\sum_r p(s',r|s,a) \left [r + \gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s', A_t=a' \right ] \right ]  \\ &=  \sum_{s', r, a'}p(s',r|s,a) \left [ r + \gamma q_\pi(s',a') \right ] \\ &=   \sum_{s',r}p(s',r|s,a) \left [ r + \gamma v_\pi(s')\right] \tag{17} \end{align*} $$
+$(15)$는 state-action pair와 successor state-action pair 간의 관계를 나타내는 $v_\pi$의 Bellman equation을 나타낸다. $\forall s\in \mathcal{S}, \forall a \in \mathcal{A(s)}, \forall r \in \mathcal{R}$에 대해 $(15)$의 consistency 조건이 state $s$-action $a$ pair와 next states $s'$-action $a'$ pair사이에 유지된다. start state-action pair의 값은 next state-action pair의 discounted expected return과 reward를 더한 값과 같다. 
+
+수식적으로, 각 $a', s', r$에 대해 probability $p(s',a',r|s,a)$를 계산하고 해당 probability로 괄호 안의 값에 weight를 준 다음 모든 probability를 합산하여 expected value를 얻는다. 여기서도, $\left[r+\gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s', A_t=a' \right ] \right]$를 $\left [r+\gamma q_\pi(s', a') \right ]$로 치환한 과정을 볼 수 있다. 
+
+$$ \begin{align*}q_\pi(s,a) &= \mathbb{E}_\pi[G_t|S_t=s, A_t=a] \\ &= \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+1}|S_t=s, A_t=a \right ] \\ &= \mathbb{E}_\pi \left [R_{t+1} + \gamma \sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_t=s, A_t=a \right ] \\ &= \sum_{a'}\sum_{s'}\sum_r p(s',a',r|s,a) \left [r + \gamma \mathbb{E}_\pi \left [\sum^\infty_{k=0} \gamma^k R_{t+k+2}|S_{t+1}=s', A_t=a' \right ] \right ]  \\ &=  \sum_{s', r, a'}p(s',a',r|s,a) \left [ r + \gamma q_\pi(s',a') \right ] \\ &=   \sum_{s',r}p(s',r|s,a) \left [ r + \gamma v_\pi(s')\right] \tag{15} \end{align*} $$
 
 <br/>
 
 
 ### Backup Diagram
 
-예제에서 언급했듯이 강화학습 방법의 핵심인 value function의 Bellman equation 혹은 그 관계는 다이어그램으로 나타낸다. 이러한 표현으로 successor states에서 state로 값 정보들을 다시 전송해준다. 
+$v_\pi$와 $q_\pi$의 관계는 current state(or state-action pair)의 expected value를 successor state-action pair(or state) expected value로 부터 계산, 다시 말해 아래에서 위 방향으로 계산이 이루어지기 때문에 Backup diagram으로 표현할 수 있다. 
+
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224640549-68ca4b13-aa94-4d43-bd57-4f5bd3f3cab5.png" width="70%" height="70%"></center>
 
 <br/>
+
+state-value function $v_\pi(s)$는 $q_\pi(s,a)$의 policy에 기반한 weighted average로, action-value function $q_\pi$는 reward와 $v_\pi(s')$의 state-transition probability에 기반한 weighted average로 이해할 수 있다. 
+<center><img src="https://user-images.githubusercontent.com/127359789/224885032-f1242aec-b8df-4556-a986-ecb4836a6424.png" width="75%" height="75%"></center>
+
+<br/>
+
+## Optimal Value Functions
+
+계산한 value funcction으로 optimal policy를 찾을 수 있다. policy $\pi$는 expected return이 모든 states에 대해 policy $\pi'$보다 크거나 같으면 policy $\pi'$보다 낫거나 같다고 정의된다. 즉, $\forall s \in \mathcal S$에 대해 $v_\pi(s) \ge v_{\pi'}(s)$인 경우에만 $\pi \ge \pi'$이다. optimal policy는 둘 이상 있을 수 있지만 모든 optimal policy를 $\pi'$로 표기하고, optimal state-value function $v_*$을 공유하게 된다.
+
+$$ v_*(s) = \max_\pi v_\pi(s), \forall s \in \mathcal{S} $$
 
