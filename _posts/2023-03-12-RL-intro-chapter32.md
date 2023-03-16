@@ -11,7 +11,7 @@ sidebar:
 
 # 3. Finite Markov Decision Processes
 ## 3.6 Markov Decision Process
-Markov property를 만족하는 강화학습 task를 Markov decision process라 한다. state space와 action space가 finite한 경우 이를 finite Markov decision process (finite MDP)라 한다. 
+Markov property를 만족하는 강화학습 task를 Markov decision process (MDP)라 한다. state space와 action space가 finite한 경우 이를 finite Markov decision process (finite MDP)라 한다. 
 
 ### 3.6.1 Finite MDP
 state와 action 집합과 env의 1 step dynamics으로 정의된다. state $s$와 action $a$가 주어지면 next state $s'$와 next reward $r$은 $(6)$과 같이 표시된다. 
@@ -142,21 +142,52 @@ $$ \begin{align*}q_\pi(s,a) &= \mathbb{E}_\pi[G_t|S_t=s, A_t=a] \\ &= \mathbb{E}
 
 ### Backup Diagram
 
-$v_\pi$와 $q_\pi$의 관계는 current state(or state-action pair)의 expected value를 successor state-action pair(or state) expected value로 부터 계산, 다시 말해 아래에서 위 방향으로 계산이 이루어지기 때문에 Backup diagram으로 표현할 수 있다. 
+$v_\pi$와 $q_\pi$의 recursive 관계는 current state(or state-action pair)의 expected value를 successor state-action pair(or state)의 expected value로 부터 계산, 다시 말해 아래에서 위 방향으로 계산이 이루어지기 때문에 Backup diagram으로 표현할 수 있다. 
 
 
 <center><img src="https://user-images.githubusercontent.com/127359789/224640549-68ca4b13-aa94-4d43-bd57-4f5bd3f3cab5.png" width="70%" height="70%"></center>
 
 <br/>
 
-state-value function $v_\pi(s)$는 $q_\pi(s,a)$의 policy에 기반한 weighted average로, action-value function $q_\pi$는 reward와 $v_\pi(s')$의 state-transition probability에 기반한 weighted average로 이해할 수 있다. 
+state-value function $v_\pi(s)$는 $q_\pi(s,a)$의 policy $\pi(a|s)$에 기반한 weighted average로, action-value function $q_\pi$는 reward와 $v_\pi(s')$의 state-transition probability에 기반한 weighted average로 이해할 수 있다. 
 <center><img src="https://user-images.githubusercontent.com/127359789/224885032-f1242aec-b8df-4556-a986-ecb4836a6424.png" width="75%" height="75%"></center>
 
 <br/>
 
 ## Optimal Value Functions
 
-계산한 value funcction으로 optimal policy를 찾을 수 있다. policy $\pi$는 expected return이 모든 states에 대해 policy $\pi'$보다 크거나 같으면 policy $\pi'$보다 낫거나 같다고 정의된다. 즉, $\forall s \in \mathcal S$에 대해 $v_\pi(s) \ge v_{\pi'}(s)$인 경우에만 $\pi \ge \pi'$이다. optimal policy는 둘 이상 있을 수 있지만 모든 optimal policy를 $\pi'$로 표기하고, optimal state-value function $v_*$을 공유하게 된다.
+optimal policy 아래 정의되는 value function을 optimal value function이라고 한다. policy $\pi$는 expected return이 모든 states에 대해 policy $\pi'$보다 크거나 같으면 policy $\pi'$보다 낫거나 같다고 정의된다. 즉, $\forall s \in \mathcal S$에 대해 $v_\pi(s) \ge v_{\pi'}(s)$인 경우에만 $\pi \ge \pi'$이다. optimal policy $\pi'$는 둘 이상 있을 수 있고 모든 optimal policy는 $\pi'$로 표기되며 같은  value function는 동일하다. . 
 
-$$ v_*(s) = \max_\pi v_\pi(s), \forall s \in \mathcal{S} $$
+
+$$ v_*(s) = \max_\pi v_\pi(s), \quad \forall s \in \mathcal{S} \tag{16} $$
+
+$$ q_*(s,a) = \max_\pi q_\pi(s,a), \quad \forall s \in \mathcal{S} ,\forall a \in \mathcal{A(s)}\tag{17} $$
+
+<br/>
+
+$v_\pi$와 $q_\pi$는 action까지 결정된 상태에서 expected return를 계산하는지에 대한 차이만 존재하기 때문에 직관적으로  $v_*(s)$와 $q_*(s,a)$는 값이 같음을 알 수 있다. 만약 optimal policy $\pi'$를 따른다면, 같은 optimal state-value function $v_*$와 optimal action-value function $q_*$를 공유하게 된다.
+
+$$ q_*(s,a) = \mathbb{E} \left [ R_{t+1} + \gamma v_*(S_{t+1}) | S_t =s, A_t =a \right ] \tag{18}$$
+
+<br/>
+
+### Bellman Optimality Equation
+
+Bellman equation을 optimal policy $\pi_*$하에 유도한 것이다. 직관적으로 Bellman optimality equation은 $\pi_*$하의 state-value가 해당 state에서 optimal action에 대한 expected return과 같아야 한다. $(19)$의 마지막 두 equation은 $v_*$의 Bellman optimality equation의 두 가지 form을 나타낸다. 
+
+$$ \begin{align*} v_*(s) &= \max_{a \in \mathcal A (s)} q_{\pi_*}(s,a) \\ 
+&= \max_a \mathbb E_{\pi_*} \left [ G_t |S_t=s, A_t=a \right ] \\
+&= \max_a \mathbb E_{\pi_*} \left [ \sum*\infty_{k=0} \gamma^k R_{t+k+1} | S_t=s, A_t=a \right ] \\
+&= \max_a \mathbb E_{\pi_*} \left [ R_{t+1} + \sum*\infty_{k=0} \gamma^k R_{t+k+2} | S_t=s, A_t=a \right  ] \\
+&= \max_a \mathbb E \left [ R_{t+1} + \gamma v_*(S_{t+1}) | S_t=s, A_t=a  \right ] \\ 
+&= \max_{a \in \mathcal A(s)} \sum_{s',r}p(s', r|s,a) \left [r +\gamma v_*(s') \right ] \tag{19} \end{align*} $$
+
+$$ \begin{align*} q_*(s,a) &= \mathbb E \left [ R_{t+1} + \gamma \max_{a'} q_*(S_{t+1}, a') \right ] \\ 
+&= \sum_{s',r}p(s'r|s,a) \left [ r + \gamma \max_{a'} q_*(s',a') \right ] \tag{20} \end{align*} $$
+
+<br/>
+
+아래의 Backup diagram은 $v_*$ 및 $q_*$에 대한 Bellman optimaility equation에서 고려된 future state와 future action을 보여준다. $v_\pi$와 $q_\pi$에 대한 Backup diagram과 동일하지만 agent의 선택지점에 policy에 대해 주어진 expected return이 아니라 해당 action에 대한 최대값이 취해진다. 
+
+finite MDP의 경우, Bellman optimality equation은 각 state에 대해 각각 하나의 equation이 존재하는 시스템이므로 env의 dynamics $p(s',r|s,a)$가 알려진 경우 이론적으로 non-linear equation system을 풀기 위한 방법을 사용하여 $v_*$와  $q_*$에 대한 equation set를 풀 수 있다. 
 
