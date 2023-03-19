@@ -76,7 +76,7 @@ Closed-loop란 원하는 상태 유지를 위해 사람의 개입없이 시스�
 
 **- policy: agent's behavior function; mapping from state to action.**
 
-agent가 행동하는 방식을 정의하며, state에서 취해야 할 action으로의 매핑이다. policy는 단순한 function이나 table일수도 혹은 매우 큰 계산이 요구되는 black-box function일 수도 있다. 일반적으로 stochastic $(a=\pi(s))$하지만 deterministic $(\pi(a|s)=P \left [A_t=a|S_t =s \right ] )$한 경우도 존재한다. 
+agent가 행동하는 방식을 정의하며, state에서 취해야 할 action으로의 매핑이다. policy는 단순한 function이나 table일수도 혹은 매우 큰 계산이 요구되는 black-box function일 수도 있다. 일반적으로 stochastic $(a=\pi(s))$하지만 deterministic $(\pi(a \middle s)=P \left [A_t=a \middle S_t =s \right ] )$한 경우도 존재한다. 
 
 **- reward: immediate(short-term) scalar feedback signal.**
 
