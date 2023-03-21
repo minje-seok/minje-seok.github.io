@@ -115,7 +115,7 @@ associative search는 optimal action을 search하는 형태에서의 trial-and-e
 
 <br/>
 
-<center><img src="https://user-images.githubusercontent.com/127359789/224055717-b414ca86-e7da-4cbc-86f9-cb1e110c72c3.PNG" width="60%" height="60%"></center>
+<center><img src="https://user-images.githubusercontent.com/127359789/224055717-b414ca86-e7da-4cbc-86f9-cb1e110c72c3.PNG" width="70%" height="70%"></center>
 
 최종적으로 위 그래프는 10-armed testbed에서 매개변수 값에 따른 성능 비교를 보여준다. 전체적으로 역 U자 모양을 그리며 매개변수의 중간 값에서 잘 작동하며 UCB가 가장 성능이 좋았다. $n$-armed bandit 문제를 푸는 이외에도 많은 알고리즘들이 있지만 고려하는 강화학습 문제 정의에는 포함되지 못했고, 살펴본 방법들은 아직 exploration과 exploitation의 균형 문제에 대한 완전히 만족스러운 해결책은 아니었다.  
 
