@@ -78,7 +78,7 @@ exploit만 진행하는 greedy 방식에서 explore 하기 위한 간단한 대�
 
 <br/>
 
-<center><img src="https://user-images.githubusercontent.com/127359789/224034888-80066f9d-d4a3-481f-aaa2-41e82a2489d3.png" width="60%" height="60%"></center>
+<center><img src="https://user-images.githubusercontent.com/127359789/224034888-80066f9d-d4a3-481f-aaa2-41e82a2489d3.png" width="70%" height="70%"></center>
 
 위 그래프는 greedy($\epsilon = 0$), $\epsilon$-greedy($\epsilon = 0.01, \epsilon = 0.1$)의 sample average로 측정한 action-value estimate를 보여준다. 첫번째 그래프는 experience를 통한 expected reward를, 두번째 그래프는 optimal action을 선택한 비율을 의미한다. greedy 방식보다 $\epsilon$ -greedy($\epsilon$값이 클수록) 좋은 성능을 보이고 있다. 이는 $\epsilon$ 값의 존재로 인해 agent가 exploit하게만 동작하는 것이 아니라, 적은 확률로 랜덤하게 action을 선택하는 explore를 진행하여 suboptimal action-value에 머물지 않고 optimal action-value를 찾아가기 때문이다. 
 
