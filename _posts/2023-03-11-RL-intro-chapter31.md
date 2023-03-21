@@ -81,7 +81,7 @@ discount rate는 reward의 현재 value를 결정한다. $\gamma$의 존재로 �
 
 episodic 그리고 process-control task를 모두 고려하기 위해 모두를 표현할 수 있는 하나의 표기법으로 나타낸다. episode의 종료는 자신에게만 전환되고 reward가 0인 특별한 absorbing state로 들어가는 것으로 간주하여 통합할 수 있다. 아래 state transition diagram에서 속 사각형은 episode의 마지막을 의미하며 이러한 표현을 통해 두 task 모두 정의가 가능하다. 
 
-<center><img src="https://user-images.githubusercontent.com/127359789/224615333-e2b890bb-a057-40a2-ba30-944fb5ecd29b.png" width="60%" height="60%"></center>
+<center><img src="https://user-images.githubusercontent.com/127359789/224615333-e2b890bb-a057-40a2-ba30-944fb5ecd29b.png" width="70%" height="70%"></center>
 
 <br/>
 
