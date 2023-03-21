@@ -116,7 +116,7 @@ $$ p(s',r|s,a) = \Pr \{R_{t+1} = r, S_{t+1} = s' | S_t, A_t \} \tag{5} $$
 
 <br/>
 
-env가 Markov한 경우, $(5)$의 dynamics를 통해 current state와 action이 주어지면 next state 및 expected next reward를 예측할 수 있다. 이 방정식의 반복을 통해 current state에 대한 지식만으로도 모든 future state와 expected reward를 예측할 수 있다. Markov state는 action 선택을 위한 최상의 기반을 제공한다. 즉, Markov state의 function으로 action을 선택하는 policy는 완전한 hisotry의 function으로 action을 선택하는 optimal policy만큼 좋다.
+env가 Markov한 경우, finite MDP의 dynamics $(5)$를 통해 current state와 action이 주어지면 next state 및 expected next reward를 예측할 수 있다. 이 방정식의 반복을 통해 current state에 대한 지식만으로도 모든 future state와 expected reward를 예측할 수 있다. Markov state는 action 선택을 위한 최상의 기반을 제공한다. 즉, Markov state의 function으로 action을 선택하는 policy는 완전한 hisotry의 function으로 action을 선택하는 optimal policy만큼 좋다.
 
 만약 state signal이 Markov가 아니여도 강화학습의 state는 Markov state의 근사치로 생각하는 것이 적절하다. 특히, 우리는 state가 항상 future reward를 예측하고 action을 선택하는 좋은 기준이 되기를 원하기 때문에 Makrov state는 이러한 task에 최적의 기반을 제공한다. 이 책의 모든 이론은 Markov state signal를 가정한다. Markov가 엄격하게 적용되지 않는 경우까지 Markov property에 기반한 이론들이 엄격하게 적용되는 것은 아니지만, 이에 대한 완전한 이해는 non-Markov task까지의 확장까지도 적용될 수 있다. 
 
