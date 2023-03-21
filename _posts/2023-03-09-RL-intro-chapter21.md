@@ -56,7 +56,7 @@ $$ Q_t(a) = \cfrac{R_1 + R_2 + \cdots + R_{N_t(a)}}{N_t(a)} \tag{1} $$
 
 ### 2.2.2 Action-Value Selection: greedy
 
-가장 단순하게 action을 선택하는 방법은 가장 높은 estimated action-value $A^{*}_t$를 선택하는 것이다. $Q_t(A^{*}_t) = \max_a Q_t(a)$. 이러한 greedy action 선택은 $(2)$와 같이 쓸 수 있다. 여기서 $\arg\max_a$는 $Q_t(a)$의 값이 최대인 action $a$를 의미한다. 여기서 중요한 점은 greedy 방식은 현재 지식을 활용하여 즉각적인 보상을 극대화하며, 실제로 더 나은지 확인하기 위해 열등한 action을 샘플링하는데 시간을 소비하지 않는다. 즉, exploit로만 action을 선택하고 explore를 진행하지 않는다. 
+가장 단순하게 action을 선택하는 방법은 가장 높은 estimated action-value $A^*_t$를 선택하는 것이다. $Q_t(A^*_t)=\max_a Q_t(a).$ 이러한 greedy action 선택은 $(2)$와 같이 쓸 수 있다. 여기서 $\arg\max_a$는 $Q_t(a)$의 값이 최대인 action $a$를 의미한다. 여기서 중요한 점은 greedy 방식은 현재 지식을 활용하여 즉각적인 보상을 극대화하며, 실제로 더 나은지 확인하기 위해 열등한 action을 샘플링하는데 시간을 소비하지 않는다. 즉, exploit로만 action을 선택하고 explore를 진행하지 않는다. 
 
 
 $$ A_t = \arg\max_a Q_t(a) \tag{2} $$
