@@ -151,7 +151,7 @@ $v_\pi$와 $q_\pi$의 recursive 관계는 current state(or state-action pair)의
 
 <br/>
 
-state-value function $v_\pi(s)$는 $q_\pi(s,a)$의 policy $\pi(a|s)$에 기반한 weighted average로, action-value function $q_\pi$는 reward와 $v_\pi(s')$의 state-transition probability에 기반한 weighted average로 이해할 수 있다. 
+state-value function $v_\pi(s)$는 $q_\pi(s,a)$의 policy $\pi(a \mid s)$에 기반한 weighted average로, action-value function $q_\pi$는 reward와 $v_\pi(s')$의 state-transition probability에 기반한 weighted average로 이해할 수 있다. 
 
 <center><img src="https://user-images.githubusercontent.com/127359789/226821716-09f4c6ad-6505-4960-b060-d9033410cc9e.png" width="75%" height="75%"></center>
 
@@ -233,3 +233,4 @@ $q_\ast$가 있으면 optimal action 선택이 더 쉬워진다. $q_\ast$는 이
 ## 3.10 Summary
 
 우리는 env와 agent 간 상호작용을 표현하는 프레임워크를 통해 강화학습 문제를 정의하고, task 종류에 의존하지 않는 agent의 목표인 return을 계산했다. 또한 대부분의 강화학습 문제에서 가정되는 Markov property를 만족하는 finite MDP에서의 probability 및 reward 계산과 expected return을 의미하는 value function을 구할 수 있었다. state-value function $v_\pi$와 action-value function $q_\pi$의 Bellman equation에서 확인 가능한 recursive한 관계에서 확장된 Bellman optimality equation으로 optimal policy까지 구할 수 있다는 결론에 이르렀다. 그러나 이러한 방식은 현실적으로 어려운 가정과 막대한 계산 비용을 요구하므로, 우리는 Bellman optimality equation을 approximate하게 해결하는 approach들을 앞으로 배울 예정이다.  
+<br/>
