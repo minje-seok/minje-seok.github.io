@@ -162,32 +162,32 @@ state-value function $v_\pi(s)$는 $q_\pi(s,a)$의 policy $\pi(a|s)$에 기반�
 optimal policy 아래 정의되는 value function을 optimal value function이라고 한다. policy $\pi$는 expected return이 모든 states에 대해 policy $\pi'$보다 크거나 같으면 policy $\pi'$보다 낫거나 같다고 정의되며, 즉 $\forall s \in \mathcal S$에 대해 $v_\pi(s) \ge v_{\pi'}(s)$인 경우, $\pi \ge \pi'$이다. optimal policy $\pi'$는 둘 이상 있을 수 있고 모든 optimal policy는 $\pi'$로 표기되며 이때 value function는 동일하다. 
 
 
-$$ v_*(s) = \max_\pi v_\pi(s), \quad \forall s \in \mathcal{S} \tag{16} $$
+$$ v_\ast(s) = \max_\pi v_\pi(s), \quad \forall s \in \mathcal{S} \tag{16} $$
 
-$$ q_*(s,a) = \max_\pi q_\pi(s,a), \quad \forall s \in \mathcal{S} ,\forall a \in \mathcal{A(s)}\tag{17} $$
+$$ q_\ast(s,a) = \max_\pi q_\pi(s,a), \quad \forall s \in \mathcal{S} ,\forall a \in \mathcal{A(s)}\tag{17} $$
 
 <br/>
 
-$v_\pi$와 $q_\pi$는 expected return를 계산하는데 action까지 결정된 상태인지 여부에 대한 차이만 존재하기 때문에 직관적으로  $v_*(s)$와 $q_*(s,a)$는 값이 같음을 알 수 있다. 만약 optimal policy $\pi'$를 따른다면, 같은 optimal state-value function $v_*$와 optimal action-value function $q_*$를 공유하게 된다.
+$v_\pi$와 $q_\pi$는 expected return를 계산하는데 action까지 결정된 상태인지 여부에 대한 차이만 존재하기 때문에 직관적으로  $v_\ast(s)$와 $q_\ast(s,a)$는 값이 같음을 알 수 있다. 만약 optimal policy $\pi'$를 따른다면, 같은 optimal state-value function $v_\ast$와 optimal action-value function $q_\ast$를 공유하게 된다.
 
-$$ q_*(s,a) = \mathbb{E} \left [ R_{t+1} + \gamma v_*(S_{t+1}) \mid S_t =s, A_t =a \right ] \tag{18}$$
+$$ q_\ast(s,a) = \mathbb{E} \left [ R_{t+1} + \gamma v_\ast(S_{t+1}) \mid S_t =s, A_t =a \right ] \tag{18}$$
 
 <br/>
 
 ### 3.9.1 Bellman Optimality Equation
 
-Bellman equation을 optimal policy $\pi_*$하에 유도한 것이다. 직관적으로 Bellman optimality equation은 $\pi_*$하의 state-value가 해당 state에서 optimal action에 대한 expected return과 같아야 한다. $(19)$의 마지막 두 equation은 $v_*$의 Bellman optimality equation의 두 가지 form을 나타낸다. 
+Bellman equation을 optimal policy $\pi_*$하에 유도한 것이다. 직관적으로 Bellman optimality equation은 $\pi_\ast$하의 state-value가 해당 state에서 optimal action에 대한 expected return과 같아야 한다. $(19)$의 마지막 두 equation은 $v_\ast$의 Bellman optimality equation의 두 가지 form을 나타낸다. 
 
-$$ \begin{align*} v_*(s) &= \max_{a \in \mathcal A (s)} q_{\pi_*}(s,a) \\ 
-&= \max_a \mathbb E_{\pi_*} \left [ G_t |S_t=s, A_t=a \right ] \\
-&= \max_a \mathbb E_{\pi_*} \left [ \sum^{\infty}_{k=0} \gamma^k R_{t+k+1} \mid S_t=s, A_t=a \right ] \\
-&= \max_a \mathbb E_{\pi_*} \left [ R_{t+1} + \sum^\infty_{k=0} \gamma^k R_{t+k+2} \mid S_t=s, A_t=a \right  ] \\
-&= \max_a \mathbb E \left [ R_{t+1} + \gamma v_*(S_{t+1}) \mid S_t=s, A_t=a  \right ] \\ 
-&= \max_{a \in \mathcal A(s)} \sum_{s',r}p(s', r|s,a) \left [r +\gamma v_*(s') \right ] \tag{19} \end{align*} $$
+$$ \begin{align*} v_\ast(s) &= \max_{a \in \mathcal A (s)} q_{\pi_\ast}(s,a) \\ 
+&= \max_a \mathbb E_{\pi_\ast} \left [ G_t |S_t=s, A_t=a \right ] \\
+&= \max_a \mathbb E_{\pi_\ast} \left [ \sum^{\infty}_{k=0} \gamma^k R_{t+k+1} \mid S_t=s, A_t=a \right ] \\
+&= \max_a \mathbb E_{\pi_\ast} \left [ R_{t+1} + \sum^\infty_{k=0} \gamma^k R_{t+k+2} \mid S_t=s, A_t=a \right  ] \\
+&= \max_a \mathbb E \left [ R_{t+1} + \gamma v_\ast(S_{t+1}) \mid S_t=s, A_t=a  \right ] \\ 
+&= \max_{a \in \mathcal A(s)} \sum_{s',r}p(s', r|s,a) \left [r +\gamma v_\ast(s') \right ] \tag{19} \end{align*} $$
 
-$$ \begin{align*} q_*(s,a) &= \max_a \mathbb E \left [ R_{t+1} + \gamma v_*(S_{t+1}) \mid S_t=s, A_t=a  \right ] \\ 
-&= \mathbb E \left [ R_{t+1} + \gamma \max_{a'} q_*(S_{t+1}, a') \mid S_t = s, A_t =a \right ] \\ 
-&= \sum_{s',r}p(s', r|s,a) \left [ r + \gamma \max_{a'} q_*(s',a') \right ] \tag{20} \end{align*} $$
+$$ \begin{align*} q_\ast(s,a) &= \max_a \mathbb E \left [ R_{t+1} + \gamma v_\ast(S_{t+1}) \mid S_t=s, A_t=a  \right ] \\ 
+&= \mathbb E \left [ R_{t+1} + \gamma \max_{a'} q_\ast(S_{t+1}, a') \mid S_t = s, A_t =a \right ] \\ 
+&= \sum_{s',r}p(s', r|s,a) \left [ r + \gamma \max_{a'} q_\ast(s',a') \right ] \tag{20} \end{align*} $$
 
 <br/>
 
@@ -199,15 +199,37 @@ finite MDP에서 Bellman optimality equation에는 policy와 독립적인 soluti
 <center><img src="https://user-images.githubusercontent.com/127359789/226785353-40edec61-ff56-4d5e-954e-47adfcf83bea.png" width="80%" height="80%"></center>
 
 
-$v_\ast$ 및 $q_\ast$에 대한 Bellman optimaility equation에서 고려된 future state와 future action을 보여주는 Backup diagram이다. $v_\pi$와 $q_\pi$에 대한 Backup diagram과 동일하지만, agent의 선택지점에는 policy에 대해 주어진 expected return이 아니라 해당 선택에 대한 최대값이 취해진다. 
+$v_\ast$ 및 $q_\ast$에 대한 Bellman optimaility equation에서 고려된 future state와 future action을 보여주는 Backup diagram이다. $v_\pi$와 $q_\pi$에 대한 Backup diagram과 동일하지만, agent의 선택지점에는 policy에 대해 주어진 expected return이 아니라 해당 선택에 대한 최대값이 취해진다. $v_\ast(s)$는 뒤따르는 $q(s,a)$ 중 최대가 되는 쪽으로, $q_\ast(s,a)$는 뒤따르는 $v_(s')$들의 최대값에 대한 가중 평균이다. 
 
 
 <br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/226822038-54ede24a-ee22-4326-927b-9bcddd7a2af9.png" width="75%" height="75%"></center>
 
-$v_\ast$가 있으면 해당 state에서 max action-value를 가진 action이 optimal action이 된다. $v(s')$은 $q(s,a)$로 표현되므로, 결국 $v_\ast$에 대해 greedy한 것이 optimal policy라는 것이다. $v_\ast$는 이미 가능한 모든 future behavior의 reward 결과를 고려하고 있기때문에, 단기 결과만을 기준으로 action을 선택하더라도 장기적 관점에서 실제로 optimal하다. $v_*$를 통해 optimal expected long-term return은 각 state에서 즉시 사용할 수 있는 수치로 변환된다. 따라서 greedy한 action 선택은 long-term optimal action을 제공한다. 
+$v_\ast$가 있으면 해당 state에서 max action-value를 가진 action이 optimal action이 된다. $v(s')$은 $q(s,a)$로 표현되므로, 결국 $v_\ast$에 대해 greedy한 것이 optimal policy라는 것이다. $v_\ast$는 이미 가능한 모든 future behavior의 reward 결과를 고려하고 있기때문에, 단기 결과만을 기준으로 action을 선택하더라도 장기적 관점에서 실제로 optimal하다. $v_\ast$를 통해 optimal expected long-term return은 각 state에서 즉시 사용할 수 있는 수치로 변환된다. 따라서 greedy한 action 선택은 long-term optimal action을 제공한다. 
 
 
 $q_\ast$가 있으면 optimal action 선택이 더 쉬워진다. $q_\ast$는 이미 state에 대한 action-value를 캐시하고 있기 때문에 agent는 action 검색을 수행할 필요조차 없다. 이는 각 state-action pair에 대해 즉시 사용할 수 있는 값으로 optimal expected long-term return을 제공한다. 따라 state-action pair를 나타내는 비용으로 optimal action-value function은 env의 dynamics에 대해 알 필요 없이; 가능한 successor state 및 그들의 value에 대해 알 필요 없이 optimal action을 선택 가능하다. 
 
+<br/>
+
+
+## 3.9 Optimality and Approximation
+
+### 3.9.1 Constraint of Bellman Optimality Equation
+
+그렇다면 Bellman optimality equation대로 풀면 강화학습 문제에서 최적의 policy를 찾을 수 있다고 생각할 수 있다. 이러한 방식의 solution은 다음의 최소 세 가지 가정에 의존하고 있다. (1) env의 dynamics를 정확하게 알고 있다. (2) solution 계산을 완료하기에 충분한 계산 리소스가 존재한다. (3) Makrov property를 만족한다. 그러나 이러한 가정을 완벽하게 만족하는 경우는 거의 없기 때문에 사실상 강화학습에서는 일반적으로 approximate solution에 만족하게 된다. 많은 강화학습 방법은 expected transition에 대한 지식이 아닌 experienced transition을 사용하여 Bellman optimality equation을 approximately하게 해결한다. 
+
+<br/>
+
+우리가 Bellman optimality equation에 기반하여 구한 optimal value function와 optimal policy는 env의 dynamics에 대한 완벽한 model이 있더라도 엄청난 계산 비용으로만 생성이 가능하다. 우리는 이러한 이론적 속성을 이해하고 agent가 다양한 방식으로 approximate하게끔 노력한다. 결국 agent는 single time step에서 수행할 수 있는 계산 능력 또한 고려되어야 한다. 
+
+사용 가능한 메모리 또한 중요한 제약 조건이다. value function, policy, model 등을 구축하려면 많은 양의 메모리를 필요로 한다. 적은 finite state set가 있는 task에서는 tabular 방식으로 사용할 수 있지만, 일반적인 문제에서는 tabular에 저장할 수 있는 것보다 훨씬 많은 state가 존재한다. 이러한 경우, function은 보다 간결한 매개변수화된 함수 표현을 사용하여 approximate된다. 
+
+계속 강화학습 문제를 approximate하게 푸는 방식의 프레임워크를 강조하는데, 이는 유용한 approximation을 얻을 수 있는 기회를 제공한다. 강화학습의 online 특성은 자주 발생하는 state에서 올바른 action을 내리는 학습에 더 많은 노력을 기울이는 방식으로 optimal policy를 approximate할 수 있게 한다. 이는 MDP를 approximately하게 해결하는 강화학습만의 핵심 속성이다. 
+
+<br/>
+
+## 3.10 Summary
+
+우리는 env와 agent 간 상호작용을 표현하는 프레임워크를 통해 강화학습 문제를 정의하고, task 종류에 의존하지 않는 agent의 목표인 return을 계산했다. 또한 대부분의 강화학습 문제에서 가정되는 Markov property를 만족하는 finite MDP에서의 probability 및 reward 계산과 expected return을 의미하는 value function을 구할 수 있었다. state-value function $v_\pi$와 action-value function $q_\pi$의 Bellman equation에서 확인 가능한 recursive한 관계에서 확장된 Bellman optimality equation으로 optimal policy까지 구할 수 있다는 결론에 이르렀다. 그러나 이러한 방식은 현실적으로 어려운 가정과 막대한 계산 비용을 요구하므로, 우리는 Bellman optimality equation을 approximate하게 해결하는 approach들을 앞으로 배울 예정이다.  
