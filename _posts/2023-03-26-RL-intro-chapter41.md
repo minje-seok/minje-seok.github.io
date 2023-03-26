@@ -25,6 +25,7 @@ $$ \begin{align*} q_\ast(s,a) &= \max_a \mathbb E \left [ R_{t+1} + \gamma v_\as
 
 ## Policy Evaluation
 DP의 policy evaluation에서는 임시 policy $\pi$를 따르는 state-value function $v_\pi$를 Bellman equation에 기반하여 $(3)$과 같이 계산한다.
+
 $$ \begin{align*} v_\pi(s) &= \mathbb{E}_\pi \left [R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+2} + \cdots \mid S_t = s\right ] \\
 &= \mathbb{E}_\pi \left [R_{t+1} + \gamma v_\pi(S_{t+1})\mid S_t = s\right ] \\
 &= \sum_a \pi(s \mid a) \sum_{s',r}p(s', r|s,a) \left [r +\gamma v_\pi(s') \right ] \tag{3} \end{align*} $$
