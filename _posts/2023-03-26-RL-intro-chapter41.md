@@ -12,7 +12,7 @@ sidebar:
 # 4. Dynamic Programming
 dynamic programming(DP)는 MDP와 같은 완벽한 env의 model이 주어졌을 때, optimal policy를 찾을 수 있는 알고리즘들을 의미한다. 이전 챕터에서 언급했듯 막대한 계산 비용 때문에 강화학습에서는 적용이 제한적이지만, 완벽하지 않은 env에서 계산을 줄인 강화학습 문제 풀이를 위한 방법들은 결국 DP와 동일한 효과를 달성하려는 시도로 볼 수 있다. DP는 continuous state space와 continuous action space를 quantize한 뒤, finite-state DP 방법을 적용하여 일반적인 approximate solution을 얻는 것도 가능하다. 
 
-일반적으로 강화학습 문제를 풀기 위해서는 value function을 사용하여 좋은 policy를 측정한다. DP에서는 원하는 value function을 개선하기 위한 $(1),(2)$와 같이 Bellman optimality equation을 만족하는 $v_\ast$ 또는 $q_\ast$를 찾는 update rule을 적용하여 optimal policy를 얻는다. 
+이전 챕터에서는 강화학습 문제를 풀기 위해서 Bellman optimality equation을 만족하는 optimal value function $v_\ast$ 또는 $q_\ast$을 사용하여 optimal policy를 찾을 수 있다고 했다. DP에서는 원하는 value function에 대한 approximation을 개선하기 위해 $(1),(2)$와 같이 Bellman equation을 전환한 update rule을 적용한다. 지금부터는 env가 $s \in \mathcal{S}, a \in \mathcal{A}(s), r \in \mathcal {R}, s' \in \mathcal {S^+}$ ($\mathcal {S^+}$는 episodic task에서 $\mathcal S $ + terminal state)가 모두 finite한 finite MDP이고, dynamics는 $p(s', r \mid s,a)$ probability의 집합으로 주어진다고 가정한다. 
 
 $$ \begin{align*} v_\ast(s) 
 &= \max_a \mathbb E \left [ R_{t+1} + \gamma v_\ast(S_{t+1}) \mid S_t=s, A_t=a  \right ] \\ 
@@ -24,7 +24,9 @@ $$ \begin{align*} q_\ast(s,a) &= \max_a \mathbb E \left [ R_{t+1} + \gamma v_\as
 <br/>
 
 ## Policy Evaluation
-DP의 policy evaluation에서는 임시 policy $\pi$를 따르는 state-value function $v_\pi$를 Bellman equation에 기반하여 $(3)$과 같이 계산한다.
+### Prediction Problem
+우선 임시 policy $\pi$를 따르는 state-value function $v_\pi$를 계산하고자 한다. 우리는 이를 prediction problem이라고 부른다. 
+이전 챕터에서는 Bellman equation에 기반하여 value function을 $(3)$과 같이 계산했다. $v_\pi$의 존재와 고유성은 $\gamma < 1$ 혹은 모든 state에 대해 termination이 policy $\pi$ 하에서 약속되는 한 보장된다. 
 
 $$ \begin{align*} v_\pi(s) &= \mathbb{E}_\pi \left [R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+2} + \cdots \mid S_t = s\right ] \\
 &= \mathbb{E}_\pi \left [R_{t+1} + \gamma v_\pi(S_{t+1})\mid S_t = s\right ] \\
@@ -32,10 +34,11 @@ $$ \begin{align*} v_\pi(s) &= \mathbb{E}_\pi \left [R_{t+1} + \gamma R_{t+2} + \
 
 <br/>
 
-만약 env의 dynamics가 완벽하게 알려져있다면, $(3)$은 simutaneous linear equation $v_\pi(s), s \in \mathcal S$의 system으로 볼 수 있다. 이러한 경우 initial value function $v_0$은 임의로 선택되어 초기화하고, 각 다음 value function approximation은 $(4)$의 update rule을 iterative하게 사용하여 solution을 얻는다. 이를 iterative policy evaluation이라고 한다. 
+### Iterative Policy Evaluation
+만약 env의 dynamics가 완벽하게 알려져있다면, $(3)$은 simutaneous linear equation $v_\pi(s)$의 system으로 볼 수 있다. 이러한 경우 initial value function $v_0$를 임의로 선택되어 초기화하고(*보통 terminal state를 제외하고 0으로*), 각 next value function approximation은 $(4)$의 Bellman equation을 update rule로 iterative하게 사용하여 solution을 얻는다. 이를 iterative policy evaluation이라고 한다. 
 
-$$ \begin{align*} v_{k+1}(s) &= \mathbb{E}_\pi \left [R_{t+1} + \gamma v_\pi(S_{t+1})\mid S_t = s\right ] \\
-&= \sum_a \pi(s \mid a) \sum_{s',r}p(s', r|s,a) \left [r +\gamma v_\pi(s') \right ] \tag{4} \end{align*} $$
+$$ \begin{align*} v_{k+1}(s) &= \mathbb{E}_\pi \left [R_{t+1} + \gamma v_k(S_{t+1})\mid S_t = s\right ] \\
+&= \sum_a \pi(s \mid a) \sum_{s',r}p(s', r|s,a) \left [r +\gamma v_k(s') \right ] \tag{4} \end{align*} $$
 
 
 <br/>
