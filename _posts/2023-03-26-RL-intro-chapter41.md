@@ -43,6 +43,6 @@ $$ \begin{align*} v_{k+1}(s) &= \mathbb{E}_\pi \left [R_{t+1} + \gamma v_k(S_{t+
 <br/>
 
 ### Full Backup
-$v_k$로부터 successive approximation $v_{k+1}$을 생성하기 위해서 iterative policy evaluation는 다음의 과정을 수행한다. 각 state $s$의 new value를 구하기 위해 현재 evaluate되는 policy에서 가능한 모든 one-step transition에서의 successor states $s'$'의 old value와 expected immediate reward의 합으로 교체한다. 이러한 과정을 full backup이라고 한다. state 또는 state-action pair이 backup되는지 여부와 successor state의 estimated value가 결합되는 방식에 따라 여러 full backup이 존재한다. 
+$v_k$로부터 successive approximation $v_{k+1}$을 생성하기 위해서 iterative policy evaluation는 다음의 과정을 수행한다. 각 state $s$의 new value를 구하기 위해 현재 evaluate되는 policy에서 가능한 모든 one-step transition에서의 successor states $s'$의 old value와 expected immediate reward의 합으로 교체한다. 이러한 과정을 full backup이라고 한다. state 또는 state-action pair이 backup되는지 여부와 successor state의 estimated value가 결합되는 방식에 따라 여러 full backup이 존재한다. 
 
 iterative policy evaluation의 각 iteration은 next approximate value function $v_{k+1}$을 생성하기 위해 모든 state value $v_k$를 backup한다. DP 알고리즘에서 수행되는 모든 backup은 sample의 next state가 아니라 가능한 모든 next state를 기반으로 하기 때문에 full backup이라고 한다. 
