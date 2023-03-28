@@ -218,7 +218,7 @@ $q_\ast$가 있으면 optimal action 선택이 더 쉬워진다. $q_\ast$는 이
 
 ### 3.9.1 Constraint of Bellman Optimality Equation
 
-그렇다면 Bellman optimality equation대로 풀면 강화학습 문제에서 최적의 policy를 찾을 수 있다고 생각할 수 있다. 이러한 방식의 solution은 다음의 최소 세 가지 가정에 의존하고 있다. (1) env의 dynamics를 정확하게 알고 있다. (2) solution 계산을 완료하기에 충분한 계산 리소스가 존재한다. (3) Makrov property를 만족한다. 그러나 이러한 가정을 완벽하게 만족하는 경우는 거의 없기 때문에 사실상 강화학습에서는 일반적으로 approximate solution에 만족하게 된다. 많은 강화학습 방법은 expected transition에 대한 지식이 아닌 experienced transition을 사용하여 Bellman optimality equation을 approximately하게 해결한다. 
+그렇다면 Bellman optimality equation대로 풀면 강화학습 문제에서 최적의 policy를 찾을 수 있다고 생각할 수 있다. 그러나 이러한 방식의 solution은 기본적으로 다음의 최소 세 가지 가정에 의존하고 있다. (1) env의 dynamics를 정확하게 알고 있다. (2) solution 계산을 완료하기에 충분한 계산 리소스가 존재한다. (3) Makrov property를 만족한다. 그러나 이러한 가정을 완벽하게 만족하는 경우는 거의 없기 때문에 사실상 강화학습에서는 일반적으로 approximate solution에 만족하게 된다. 많은 강화학습 방법은 expected transition에 대한 지식이 아닌 experienced transition을 사용하여 Bellman optimality equation을 approximately하게 해결한다. 
 
 <br/>
 
@@ -232,5 +232,6 @@ $q_\ast$가 있으면 optimal action 선택이 더 쉬워진다. $q_\ast$는 이
 
 ## 3.10 Summary
 
-우리는 env와 agent 간 상호작용을 표현하는 프레임워크를 통해 강화학습 문제를 정의하고, task 종류에 의존하지 않는 agent의 목표인 return을 계산했다. 또한 대부분의 강화학습 문제에서 가정되는 Markov property를 만족하는 finite MDP에서의 probability 및 reward 계산과 expected return을 의미하는 value function을 구할 수 있었다. state-value function $v_\pi$와 action-value function $q_\pi$의 Bellman equation에서 확인 가능한 recursive한 관계에서 확장된 Bellman optimality equation으로 optimal policy까지 구할 수 있다는 결론에 이르렀다. 그러나 이러한 방식은 현실적으로 어려운 가정과 막대한 계산 비용을 요구하므로, 우리는 Bellman optimality equation을 approximate하게 해결하는 approach들을 앞으로 배울 예정이다.  
+이번 챕터에서는 강화학습 문제 해결에 필요한 기초적 이론을 공부했다. env와 agent 간 상호작용을 표현할 수 있는 finite MDP를 통해 강화학습 문제를 정의하고, expected return을 의미하는 value function에 대해 알아보았다. 또한 Bellman equation을 통해 state-value function $v_\pi$와 action-value function $q_\pi$의 recursive한 관계 그리고 Bellman optimality equation으로 optimal policy를 구할 수 있다는 것을 확인했다. 그러나 이러한 방식은 현실적으로 어려운 env에 대한 가정과 막대한 계산 비용을 요구하므로, 본 챕터에서는 optimal value function이 존재하고 계산될 수 있다는 것을 강조하지만 계산에 대한 방법은 언급되지 않는다. 따라 뒤 챕터에서는 optimal policy를 찾기위한 value function을 계산하기 위해 간단한 문제는 tabular 방식을, 복잡한 경우에는 approximate 방식을 적용한 강화학습 approach들을 배울게 된다. 
+
 <br/>
