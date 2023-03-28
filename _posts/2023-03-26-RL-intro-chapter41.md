@@ -35,13 +35,14 @@ $$ \begin{align*} v_\pi(s) &= \mathbb{E}_\pi \left [R_{t+1} + \gamma R_{t+2} + \
 <br/>
 
 ### Iterative Policy Evaluation
-만약 env의 dynamics가 완벽하게 알려져있다면, $(3)$은 simutaneous linear equation $v_\pi(s)$의 system으로 볼 수 있다. 이러한 경우 initial value function $v_0$를 임의로 선택되어 초기화하고(*보통 terminal state를 제외하고 0으로*), 각 next value function approximation은 $(4)$의 Bellman equation을 update rule로 iterative하게 사용하여 solution을 얻는다. 이를 iterative policy evaluation이라고 한다. 
+만약 env의 dynamics가 완벽하게 알려져있다면, $(3)$은 simutaneous linear equation $v_\pi(s)$의 system으로 볼 수 있다. 이러한 경우 initial value function $v_0$를 임의로 선택되어 초기화하고(*보통 terminal state를 제외하고 0으로*), 각 next value function approximation은 $(4)$의 Bellman equation을 update rule로 iterative하게 사용하여 solution을 얻는다. $v_\pi$에 대한 Bellman equation이 $v_k = v_\pi$ 경우에도 동등하게 보장되기 때문에 이러한 update rule이 적용 가능하다. 실제로 $v_0, v_1, v_2, \ldots$의 sequence $v_k$는 일반적으로 $v_\pi$의 존재를 보장하는 동일 조건 하에서 $k \rightarrow \infty$일 때 $v_\pi$로 수렴한다. 이러한 알고리즘을 iterative policy evaluation이라고 한다. 
 
 $$ \begin{align*} v_{k+1}(s) &= \mathbb{E}_\pi \left [R_{t+1} + \gamma v_k(S_{t+1})\mid S_t = s\right ] \\
 &= \sum_a \pi(s \mid a) \sum_{s',r}p(s', r|s,a) \left [r +\gamma v_k(s') \right ] \tag{4} \end{align*} $$
 
-
 <br/>
 
-update rule $(4)$를 현재 time step의 모든 state에 대해 적용하여, $v_{k+1}$을 $v_k$와 expected immediate reward로 생성하는 full backup을 진행한다. iterative policy evaluation의 각 iteration은 새로운 approximate value function $v_{k+1}$를 생성하기 위해 모든 state value function을 한 번 back up 한다. state 혹은 state-action pair
-DP에서 수행되는 backup은 모든 가능한 next state를 기반으로 하기 때문에 full backup이라고 부른다. 
+### Full Backup
+$v_k$로부터 successive approximation $v_{k+1}$을 생성하기 위해서 iterative policy evaluation는 다음의 과정을 수행한다. 각 state $s$의 new value를 구하기 위해 현재 evaluate되는 policy에서 가능한 모든 one-step transition에서의 successor states $s'$'의 old value와 expected immediate reward의 합으로 교체한다. 이러한 과정을 full backup이라고 한다. state 또는 state-action pair이 backup되는지 여부와 successor state의 estimated value가 결합되는 방식에 따라 여러 full backup이 존재한다. 
+
+iterative policy evaluation의 각 iteration은 next approximate value function $v_{k+1}$을 생성하기 위해 모든 state value $v_k$를 backup한다. DP 알고리즘에서 수행되는 모든 backup은 sample의 next state가 아니라 가능한 모든 next state를 기반으로 하기 때문에 full backup이라고 한다. 
