@@ -12,7 +12,7 @@ sidebar:
 # 4. Dynamic Programming
 dynamic programming(DP)는 MDP와 같은 완벽한 env의 model이 주어졌을 때, optimal policy를 찾을 수 있는 알고리즘들을 의미한다. 이전 챕터에서 언급했듯 막대한 계산 비용 때문에 강화학습에서는 적용이 제한적이지만, 완벽하지 않은 env에서 계산을 줄인 강화학습 문제 풀이를 위한 방법들은 결국 DP와 동일한 효과를 달성하려는 시도로 볼 수 있다. DP는 continuous state space와 continuous action space를 quantize한 뒤, finite-state DP 방법을 적용하여 일반적인 approximate solution을 얻는 것도 가능하다. 
 
-이전 챕터에서는 강화학습 문제를 풀기 위해서 Bellman optimality equation을 만족하는 optimal value function $v_\ast$ 또는 $q_\ast$을 사용하여 optimal policy를 찾을 수 있다고 했다. DP에서는 원하는 value function에 대한 approximation을 개선하기 위해 $(1),(2)$와 같이 Bellman equation을 전환한 update rule을 적용한다. 지금부터는 env가 $s \in \mathcal{S}, a \in \mathcal{A}(s), r \in \mathcal {R}, s' \in \mathcal {S^+}$ ($\mathcal {S^+}$는 episodic task에서 $\mathcal S $ + terminal state)가 모두 finite한 finite MDP이고, dynamics는 $p(s', r \mid s,a)$ probability의 집합으로 주어진다고 가정한다. 
+이전 챕터에서는 강화학습 문제를 풀기 위해서 Bellman optimality equation을 만족하는 optimal value function $v_\ast$ 또는 $q_\ast$을 사용하여 optimal policy를 찾을 수 있다고 했다. DP에서는 원하는 value function에 대한 approximation을 개선하기 위해 $(1),(2)$와 같이 Bellman equation을 전환한 update rule을 적용한다. 지금부터는 env가 $s \in \mathcal{S}, a \in \mathcal{A}(s), r \in \mathcal {R}, s' \in \mathcal {S^+}$ ($\mathcal {S^+}$는 episodic task에서 $\mathcal{S}$ + terminal state)가 모두 finite한 finite MDP이고, dynamics는 $p(s', r \mid s,a)$ probability의 집합으로 주어진다고 가정한다. 
 
 $$ \begin{align*} v_\ast(s) 
 &= \max_a \mathbb E \left [ R_{t+1} + \gamma v_\ast(S_{t+1}) \mid S_t=s, A_t=a  \right ] \\ 
@@ -46,3 +46,15 @@ $$ \begin{align*} v_{k+1}(s) &= \mathbb{E}_\pi \left [R_{t+1} + \gamma v_k(S_{t+
 $v_k$로부터 successive approximation $v_{k+1}$을 생성하기 위해서 iterative policy evaluation는 다음의 과정을 수행한다. 각 state $s$의 new value를 구하기 위해 현재 evaluate되는 policy에서 가능한 모든 one-step transition에서의 successor states $s'$의 old value와 expected immediate reward의 합으로 교체한다. 이러한 과정을 full backup이라고 한다. state 또는 state-action pair이 backup되는지 여부와 successor state의 estimated value가 결합되는 방식에 따라 여러 full backup이 존재한다. 
 
 iterative policy evaluation의 각 iteration은 next approximate value function $v_{k+1}$을 생성하기 위해 모든 state value $v_k$를 backup한다. DP 알고리즘에서 수행되는 모든 backup은 sample의 next state가 아니라 가능한 모든 next state를 기반으로 하기 때문에 full backup이라고 한다. 
+
+<br/>
+
+## In-Place Iterative Policy Evaluation
+
+상식적으로 full bakcup을 진행하기 위해서는 old value와 new value를 저장할 두 개의 array를 필요로 하지만 하나의 array만을 사용하여 'in-place'하게 update할 수도 있다. 이렇게 되면 next state가 backup되는 순서에 따라, state의 old value가 아닌 new value가 사용되게 되지만 $v_\pi$로 수렴한다. in-place 알고리즘에서 state가 backup되는 순서는 수렴 속도에 상당한 영향을 미치고, 2-array보다 빠르게 수렴한다. 일반적으로 DP 알고리즘은 in-place를 염두에 둔다. 
+
+<br/>
+
+### Termination of Algorithm
+
+iterative policy evaluation는 현실적으로 수렴이 이루어지기 전에 멈춰야 하는 constraint가 존재한다. 일반적으로는 각 sweep 이후 $\max_{s \in \mathcal{S}} \mid v_{k+1}(s) - v_k(s) \mid$가 충분히 작을 때 중지한다. 위 pseudo code는 stopping criterion이 고려된 iterative policy evaluation을 의미한다. 
