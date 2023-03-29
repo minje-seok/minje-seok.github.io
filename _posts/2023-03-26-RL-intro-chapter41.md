@@ -58,3 +58,12 @@ iterative policy evaluation의 각 iteration은 next approximate value function 
 ### Termination of Algorithm
 
 iterative policy evaluation는 현실적으로 수렴이 이루어지기 전에 멈춰야 하는 constraint가 존재한다. 일반적으로는 각 sweep 이후 $\max_{s \in \mathcal{S}} \mid v_{k+1}(s) - v_k(s) \mid$가 충분히 작을 때 중지한다. 위 pseudo code는 stopping criterion이 고려된 iterative policy evaluation을 의미한다. 
+
+
+## Policy Improvement
+policy evaluation을 통해 임시 policy $\pi$에 대한 $v_\pi$를 얻을 수 있었다. 우리는 이제 특정 state $s$에서, 기존의 임시 $\pi$에서 deterministic하게 결정하던 $a$를 바꿔야하는지 알아야 한다. $v_\pi$를 통해 $s$에서 현재 $\pi$가 얼마나 좋은지에 대해 알 수 있었으니, 이제 $s$에서 $a$를 선택한 후 어떤 $\pi$를 따를지 고려하면 된다. 만약 $(5)$가 $v_\pi$보다 크다면, $s$에서마다 $a$를 선택하는 것이 더 좋은 것으로 판단할 수 있으며, 실제로 새 $\pi$는 더 나은 $\pi$가 될 것이다. 
+
+$$ \begin{align*} q_\pi(s,a) &= \mathbb{E}_\pi \left [ R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t=s, A_t=a \right ] \\ &= \sum_{s', r} p(s',r \mid s, a) \left [ r + \gamma v_\pi(s') \right ] \tag{5} \end{align*}$$
+
+<br/>
+
