@@ -59,11 +59,81 @@ iterative policy evaluation의 각 iteration은 next approximate value function 
 
 iterative policy evaluation는 현실적으로 수렴이 이루어지기 전에 멈춰야 하는 constraint가 존재한다. 일반적으로는 각 sweep 이후 $\max_{s \in \mathcal{S}} \mid v_{k+1}(s) - v_k(s) \mid$가 충분히 작을 때 중지한다. 위 pseudo code는 stopping criterion이 고려된 iterative policy evaluation을 의미한다. 
 
+<center><img src="https://user-images.githubusercontent.com/127359789/229339632-3d8f3997-d8e4-4117-ad15-ac05bfb9fe07.png" width="80%" height="80%"></center>
+
+<br/>
+
 
 ## Policy Improvement
-policy evaluation을 통해 임시 policy $\pi$에 대한 $v_\pi$를 얻을 수 있었다. 우리는 이제 특정 state $s$에서, 기존의 임시 $\pi$에서 deterministic하게 결정하던 $a$를 바꿔야하는지 알아야 한다. $v_\pi$를 통해 $s$에서 현재 $\pi$가 얼마나 좋은지에 대해 알 수 있었으니, 이제 $s$에서 $a$를 선택한 후 어떤 $\pi$를 따를지 고려하면 된다. 만약 $(5)$가 $v_\pi$보다 크다면, $s$에서마다 $a$를 선택하는 것이 더 좋은 것으로 판단할 수 있으며, 실제로 새 $\pi$는 더 나은 $\pi$가 될 것이다. 
+policy evaluation을 통해 임시 policy $\pi$에 대한 $v_\pi$를 얻을 수 있었고, 우리는 이제 특정 state $s$에서, 기존의 임시 $\pi$에서 deterministic하게 결정하던 $a$를 바꿔야 하는지에 대한 여부를 판단한다. $v_\pi$를 통해 $s$에서 현재 $\pi$가 얼마나 좋은지에 대해 알 수 있었으니, 이제 $s$에서 $a$를 선택한 후, 어떤 $\pi$를 따를지 고려하면 된다. 만약 $(5)$가 기존 $v_\pi$보다 크다면, $s$에서마다 $a$를 선택하는 것이 더 좋은 것으로 판단할 수 있으며, 실제로 새 $\pi$는 기존보다 더 나을 것이다. 
 
 $$ \begin{align*} q_\pi(s,a) &= \mathbb{E}_\pi \left [ R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t=s, A_t=a \right ] \\ &= \sum_{s', r} p(s',r \mid s, a) \left [ r + \gamma v_\pi(s') \right ] \tag{5} \end{align*}$$
+
+<br/>
+
+이러한 사실에 기반하여 policy improvement를 적용할 수 있다. 모든 $s \in \mathcal{S}$에서 $\pi$와 $\pi'$를 어떤 deterministic policy이고 $(6)$과 같다면, $\pi'$는 무조건 $\pi$보다 좋거나 같다. 그말인 즉, $(7)$처럼 모든 $s \in \mathbb{S}$에서 더 좋거나 같은 expected return를 얻는다는 것이다. 
+
+$$ \begin{align*} q_\pi(s, \pi'(s)) \ge v_\pi(s)\tag{6} \end{align*}$$
+$$ \begin{align*} v_{\pi'} \ge v_\pi(s)\tag{7} \end{align*}$$
+
+<br/>
+
+어떤 state에서 $(6)$의 부등식이 성립하면 적어도 하나의 state에서 $(7)$의 부등식이 존재하게 되고, 이는 $\pi$와 $\pi'$($\pi \ne \pi'$) 모두에서 적용된다. $(7)$은 모든 state에서 유지되기에, 결과적으로 $ q_\pi(s, a) \ge v_\pi(s)$라면 $\pi'$가 실제로 $\pi$보다 낫다. 
+
+<br/>
+
+### Proof of Policy Improvement 
+$v_\pi$를 얻을 때 까지, $(7)$의 부등식에서 시작해 $q_\pi$를 계속 확장하여, $(7)$를 재적용시켜 나아가면 증명 가능하다. 
+
+$$ \begin{align*} v_\pi &\le q_\pi(s, \pi'(s))
+\\ &= \mathbb{E}_{\pi'} \left [ R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t =s \right ] 
+\\ &\le \mathbb{E}_{\pi'} \left [ R_{t+1} + \gamma q_\pi(S_{t+1}, \pi'(S_{t+1})) \mid S_t =s 
+\right ] 
+\\ &= \mathbb{E}_{\pi'} \left [ R_{t+1} + \gamma \mathbb{E}_{\pi'} \left [ R_{t+2} + \gamma v_\pi(S_{t+2}) \right ]  \mid S_t =s \right ] 
+\\ &= \mathbb{E}_{\pi'} \left [ R_{t+1} + \gamma R_{t+2} + \gamma^2 v_\pi(S_{t+2}) \mid S_t =s \right ] 
+\\ &\le \mathbb{E}_{\pi'} \left [ R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \gamma^3 v_\pi(S_{t+3}) \mid S_t =s \right ] 
+\\ &\dots
+\\ &\le \mathbb{E}_{\pi'} \left [ R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \gamma^3 R_{t+4} + \cdots \mid S_t =s \right ]
+\\ &= v_\pi'(s)  
+\tag{8} \end{align*} $$
+
+### Greedy Policy $\pi'$
+모든 states와 모든 action에서 가장 좋은 $q_\pi(s,a)$를 선택하는 greedy policy $\pi'$로의 확장도 가능하다. greedy policy는 $v_\pi$에 의거한 one step 앞의 best action을 취하는데 이 때, $(7)$에서의 조건을 만족하게 되면 policy가 향상된다. 기존 policy의 value function에서 greedy하게 행동하여, 기존보다 더 좋거나 같은 policy를 만드는 과정을 policy improvement라고 한다. 
+
+$$ \begin{align*} \pi'(s) &= \argmax_a q_\pi(s,a)
+\\ &= \argmax_a \mathbb{E} \left [ R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t = s, A_t = a \right ]
+\\ &= \argmax_a \sum_{s', r} p(s',r \mid s, a) \left [ r + \gamma v_\pi(s') \right ]  
+\tag{9} \end{align*} $$
+
+</br>
+
+만약 new greedy policy $\pi'$가 기존 policy $\pi$보다 같지만 더 좋지 않다면($v_\pi = v_{\pi'}$), $(9)$는 모든 state $s \in \mathcal{S}$에서 $(10)$과 같다. 이는 Bellman optimality equation과 같으므로, $v_{\pi'}$는 $v_\ast$이며 $\pi$와 $\pi'$는 optimal policy가 된다. policy improvement는 기존 policy가 이미 optimal하지 않는 이상 엄밀히 더 좋은 policy를 제공한다. 
+
+$$ \begin{align*} v_{\pi'}(s) &= \max_a q_{\pi'}(s,a)
+\\ &= \max_a \mathbb{E} \left [ R_{t+1} + \gamma v_{\pi'}(S_{t+1}) \mid S_t = s, A_t = a \right ]
+\\ &= \max_a \sum_{s', r} p(s',r \mid s, a) \left [ r + \gamma v_{\pi'}(s') \right ]  
+\tag{10} \end{align*} $$
+
+
+### Deterministic case vs. Stochastic case
+
+해당 섹션에서는 deterministic policy case를 고려하였지만, 일반적인 경우에 사용되는 stochastic policy는  $\pi$가 $s$에서 $a$를 하는 probability인 $\pi(a \mid s)$를 갖는다. policy improvement에서 stochastic case의 경우 $q_\pi$는 $(11)$로 표현된다. $(9)$에서 maximal action이 여러개인 경우, stochastic case에는 그 중 하나의 action을 선택하는 것이 아닌 각 maximal action이 선택될 probability가 주어진다. 만약 maximal action이 하나라면, 나머지 submaximal action은 probability가 0일 것이다. 
+
+$$ q_\pi(s, \pi'(s)) = \sum_a \pi'(a\mid s) q_\pi(s,a) \tag {11} $$
+
+<br/>
+
+## Policy Iteration
+
+$\pi$에서의 $v_\pi$를 사용하여 더 좋은 $\pi'$를 구할 수 있고, $v_{\pi'}$를 사용하여 또다시 전보다 더 좋은데 $\pi''$를 구할 수 있다. 따라 일련의 policy evaluation과 policy improvement의 반복을 통해 단조롭게 개선되는 value function과 policy를 얻을 수 있다. 이러한 방식을 policy iteration이라고 한다. 
+
+<center><img src="https://user-images.githubusercontent.com/127359789/229339671-18be8977-50e7-43d5-929b-194483b819fa.png" width="80%" height="80%"></center>
+
+<br/>
+
+finite MDP는 finite 수의 policy만 가지므로 finite iteration에서 optimal policy와 optimal value function으로 수렴해야 한다. 각 policy evaluation이 이전 policy의 value function으로 시작되어 value function이 policy 간 거의 변경되지 않기 때문에 일반적으로 policy evluation의 수렴 속도가 크게 증가한다. 
+
+<center><img src="https://user-images.githubusercontent.com/127359789/229339595-ac87d298-8980-4160-abda-a39bea3bf9bb.png" width="80%" height="80%"></center>
 
 <br/>
 
