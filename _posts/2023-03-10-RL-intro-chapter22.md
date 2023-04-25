@@ -36,14 +36,12 @@ bias를 지닌 initial action-value는 exploration은 장려하는 방식으로 
 estimated action value의 부정확함으로 인해 exploration이 더 필요하다. $\epsilon$-greedy를 수행할수도 있지만 이는 불확실한 action에 대한 preference 없이 무차별적으로 시도된다. 우리는 estimate가 maximal과 얼마나 가까운지와 estimate의 불확실성을 모두 고려하여 실제로 optimal일 가능성에 따라 non-greedy action 중에서 선택하는 것이 바람직하다. 
 
 
-이를 효과적으로 수행하기 위해서는 action을 다음과 같이 선택한다. 여기서 $\ln t$는 $t$($e \approx 2.71828$)의 natural logarithm를 나타내며 $c > 0$는 exploration 정도를 제어한다. 만약 $N_t(a) =0$이면, $a$는 maximizing action이라고 간주된다. 
+upper confidence bound (UCB)의 아이디어는 불확실성 또는 variance의 척도를 의미하는 square-root 항을 사용하여 $a$의 estimated action-value를 표현하자는 것이다. 이를 효과적으로 수행하기 위해서는 action을 아래와 같이 선택한다. 해당 action value가 최대가 되는 값은 신뢰 수준을 결정하는 $c$와 함께 action $a$의 가능한 true value에 대한 upper bound이다. 여기서 $\ln t$는 $t$($e \approx 2.71828$)의 natural logarithm를 나타내며 $c > 0$는 exploration 정도를 제어한다. 만약 $N_t(a) =0$이면, $a$는 maximizing action이라고 간주된다. 
 
 
 $$ A_t = \arg\max_a \left[ {Q_t(a) + c\sqrt{\cfrac{\ln t}{N_t(a)}}} \, \right ] \tag{8}$$
 
 <br/>
-
-upper confidence bound(UCB)의 아이디어는 불확실성 또는 variance의 척도를 의미하는 square-root 항을 사용하여 $a$의 estimated action-value를 표현하자는 것이다. 따라서 해당 action value가 최대가 되는 값은 신뢰 수준을 결정하는 $c$와 함께 action $a$의 가능한 true value에 대한 upper bound이다. 
 
 특정 action $a$가 선택됨에 따라, $a$가 선택된 횟수인 $N_t(a)$는 증가하고 이는 불확실성 항의 분모에 나타나므로 항은 감소한다. 반면에 다른 $a$가 선택될 때마다 $t$는 증가하고 이는 분자에 나타나므로 불확실성 추정치가 증가한다. 결과적으로 $a$가 선택될 때마다 불확실성은 감소할 것이다. natural logrithm의 사용은 증가폭이 시간이 지남에 따라 작아지지만 제한이 없음을 의미한다. 결국 모든 action이 선택되지만 시간이 지남에 따라 estimate가 낮거나 이미 더 많이 선택된 action의 경우 대기 시간이 길어지고 선택 빈도가 낮아지게 된다.
 
