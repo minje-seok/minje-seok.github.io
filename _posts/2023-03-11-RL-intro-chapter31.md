@@ -23,6 +23,8 @@ sidebar:
 2. given state에 근거하여 action $A_t \in \mathcal A(S_t)$를 수행한다. $\mathcal A(S_t)$는 state $S_t$에서 가능한 action 집합을 의미한다. 
 3. 1 time step 이후, agent는 action에 대한 결과인 numerical reward $R_{t+1} \in \mathcal R \in \mathbb R$과 새로운 state $S_{t+1}$를 받게된다. 
 
+<br/>
+
 각 time step에서 agent는 probability에 기반하여 state에서 가능한 action을 매핑을 구현한다. 여기서 state는 결정을 내리는데 사용가능한 모든 정보들이, action은 원하고자 하는 모든 행동이 될 수 있다. 매핑은 이전에 언급했듯이 policy라고하며 $\pi_t$로 표기된다. $\pi_t(a \mid s)$라면 $S_t=s$에서 $A_t =a$일 때의 probability을 의미한다. 강화학습은 경험의 결과로 policy $\pi$를 변경하게 되며, 궁극적으로 장기적인 총 reward를 최대화하는 것을 목적한다. 
 
 <br/>
