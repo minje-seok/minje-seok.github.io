@@ -20,12 +20,15 @@ $$ \begin{align*} v_{k+1}(s)
 ### 4.5.1 Bellman Optimality Equation
 value iteration은 Bellman optimality equation을 update rule로 변환한 것으로도 볼 수 있다. maximum action value를 가져와야한다는 점을 제외하고 value iteration backup은 policy evaluation backup과 동일하다. 왼쪽의 그림은 policy evaluation의 backup diagram을, 오른쪽의 그림은 value iteration의 backup diagram을 나타낸다. 
 
+<br/>
+
 <center><img src="https://user-images.githubusercontent.com/127359789/229777724-6ee5a390-7267-40f8-8a81-a68d62975263.png" width="70%" height="70%"></center>
 
 <br/>
 
 value iteration 또한 $v_\ast$에 도달하기 위해서는 infinite iteration이 필요하다. 실제 pseudo code에서는, sweep에서 작은 양의 value function의 변화가 생길때마다 termination condition을 만족하게된다. value iteration은 각 sweep에서 한 번의 policy evaluation과 한 번의 policy improvement를 결합한다. 한번의 improvement 사이에 여러 번의 evaluation을 진행하면 더 빠른 수렴이 가능하다. 이러한 모든 알고리즘들은 discounted finite MDP에서 optimal policy로 수렴한다. 
 
+<br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/229780871-b4bfe63a-b9bc-48fc-9406-e5ab4ab26b25.png" width="70%" height="70%"></center>
 
@@ -46,16 +49,19 @@ asynchronous 알고리즘은 계산과 실시간 상호 작용을 쉽게 혼합�
 
 generalized policy iteration (GPI)는 policy evaluation과 policy improvement가 상호작용하는 일반적인 개념을 나타낸다. 거의 모든 RL 방법은 GPI로 설명이 가능하며, identifiable policy와 value function를 가진다. 아래 그림과 같이 policy는 value function에 연관되어 개선되고, value function은 항상 policy에 따라 계산된다. 
 
-GPI의 evalution과 improvement 프로세스는 경쟁과 협력의 측면으로 볼 수 있다. policy를  greedy하게 만드는 것은 변경된 policy에 대해 value function을 부정확하게 만들고,  value function을 policy와 일관되게 만들면 일반적으로 해당 policy가 더 이상 greedy하지 않게 된다. 그러나 장기적으로 이 두 프로세스는 optimal policy와 optimal value fnction이라는 single joint solution을 찾기 위해 상호작용한다. 
+<br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/233935350-7230cc1a-5719-408f-a0b9-d2db49623d95.png" width="70%" height="70%"></center>
 
 
+GPI의 evalution과 improvement 프로세스는 경쟁과 협력의 측면으로 볼 수 있다. policy를  greedy하게 만드는 것은 변경된 policy에 대해 value function을 부정확하게 만들고,  value function을 policy와 일관되게 만들면 일반적으로 해당 policy가 더 이상 greedy하지 않게 된다. 그러나 장기적으로 이 두 프로세스는 optimal policy와 optimal value fnction이라는 single joint solution을 찾기 위해 상호작용한다. 
+
+
 <br/>
 
-아래 다이어그램의 각 프로세스는 두 가지 목표 중 하나에 대한 solution을 나타내는 라인 중 하나를 향해 value funtion 또는 policy를 추진한다. 한 목표를 향해 움직이면 다른 목표에서 또한 움직임이 약간 발생하면서 공동 프로세스는 optimal에 더 가까워 진다. 다이어그램의 화살표는 두 목표 중 하나를 완전히 달성할 때까지 진행하는 점에서  policy iteration이라 볼 수 있다. 두 경우 모두 직접 달성하려하지 않아도, 두 프로세스가 함께 optimal을 달성한다. 
-
 <center><img src="https://user-images.githubusercontent.com/127359789/233935592-fbd59779-1a4a-4454-8b84-03458e87f5a6.png" width="70%" height="70%"></center>
+
+다이어그램의 각 프로세스는 두 가지 목표 중 하나에 대한 solution을 나타내는 라인 중 하나를 향해 value funtion 또는 policy를 추진한다. 한 목표를 향해 움직이면 다른 목표에서 또한 움직임이 약간 발생하면서 공동 프로세스는 optimal에 더 가까워 진다. 다이어그램의 화살표는 두 목표 중 하나를 완전히 달성할 때까지 진행하는 점에서  policy iteration이라 볼 수 있다. 두 경우 모두 직접 달성하려하지 않아도, 두 프로세스가 함께 optimal을 달성한다. 
 
 <br/>
 
@@ -68,6 +74,8 @@ DP는 종종 state의 개수에 따른 차원의 저주로 인해, 적용 가능
 
 이렇게 state space가 큰 경우는 asynchronous DP가 선호된다. synchronous의 한 sweep은 모든 state에 대한 계산과 메모리가 필요는 비실용적이고, optimal solution의 trajectory를 따라 발생하는 state가 공통적으로 sweep이 반복되기 때문에 문제의 잠재적 해결이 가능하다. 이러한 방식은 synchronous보다 훨씬 빠르게 optimal policy를 찾을 수 있다. 
 
+<br/>
+
 ## 4.9 Summary 
 
 해당 챕터에서는 finite MDP의 해결과 관련된 DP 기본 아이디어를 언급했다. policy evaluation는 given policy에 대한 value function의 반복적인 계산을, policy improvement는 해당 policy에 대한 value function이 주어진 improved policy의 계산을 말한다. 이 두 프로세스를 합치면 policy iteration과 value iteration으로 확장할 수 있었다. 이를 통해 fully-known finite MDP에 대한 optimal policy 및 value function을 안정적으로 계산하는데 사용할 수 있다. 기존 DP 방법은 전체 state에 대해 sweep하여 value function이 더이상 변경되지 않을 때까지 full backup을 수행하면, 해당 Bellman equation을 충족하는 수렴이 발생했다고 볼 수 있다. 
@@ -75,3 +83,5 @@ DP는 종종 state의 개수에 따른 차원의 저주로 인해, 적용 가능
 모든 RL 방법은 GPI의 approximate policy와 approximate value function을 중심으로 상호작용하는 두 개의 프로세스에 대한 아이디어를 사용한다. 하나는 given policy에 따라 value function를 update하고, 다른 하나는 given value function에 따라 policy를  update한다. 각 프로세스가 다른 프로세스의 기반을 변경하지만 결국 공동 solution을 찾기 위해 함께 작동하여 optimal policy 및 optimal value function을 찾는다. 이는 다른 경우는 제외하고 해당 챕터에서 언급한 고전적인 DP에서 GPI의 수렴을 입증한다. full backup의 과도한 계산 비용을 피하기 위해, 임의의 순서로 state를 backup하는 in-place iterative 방식의 asynchronous DP 방법도 존재한다. 이는 세분화된 형태의  GPI로도 볼 수 있다. 
 
 DP는 successor state의 estimate를 기반으로 estimate를 update하는 bootstrapping을 수행한다. 많은 RL은 DP가 요구하는 완벽한 env model이 필요하지 않은 경우에도 bootstrapping을 수행한다. 다음 챕터에서는 model과 bootstrapping이 필요하지 않은 RL 방법들을 살펴본다. 그 다음 챕터에서는 model이 필요없지만, bootstrapping을 수행하는 방법을 알아볼 예정이다. 
+
+<br/>
