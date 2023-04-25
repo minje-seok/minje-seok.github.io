@@ -64,6 +64,8 @@ iterative policy evaluation의 각 iteration은 next approximate value function 
 
 iterative policy evaluation는 현실적으로 수렴이 이루어질때까지 반복할 수 없다는 constraint가 존재한다. 일반적으로는 매 sweep(*모든 state에서 value의 순차적인 update*) 이후 $\max_{s \in \mathcal{S}} \mid v_{k+1}(s) - v_k(s) \mid$가 충분히 작을 때 중지한다. pseudo code는 stopping criterion이 고려된 iterative policy evaluation을 의미한다. 
 
+<br/>
+
 <center><img src="https://user-images.githubusercontent.com/127359789/229339632-3d8f3997-d8e4-4117-ad15-ac05bfb9fe07.png" width="80%" height="80%"></center>
 
 <br/>
@@ -132,11 +134,15 @@ $$ q_\pi(s, \pi'(s)) = \sum_a \pi'(a\mid s) q_\pi(s,a) \tag {11} $$
 
 $\pi$에서의 $v_\pi$를 사용하여 더 좋은 $\pi'$를 구할 수 있고, $v_{\pi'}$를 사용하여 전보다 더 좋은데 $\pi''$를 구할 수 있다. 따라 일련의 policy evaluation과 policy improvement의 반복을 통해서 단조롭게 개선되는 value function과 policy를 얻을 수 있다. 이러한 방식을 policy iteration이라고 한다. 
 
+<br/>
+
 <center><img src="https://user-images.githubusercontent.com/127359789/229339671-18be8977-50e7-43d5-929b-194483b819fa.png" width="70%" height="70%"></center>
 
 <br/>
 
 finite MDP는 finite 개수의 policy만 가지므로 finite iteration에서 optimal policy와 optimal value function으로 수렴해야 한다. 각 policy evaluation이 이전 policy의 value function으로 시작되어 value function이 policy 간 거의 변경되지 않기 때문에 일반적으로 policy evluation의 수렴 속도가 크게 증가한다. 
+
+<br/>
 
 <center><img src="https://user-images.githubusercontent.com/127359789/229339595-ac87d298-8980-4160-abda-a39bea3bf9bb.png" width="80%" height="80%"></center>
 
