@@ -112,7 +112,7 @@ $$ \begin{align*} \pi'(s) &= \arg\max_a q_\pi(s,a)
 \\ &= \arg\max_a \sum_{s', r} p(s',r \mid s, a) \left [ r + \gamma v_\pi(s') \right ]  
 \tag{9} \end{align*} $$
 
-</br>
+<br/>
 
 만약 new greedy policy $\pi'$가 기존 policy $\pi$보다 같지만 더 좋지 않다면($v_\pi = v_{\pi'}$), $(9)$는 모든 state $s \in \mathcal{S}$에서 $(10)$과 같다. 이는 Bellman optimality equation과 같으므로, $v_{\pi'}$는 $v_\ast$이며 $\pi$와 $\pi'$는 optimal policy가 된다. policy improvement는 기존 policy가 이미 optimal하지 않는 이상 엄밀히 더 좋은 policy를 제공한다. 
 
