@@ -14,6 +14,8 @@ sidebar:
 
 Markov property를 만족하는 강화학습 task를 Markov decision process (MDP)라 한다. state space와 action space가 finite한 경우 이를 finite Markov decision process (finite MDP)라 한다. 
 
+<br/>
+
 ### 3.6.1 Finite MDP
 state와 action 집합과 env의 1 step dynamics으로 정의된다. state $s$와 action $a$가 주어지면 next state $s'$와 next reward $r$은 $(6)$과 같이 표시된다. $(6)$에 지정된 dynamics가 주어지면 state-action pair에 대한 env에 대해 알고 싶은 다른 모든 것들 계산이 가능하다.
 
