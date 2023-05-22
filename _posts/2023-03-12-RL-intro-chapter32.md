@@ -234,6 +234,6 @@ $q_\ast$가 있으면 optimal action 선택이 더 쉬워진다. $q_\ast$는 이
 
 ## 3.10 Summary
 
-이번 챕터에서는 강화학습 문제 해결에 필요한 기초적 이론을 공부했다. env와 agent 간 상호작용을 표현할 수 있는 finite MDP를 통해 강화학습 문제를 정의하고, expected return을 의미하는 value function에 대해 알아보았다. 또한 Bellman equation을 통해 state-value function $v_\pi$와 action-value function $q_\pi$의 recursive한 관계 그리고 Bellman optimality equation으로 optimal policy를 구할 수 있다는 것을 확인했다. 그러나 이러한 방식은 현실적으로 어려운 env에 대한 가정과 막대한 계산 비용을 요구하므로, 본 챕터에서는 optimal value function이 존재하고 계산될 수 있다는 것을 강조하지만 계산에 대한 방법은 언급되지 않는다. 따라 뒤 챕터에서는 optimal policy를 찾기위한 value function을 계산하기 위해 간단한 문제는 tabular 방식을, 복잡한 경우에는 approximate 방식을 적용한 강화학습 approach들을 배울게 된다. 
+이번 챕터에서는 강화학습 문제 해결에 필요한 기초적 이론을 공부했다. env와 agent 간 상호작용을 표현할 수 있는 finite MDP를 통해 강화학습 문제를 정의하고, expected return을 의미하는 value function에 대해 알아보았다. 또한 Bellman equation을 통해 state-value function $v_\pi$와 action-value function $q_\pi$의 recursive한 관계 그리고 Bellman optimality equation으로 optimal policy를 구할 수 있다는 것을 확인했다. 그러나 이러한 방식은 현실적으로 어려운 env에 대한 가정과 막대한 계산 비용을 요구하므로, 본 챕터에서는 optimal value function이 존재하고 계산될 수 있다는 것을 강조하지만 계산에 대한 방법은 언급되지 않는다. 따라 뒤 챕터에서는 optimal policy를 찾기위한 value function을 계산하기 위해 간단한 문제는 tabular 방식을, 복잡한 경우에는 approximate 방식을 적용한 강화학습 approach들을 배게 된다. 
 
 <br/>
