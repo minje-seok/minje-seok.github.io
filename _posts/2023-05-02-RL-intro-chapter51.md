@@ -24,9 +24,9 @@ given policy에 대해 state-value function을 학습하기 위한 prediction �
 
 <br>
 
-### 5.1.1 First-visit Monte Carlo
+### 5.1.1 First-visit MC vs. Every-visit MC
 
-episode에서 처음 방문하는 state $s$를 $s$에 대한 first-visit이라고 하는 first-visit MC는 첫 번째 방문 이후의 average return으로 $v_\pi(s)$를 estimate하는 반면, every-visit MC는 $s$에 대한 모든 방문 이후의 average return을 구한다. every-visit MC는 function approximation과 eligibility traces로 확장되고 추후 챕터에서 다루고, 해당 챕터에서는 더 많은 연구가 진행된 first-visit MC에 집중한다. 
+episode에서 처음 방문하는 state $s$를 고려하는 first-visit MC는 각 $s$의 첫 번째 방문의 return만으로 $v_\pi(s)$를 estimate하는 반면, every-visit MC는 각 $s$에 대한 모든 방문 이후의 average return으로 esitmate한다. every-visit MC는 function approximation과 eligibility traces로 확장되어 추후 챕터에서 다루고, 해당 챕터에서는 더 많은 연구가 진행된 first-visit MC에 집중한다. 
 
 </br>
 
@@ -52,7 +52,7 @@ blackjack은 보유한 카드들로 숫자의 합이 21이 넘지 않는 가장 
 
 blackjack은 매 게임이 episode인, episodic finite MDP라고 볼 수 있다. reward는 win, lose, draw에 따라 $+1, -1, 0$로 각각 주어진다. 게임 중간에 reward가 주어지지는 않기에, 마지막 reward가 곧 return을 의미한다. state는 플레이어의 카드와 딜러가 보여주는 카드이고, 플레이어의 action은 $hit$ 또는 $stick$이다. 
 
-만약 플레이어가 ace를 들고있을 때, 그를 11로 취급해도 $bust$되지 않는다면 $usable$라 하며 무조건 11로 계산된다. 따라서 플레이어는 현재 자신의 합계(12-21), 딜러가 보여주는 카드(ace-10), $usable$ ace 보유 여부를 기반으로 결정을 내리게 되며 이는 총 200가지의 state가 된다. 해당 blackjack 문제에서는 same state가 episode에서 절대 재반복되지 않으므로 first-visit과 every-visit MC 방식에 차이가 없다. 
+만약 플레이어가 ace를 들고있을 때, 그를 11로 취급해도 $bust$되지 않는다면 $usable$라 하며 무조건 11로 계산된다. 따라서 플레이어는 현재 자신의 합계(12-21), 딜러가 보여주는 카드(ace-10), $usable$ ace 보유 여부를 기반으로 결정을 내리게 되며 이는 총 200가지의 state가 된다. 해당 blackjack 문제에서는 same state가 episode에서 절대 재반복되지 않으므로 first-visit과 every-visit MC 방법에 차이가 없다. 
 
 </br>
 
@@ -62,4 +62,29 @@ blackjack은 매 게임이 episode인, episodic finite MDP라고 볼 수 있다.
 
 </br>
 
-### Appliance of DP
+### 5.1.3. Comparsion with DP and backup diagram of MC
+
+env의 완벽한 dynamics를 알고 있더라도, value function 계산에 DP 방법을 적용하는 것은 모든 event에 대한 expected reward와 transition probability를 요구할 뿐만 아니라, 이에 대한 계산은 복잡하고 오류를 유발하므로 매우 어렵다. 그러나 MC 방법은 적용이 쉬우므로, 만약 env의 dynamics를 알더라도 sample episode로 동작하는 것이 훨씬 이점이 많다. 
+
+</br>
+
+<center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/2aae04b0-218a-4b85-bd1c-e6c06c93e43f" width="70%" height="70%"></center>
+
+위 그림에서는 MC 방법에서 $v_\pi$를 추정하기 위해, root는 state node, 그 아래는 single episode 동안의 entire trajectory of ransition으로 구성된다. DP 방법에서는 one-step transition을 보여주었지만, MC에서는 episode의 끝까지를 보여준다. 이 때, 중요한 점은 각 state의 estimate가 independent하다는 것이고, 결과적으로 MC는 DP에서 처럼 bootstrap하지 않는다. 특히, 각 independent state에 대한 value estimate 과정에서 다른 모든 state를 무시하고 해당 state에서 return되는 평균만을 계산하기에 experience를 통해 학습이 가능하다. 
+
+</br>
+
+## 5.2. Monte Carlo Estimation of Action Values
+
+만약 DP에서처럼 model이 존재한다면 state-value만 사용하면, one-step 뒤의 reward와 next state의 조합을 통해 어떤 action이 좋은지 알 수 있었다. 그러나 model이 없다면, state-value로는 명시적인 action value의 estimate로 policy를 생성 하기 부족하므로 MC로 $q_\ast$를 추정하고자 한다. 우리는 action value를 위해 policy evaluation 고려한다.   
+
+state-action pair $s,a$는 state $s$에서 action $a$를 수행한 episode라고 할 수 있다. every-visit MC는 episode 내 방문한 모든 $s,a$의 return을 평균하고, first-visit MC는 episode에서 첫번째로 방문한 $s,a$의 return으로 estimate한다. 이러한 방법은 state-action pair가 infinity로 갈수록, quadratically하게 수렴하게 된다. 
+
+</br>
+
+### 5.2.1 Exploring Starts 
+그러나 방문되지 않는 많은 state-action pair가 생길 수 있다는 maintaining exploration 문제가 존재한다. 만약 $\pi$가 deterministic policy라면, 특정 state에서 동일한 action만을 선택할 수도 있다. 따라 continual exploration을 강제하는 방식 중 하나는 episode의 start를 state-action pair를 지정하는 것이다. 이는 모든 state-action pair의 방문을 보장해주게 된다.exploring starts는 간간히 유용하지만, env와 직접적으로 상호작용하는 경우에는 특히 적용이 어렵다. 일반적으로, 이에 대한 대안으로 non-zero stochastic policy를 사용한다. 
+
+</br>
+
+## 5.3. Monte Carlo Control
