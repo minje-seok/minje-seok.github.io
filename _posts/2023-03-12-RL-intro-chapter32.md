@@ -161,7 +161,7 @@ state-value function $v_\pi(s)$는 $q_\pi(s,a)$의 policy $\pi(a \mid s)$에 기
 
 ## 3.9 Optimal Value Functions
 
-optimal policy 아래 정의되는 value function을 optimal value function이라고 한다. policy $\pi$는 expected return이 모든 states에 대해 policy $\pi'$보다 크거나 같으면 policy $\pi'$보다 낫거나 같다고 정의되며, 즉 $\forall s \in \mathcal S$에 대해 $v_\pi(s) \ge v_{\pi'}(s)$인 경우, $\pi \ge \pi'$이다. optimal policy $\pi'$는 둘 이상 있을 수 있고 모든 optimal policy는 $\pi'$로 표기되며 이때 value function는 동일하다. 
+optimal policy 아래 정의되는 value function을 optimal value function이라고 한다. policy $\pi$는 expected return이 모든 states에 대해 policy $\pi'$보다 크거나 같으면 policy $\pi'$보다 낫거나 같다고 정의되며, 즉 $\forall s \in \mathcal S$에 대해 $v_\pi(s) \ge v_{\pi'}(s)$인 경우, $\pi \ge \pi'$이다. optimal policy $\pi_\ast$는 둘 이상 있을 수 있고 이때 value function는 동일하다. 
 
 
 $$ v_\ast(s) = \max_\pi v_\pi(s), \quad \forall s \in \mathcal{S} \tag{16} $$
