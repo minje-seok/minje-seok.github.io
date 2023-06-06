@@ -43,9 +43,9 @@ blackjack은 보유한 카드들로 숫자의 합이 21이 넘지 않는 가장 
 
 1. 게임 시작과 동시에, 딜러와 플레이어에게 2장씩 카드를 제공한다. 
 2. 만약 플레이어가 시작부터 21을 가지게 되면(ace + 10) ($natural$), 딜러 또한 $natural$이 아닌 이상, 무조건 플레이어가 승리한다. 
-3. 플레이어가 $natural$이 아니라면, 멈추거나($sticks$) 21을 초과할때까지 ($goes \ bust$) 1개씩 추가 카드를 요청($hits$)할 수 있다. 
-4. 만약 $bust$된다면, 플레이어가 지고; $sticks$한다면 딜러의 선택 차례로 넘어간다.
-5. 딜러는 다음의 고정된 전략에 따른다. 숫자의 합이 17 이상이면 $sticks$, 그렇지 않다면 $hits$한다. 만약 딜러가 $bust$되면 플레이어가 승리한다. 
+3. 플레이어가 $natural$이 아니라면, 멈추거나($stick$) 21을 초과할때까지 ($goes \ bust$) 1개씩 추가 카드를 요청($hit$)할 수 있다. 
+4. 만약 $bust$된다면, 플레이어가 지고; $stick$한다면 딜러의 선택 차례로 넘어간다.
+5. 딜러는 다음의 고정된 전략에 따른다. 숫자의 합이 17 이상이면 $stick$, 그렇지 않다면 $hit$한다. 만약 딜러가 $bust$되면 플레이어가 승리한다. 
 6. 최종적으로 양족다 $bust$되지 않는다면, 21에 더 가까운 쪽이 승리한다. (win, lose, draw)
 
 <br>
@@ -58,7 +58,7 @@ blackjack은 매 게임이 episode인, episodic finite MDP라고 볼 수 있다.
 
 <center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/a2e6122b-d7d1-4f88-8852-0422ed816559" width="70%" height="70%"></center>
 
-위 그림은 플레이어의 숫자 합이 20 또는 21일 때는 $stick$, 아니면 $hit$하는 policy를 고려했을 때의 state-value function를 보여준다. 10,000 게임 이후, $usable$ ace는 자주 등장하지 않기 때문에, estimate가 덜 확실하고 덜 규칙적인 것을 볼 수 있다. 500,000 게임 이후, value function은 어떤 상황에서든지 잘 approximate된 것을 확인 가능하다. 
+위 그림은 플레이어의 숫자 합이 20 또는 21일 때는 $stick$, 아니면 $hit$하는 policy를 고려했을 때의 state-value function를 보여준다. 10,000 episode 학습 이후, $usable$ ace는 자주 등장하지 않기 때문에, estimate가 덜 확실하고 덜 규칙적인 것을 볼 수 있다. 500,000 episode 학습 이후, value function은 어떤 상황에서든지 잘 approximate된 것을 확인 가능하다. 
 
 <br>
 
@@ -83,8 +83,23 @@ state-action pair $s,a$는 state $s$에서 action $a$를 수행한 episode라고
 <br>
 
 ### 5.2.1 Exploring Starts 
-그러나 방문되지 않는 많은 state-action pair가 생길 수 있다는 maintaining exploration 문제가 존재한다. 만약 $\pi$가 deterministic policy라면, 특정 state에서 동일한 action만을 선택할 수도 있다. 따라 continual exploration을 강제하는 방식 중 하나는 episode의 start를 state-action pair를 지정하는 것이다. 이는 모든 state-action pair의 방문을 보장해주게 된다.exploring starts는 간간히 유용하지만, env와 직접적으로 상호작용하는 경우에는 특히 적용이 어렵다. 일반적으로, 이에 대한 대안으로 non-zero stochastic policy를 사용한다. 
+그러나 방문되지 않는 많은 state-action pair가 생길 수 있다는 maintaining exploration 문제가 존재한다. 만약 $\pi$가 deterministic policy라면, 특정 state에서 동일한 action만을 선택할 수도 있다. 따라 continual exploration을 강제하는 방식 중 하나는 episode의 start를 state-action pair를 지정하는 것이다. 이는 모든 state-action pair의 방문을 보장해주게 된다. exploring starts는 간간히 유용하지만, env와 직접적으로 상호작용하는 경우에는 특히 적용이 어렵다. 일반적으로, 이에 대한 대안으로 state에서 모든 action을 선택할 확률이 non-zero인 stochastic policy를 사용한다. 
 
 <br>
 
 ## 5.3. Monte Carlo Control
+
+MC estimate를 진행하였으니, 이제 DP chapter에서의 GPI의 아이디어를 이용하여, optimal policy를 approximate하는 MC control이 가능하다. 반복을 통해, value function은 current policy에 가깝게 approximate되고, policy는 current value function을 통해 향상된다. 
+
+이러한 두 종류의 변화는 서로에게 움직이는 목표를 생성하기 때문에, 어느 정도는 서로에게 불리하게 작용하지만 함께 policy와 value function이 모두 optimality에 수렴하도록 만든다. 
+
+
+evaluation과 improvement를 반복하던 policy iteration의 MC version이라고 생각하면 된다. 많은 episode를 경험할수록, approximate action-value function은 점진적으로 true function에 도달하게 된다. episode들이 exploring starts를 통해서 시작되었고, infinite만큼 경험했다고 가정하면 MC는 arbitary policy $\pi_k$에 대해 정확한 $q_{\pi_k}$를 계산할 수 있다. 
+
+우리는 더이상 model 없이도 current action-value function에 관해, policy를 greedy하게 만들면 improvement가 수행된다. 각 state $s \in \mathcal{S}$에서 action-value function $q_{\pi_k}$에 대해 deterministically하게 다음과 같이 greedy action을 선택하면 $\pi_{k+1}$가 된다. 
+
+$$ \begin{align*} q_{\pi_k}(s, \pi_{k+1}(s)) &= q_{\pi_k}(s, \argmax_a q_{\pi_k}(s,a)) \\ &= \max_a q_{\pi_k}(s,a) \\ &\ge q_{\pi_k}(s,\pi_k(s)) \\ &= v_{\pi_k}(s) \tag{1} \end{align*} $$
+
+MC는 이러한 방식으로 이전 chapter에서 언급했듯이, optimal policy를 찾는 것을 보장한다. 결과적으로, MC 방법은 env의 dynamics 없이, sample episode만으로도 optimal policy를 찾을 수 있다. 
+
+
