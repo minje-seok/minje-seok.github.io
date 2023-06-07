@@ -103,13 +103,42 @@ $$ \begin{align*} q_{\pi_k}(s, \pi_{k+1}(s)) &= q_{\pi_k}(s, \argmax_a q_{\pi_k}
 
 MC는 이러한 방식으로 이전 chapter에서 언급했듯이, optimal policy를 찾는 것을 보장한다. 결과적으로, MC 방법은 env의 dynamics 없이, sample episode만으로도 optimal policy를 찾을 수 있다. 
 
+<br>
 
 ### 5.3.1. Assumption of Infinite iteration
 
 episode가 infinite하게 반복된다는 가정을 해결하기 위한 첫번 째 방법은 각각의 policy evaluation에서 $q_{\pi_k}$를 approximate한다는 것을 고려하는 것이다. estimate에 대한 error 크기에 대한 bound가 충분히 작도록 충분한 step이 각 policy evaluation에서 이루어져야 한다. 이러한 방법은 어느 정도의 approximation까지 올바른 convergence를 보장한다. 그러나 이 또한 작은 문제를 제외하고는 실용적으로 사용하기에 많은 episode를 여전히 필요로 한다. 
 
-명목상 infinite episode를 피하는 두번 째 방법은 policy improvement 전에 policy evaluation을 중도에 멈추는 것이다. 
+명목상 infinite episode를 피하는 두번 째 방법은 policy improvement 전에 policy evaluation을 중도에 멈추는 것이다. 각 policy evaluation step에서 value function을 $q_{\pi_k}$에 가깝게 이동시키지만, 많은 단계를 거쳐야만 가능하다. policy evaluation 한 번 후에 바로 policy improvement를 진행하는 value iteration에서처럼 동작하면 된다. in-place의 경우는 더욱 극적으로, 매 policy improvement마다가 아닌 single state마다 policy evaluation이 진행된다. 
 
+<br>
+
+### 5.3.2. Monte Carlo ES
+
+각 state-action pair에 대한 모든 returns는 어떤 policy가 수행되었는지에 관계 없이 accumulate & average 된다. 
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
 
 <center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/7ea7c505-1f9f-47fd-bc98-b819137c0b58" width="70%" height="70%"></center>
 
