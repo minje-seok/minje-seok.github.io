@@ -91,9 +91,10 @@ state-action pair $s,a$는 state $s$에서 action $a$를 수행한 episode라고
 
 MC estimate를 진행하였으니, 이제 DP chapter에서의 GPI의 아이디어를 이용하여, optimal policy를 approximate하는 MC control이 가능하다. 반복을 통해, value function은 current policy에 가깝게 approximate되고, policy는 current value function을 통해 향상된다. 
 
+<center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/2a480c0f-762b-4687-be7e-8b8b0642420e" width="70%" height="70%"></center>
 이러한 두 종류의 변화는 서로에게 움직이는 목표를 생성하기 때문에, 어느 정도는 서로에게 불리하게 작용하지만 함께 policy와 value function이 모두 optimality에 수렴하도록 만든다. 
 
-
+<center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/5d7f6f97-faeb-40f2-989b-f768bf3b3a47" width="70%" height="70%"></center>
 evaluation과 improvement를 반복하던 policy iteration의 MC version이라고 생각하면 된다. 많은 episode를 경험할수록, approximate action-value function은 점진적으로 true function에 도달하게 된다. episode들이 exploring starts를 통해서 시작되었고, infinite만큼 경험했다고 가정하면 MC는 arbitary policy $\pi_k$에 대해 정확한 $q_{\pi_k}$를 계산할 수 있다. 
 
 우리는 더이상 model 없이도 current action-value function에 관해, policy를 greedy하게 만들면 improvement가 수행된다. 각 state $s \in \mathcal{S}$에서 action-value function $q_{\pi_k}$에 대해 deterministically하게 다음과 같이 greedy action을 선택하면 $\pi_{k+1}$가 된다. 
@@ -101,5 +102,10 @@ evaluation과 improvement를 반복하던 policy iteration의 MC version이라�
 $$ \begin{align*} q_{\pi_k}(s, \pi_{k+1}(s)) &= q_{\pi_k}(s, \argmax_a q_{\pi_k}(s,a)) \\ &= \max_a q_{\pi_k}(s,a) \\ &\ge q_{\pi_k}(s,\pi_k(s)) \\ &= v_{\pi_k}(s) \tag{1} \end{align*} $$
 
 MC는 이러한 방식으로 이전 chapter에서 언급했듯이, optimal policy를 찾는 것을 보장한다. 결과적으로, MC 방법은 env의 dynamics 없이, sample episode만으로도 optimal policy를 찾을 수 있다. 
+
+
+
+
+<center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/7ea7c505-1f9f-47fd-bc98-b819137c0b58" width="70%" height="70%"></center>
 
 
