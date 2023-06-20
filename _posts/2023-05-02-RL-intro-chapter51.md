@@ -126,3 +126,4 @@ Monte Carlo ES에서, 각 state-action pair에 대한 모든 returns는 어떤 p
 <center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/7ea7c505-1f9f-47fd-bc98-b819137c0b58" width="70%" height="70%"></center>
 
 
+### 5.3.3 Applying Monte Carlo ES at Blackjack Example 
