@@ -91,8 +91,12 @@ state-action pair $s,a$는 state $s$에서 action $a$를 수행한 episode라고
 
 MC estimate를 진행하였으니, 이제 DP chapter에서의 GPI의 아이디어를 이용하여, optimal policy를 approximate하는 MC control이 가능하다. 반복을 통해, value function은 current policy에 가깝게 approximate되고, policy는 current value function을 통해 향상된다. 
 
+<br>
+
 <center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/2a480c0f-762b-4687-be7e-8b8b0642420e" width="70%" height="70%"></center>
 이러한 두 종류의 변화는 서로에게 움직이는 목표를 생성하기 때문에, 어느 정도는 서로에게 불리하게 작용하지만 함께 policy와 value function이 모두 optimality에 수렴하도록 만든다. 
+
+<br>
 
 <center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/5d7f6f97-faeb-40f2-989b-f768bf3b3a47" width="70%" height="70%"></center>
 evaluation과 improvement를 반복하던 policy iteration의 MC version이라고 생각하면 된다. 많은 episode를 경험할수록, approximate action-value function은 점진적으로 true function에 도달하게 된다. episode들이 exploring starts를 통해서 시작되었고, infinite만큼 경험했다고 가정하면 MC는 arbitary policy $\pi_k$에 대해 정확한 $q_{\pi_k}$를 계산할 수 있다. 
@@ -107,36 +111,15 @@ MC는 이러한 방식으로 이전 chapter에서 언급했듯이, optimal polic
 
 ### 5.3.1. Assumption of Infinite iteration
 
-episode가 infinite하게 반복된다는 가정을 해결하기 위한 첫번 째 방법은 각각의 policy evaluation에서 $q_{\pi_k}$를 approximate한다는 것을 고려하는 것이다. estimate에 대한 error 크기에 대한 bound가 충분히 작도록 충분한 step이 각 policy evaluation에서 이루어져야 한다. 이러한 방법은 어느 정도의 approximation까지 올바른 convergence를 보장한다. 그러나 이 또한 작은 문제를 제외하고는 실용적으로 사용하기에 많은 episode를 여전히 필요로 한다. 
+episode가 infinite하게 반복된다는 가정을 해결하기 위한 첫 번째 방법은 각각의 policy evaluation에서 $q_{\pi_k}$를 approximate한다는 것을 고려하는 것이다. estimate에 대한 error 크기에 대한 bound가 충분히 작도록 충분한 step이 각 policy evaluation에서 이루어져야 한다. 이러한 방법은 어느 정도의 approximation까지 올바른 convergence를 보장한다. 그러나 이 또한 작은 문제를 제외하고는 실용적으로 사용하기에 많은 episode를 여전히 필요로 한다. 
 
-명목상 infinite episode를 피하는 두번 째 방법은 policy improvement 전에 policy evaluation을 중도에 멈추는 것이다. 각 policy evaluation step에서 value function을 $q_{\pi_k}$에 가깝게 이동시키지만, 많은 단계를 거쳐야만 가능하다. policy evaluation 한 번 후에 바로 policy improvement를 진행하는 value iteration에서처럼 동작하면 된다. in-place의 경우는 더욱 극적으로, 매 policy improvement마다가 아닌 single state마다 policy evaluation이 진행된다. 
+명목상 infinite episode를 피하는 두 번째 방법은 policy improvement 전에 policy evaluation을 중도에 멈추는 것이다. 각 policy evaluation step에서 value function을 $q_{\pi_k}$에 가깝게 이동시키지만, 많은 단계를 거쳐야만 가능하다. policy evaluation 한 번 후에 바로 policy improvement를 진행하는 value iteration에서처럼 동작하면 된다. in-place의 경우는 더욱 극적으로, 매 policy improvement마다가 아닌 single state마다 policy evaluation이 진행된다. 
 
 <br>
 
 ### 5.3.2. Monte Carlo ES
 
-각 state-action pair에 대한 모든 returns는 어떤 policy가 수행되었는지에 관계 없이 accumulate & average 된다. 
-
-<br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Monte Carlo ES에서, 각 state-action pair에 대한 모든 returns는 어떤 policy가 수행되었는지에 관계 없이 accumulate & average 된다. 그러면 value function은 결국 해당 policy로 수렴하고, 결과적으로 policy가 변경될 것이다. stability는 policy와 value function이 모두 optimal일 때만 성립한다. value function의 변동이 시간이 지남에 따라 감소함에 따라, convergence는 불가피하나 수식적으로 증명되지는 않았다. 
 
 <br>
 
