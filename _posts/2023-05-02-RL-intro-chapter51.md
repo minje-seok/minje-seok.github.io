@@ -125,5 +125,21 @@ Monte Carlo ES에서, 각 state-action pair에 대한 모든 returns는 어떤 p
 
 <center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/7ea7c505-1f9f-47fd-bc98-b819137c0b58" width="70%" height="70%"></center>
 
+<br>
 
 ### 5.3.3 Applying Monte Carlo ES at Blackjack Example 
+이전과 동일한 설정으로 blackjack env에 적용은 간단하다. exploring start를 위해, initial state의 모든 경우의 수를 각각 random equal probability로 설정하여 env를 실행시키면 된다. 
+
+<br>
+
+<center><img src="" width="70%" height="70%"></center>
+
+## 5.4. Monte Carlo Control without Exploring Starts
+
+그러나 언급했듯이 exploring start가 현실적이지 못한 상황이 훨씬 많다. 일반적인 방법으로는 무한하게 action을 선택하는 것이지만, 이를 보장하는 on-policy, off-policy 방법이 존재한다. on-policy는 policy를 evaluate & improve하지만, off-policy는 데이터 생성에 사용되는 policy와 다른 policy를 evaluate & improve한다. Monte Carlo ES는 on-policy에 속한다. 
+
+<br>
+
+### 5.4.1 On-policy Monte Carlo Control
+
+on-policy control 방법은 일반적으로 $\pi(a | s) > 0 $ for all $s \in \mathcal{S}, a \in \mathcal{A}(s)$를 충족하는 $soft$하다고 하며, 거의 deterministic optimal policy에 가깝다고 볼 수 있다. chapter 2에서 보았던 $\epsilon$-greedy policy의 모든 non-greedy action들은 선택될 minimal probability $\cfrac{\epsilon}{|\mathcal{A}(s)|}$로, 그리고 나머지 greedy action은 $1-\epsilon+\cfrac{\epsilon}{|\mathcal{A}(s)|}$ probability로 선택된다. $\epsilon$-greedy는 $\pi(a|s) \ge \cfrac{\epsilon}{|\mathcal{A}(s)|}, \epsilon > 0$로 정의되는 $\epsilon-soft$ policy라고 할 수 있다. $\epsilon-soft$ 중, $\epsilon$-greeedy$는 가장 greedy에 가깝다고 볼 수 있다.  
