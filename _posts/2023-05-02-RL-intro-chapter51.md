@@ -105,6 +105,8 @@ evaluation과 improvement를 반복하던 policy iteration의 MC version이라�
 
 $$ \begin{align*} q_{\pi_k}(s, \pi_{k+1}(s)) &= q_{\pi_k}(s, \argmax_a q_{\pi_k}(s,a)) \\ &= \max_a q_{\pi_k}(s,a) \\ &\ge q_{\pi_k}(s,\pi_k(s)) \\ &= v_{\pi_k}(s) \tag{1} \end{align*} $$
 
+<br>
+
 MC는 이러한 방식으로 이전 chapter에서 언급했듯이, optimal policy를 찾는 것을 보장한다. 결과적으로, MC 방법은 env의 dynamics 없이, sample episode만으로도 optimal policy를 찾을 수 있다. 
 
 <br>
@@ -143,3 +145,5 @@ Monte Carlo ES에서, 각 state-action pair에 대한 모든 returns는 어떤 p
 ### 5.4.1 On-policy Monte Carlo Control
 
 on-policy control 방법은 일반적으로 $\pi(a | s) > 0 $ for all $s \in \mathcal{S}, a \in \mathcal{A}(s)$를 충족하는 $soft$하다고 하며, 거의 deterministic optimal policy에 가깝다고 볼 수 있다. chapter 2에서 보았던 $\epsilon$-greedy policy의 모든 non-greedy action들은 선택될 minimal probability $\cfrac{\epsilon}{|\mathcal{A}(s)|}$로, 그리고 나머지 greedy action은 $1-\epsilon+\cfrac{\epsilon}{|\mathcal{A}(s)|}$ probability로 선택된다. $\epsilon$-greedy는 $\pi(a|s) \ge \cfrac{\epsilon}{|\mathcal{A}(s)|}, \epsilon > 0$로 정의되는 $\epsilon-soft$ policy라고 할 수 있다. $\epsilon-soft$ 중, $\epsilon$-greeedy$는 가장 greedy에 가깝다고 볼 수 있다.  
+
+모든 $q_\pi$에 대한 $\epsilon$-greedy poilcy는 policy improvement theorem에 따라 어떤 $\epsilon$-soft policy보다 향상됨을 보장한다. 
