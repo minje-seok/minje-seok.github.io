@@ -101,6 +101,8 @@ MC estimate를 진행하였으니, 이제 DP chapter에서의 GPI의 아이디�
 <center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/5d7f6f97-faeb-40f2-989b-f768bf3b3a47" width="70%" height="70%"></center>
 evaluation과 improvement를 반복하던 policy iteration의 MC version이라고 생각하면 된다. 많은 episode를 경험할수록, approximate action-value function은 점진적으로 true function에 도달하게 된다. episode들이 exploring starts를 통해서 시작되었고, infinite만큼 경험했다고 가정하면 MC는 arbitary policy $\pi_k$에 대해 정확한 $q_{\pi_k}$를 계산할 수 있다. 
 
+<br>
+
 우리는 더이상 model 없이도 current action-value function에 관해, policy를 greedy하게 만들면 improvement가 수행된다. 각 state $s \in \mathcal{S}$에서 action-value function $q_{\pi_k}$에 대해 deterministically하게 다음과 같이 greedy action을 선택하면 $\pi_{k+1}$가 된다. 
 
 $$ \begin{align*} q_{\pi_k}(s, \pi_{k+1}(s)) &= q_{\pi_k}(s, \argmax_a q_{\pi_k}(s,a)) \\ &= \max_a q_{\pi_k}(s,a) \\ &\ge q_{\pi_k}(s,\pi_k(s)) \\ &= v_{\pi_k}(s) \tag{1} \end{align*} $$
@@ -134,7 +136,9 @@ Monte Carlo ES에서, 각 state-action pair에 대한 모든 returns는 어떤 p
 
 <br>
 
-<center><img src="" width="70%" height="70%"></center>
+<center><img src="https://github.com/kitian616/jekyll-TeXt-theme/assets/127359789/bf6e4c65-5618-4ec7-8654-d22232461e87" width="70%" height="70%"></center>
+
+<br>
 
 ## 5.4. Monte Carlo Control without Exploring Starts
 
@@ -144,6 +148,20 @@ Monte Carlo ES에서, 각 state-action pair에 대한 모든 returns는 어떤 p
 
 ### 5.4.1 On-policy Monte Carlo Control
 
-on-policy control 방법은 일반적으로 $\pi(a | s) > 0 $ for all $s \in \mathcal{S}, a \in \mathcal{A}(s)$를 충족하는 $soft$하다고 하며, 거의 deterministic optimal policy에 가깝다고 볼 수 있다. chapter 2에서 보았던 $\epsilon$-greedy policy의 모든 non-greedy action들은 선택될 minimal probability $\cfrac{\epsilon}{|\mathcal{A}(s)|}$로, 그리고 나머지 greedy action은 $1-\epsilon+\cfrac{\epsilon}{|\mathcal{A}(s)|}$ probability로 선택된다. $\epsilon$-greedy는 $\pi(a|s) \ge \cfrac{\epsilon}{|\mathcal{A}(s)|}, \epsilon > 0$로 정의되는 $\epsilon-soft$ policy라고 할 수 있다. $\epsilon-soft$ 중, $\epsilon$-greeedy$는 가장 greedy에 가깝다고 볼 수 있다.  
+on-policy control 방법은 일반적으로 $\pi(a | s) > 0 $ for all $s \in \mathcal{S}, a \in \mathcal{A}(s)$를 충족하는 $soft$하다고 하며, 거의 deterministic optimal policy에 가깝다고 볼 수 있다. chapter 2에서 보았던 $\epsilon$-greedy policy의 모든 non-greedy action들은 선택될 minimal probability $\cfrac{\epsilon}{|\mathcal{A}(s)|}$로, 그리고 나머지 greedy action은 $1-\epsilon+\cfrac{\epsilon}{|\mathcal{A}(s)|}$ probability로 선택된다. $\epsilon$-greedy는 $\pi(a|s) \ge \cfrac{\epsilon}{|\mathcal{A}(s)|}, \epsilon > 0$로 정의되는 $\epsilon$-$soft$ policy라고 할 수 있다. $\epsilon$-$soft$ 중, $\epsilon$-greeedy는 가장 greedy에 가깝다고 볼 수 있다.  
 
-모든 $q_\pi$에 대한 $\epsilon$-greedy poilcy는 policy improvement theorem에 따라 어떤 $\epsilon$-soft policy보다 향상됨을 보장한다. 
+<br>
+
+모든 $q_\pi$에 대한 $\epsilon$-greedy poilcy는 policy improvement theorem에 따라 어떤 $\epsilon$-$soft$ policy보다 향상됨을 보장한다. $\pi'$가 $\epsilon$-greedy policy라고 할 때, policy improvement theorem의 $\forall s \in \mathcal{S}$에서의 조건은 다음과 같이 적용된다. 
+
+$$ \begin{align*} q_{\pi_k}(s, \pi'(s)) &= \sum_a \pi'(a|s)q_\pi(s,a) 
+\\ &= \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a q_\pi(s,a) + (1- \epsilon) \max_a q_\pi (s,a) 
+\\ &\ge \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a q_\pi(s,a) + (1- \epsilon) \sum_a \cfrac{\pi(a|s)-\cfrac{\epsilon}{|\mathcal{A}(s)|}}{1-\epsilon} \ q_\pi(s,a) 
+\\&= \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a q_\pi(s,a) - \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a q_\pi(s,a) + \sum_a \pi(a|s)q_\pi(s,a) 
+\\&= v_\pi(s)
+ \tag{2} \end{align*} $$
+
+<br>
+
+policy improvement theorem에 의해, $\pi' \ge \pi, \forall s\in \mathcal{S}$를 만족한다. 이를 통해, 우리는 $\epsilon$-$soft$ policy 중에서 $\pi'$와 $\pi$가 모두 optimal인 경우, 즉 다른 모든 $\epsilon$-$soft$ policy보다 낫거나 같은 경우에만 equality가 유지될 수 있음을 증명 가능하다. 
+
