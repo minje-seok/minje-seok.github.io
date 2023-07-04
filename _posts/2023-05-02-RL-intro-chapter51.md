@@ -200,20 +200,40 @@ $\mu$를 따르는 episode로부터 $\pi$의 value를 estimate하기 위해서�
 
 <br>
 
-### 5.5.2 Importance Sampling using Transition Probability
+### 5.5.2 Importance Sampling (Transition Probability)
 
-importance sampling은 다른 distribution으로부터 주어진 sample을 통해 distribution을 estimate하는 일반적인 방법이다. 우리는 importance sampline ratio라고 불리는 target과 behavior policy에서 발생하는 trajectory에 대한 relative probability에 따라 return을 weight하는 off-policy learning을 적용한다. 아래는 subsequent state-action trajectory의 probability를 나타낸다. 
+importance sampling은 다른 distribution으로부터 주어진 sample을 통해 distribution을 estimate하는 일반적인 방법이다. 우리는 importance-sampling ratio라고 불리는 target과 behavior policy에서 발생하는 trajectory에 대한 relative probability에 따라 return을 weight하는 off-policy learning을 적용한다. 아래는 subsequent state-action trajectory의 probability를 나타낸다. 
 
 $$ \begin{align*} \prod^{T-1}_{k=t} \pi(A_k\mid S_k) p(S_{k+1} \mid S_k, A_k)  \end{align*} $$
 
 <br>
 
-따라, target과 behavior policy를 따르는 trajectory에 대한 relative probability인 importance sampline ratio는 아래와 같다. 그러나 대부분 우리는 MDP's transition을 모른다. 
+따라, target과 behavior policy를 따르는 trajectory에 대한 relative probability인 importance-sampling ratio는 아래와 같다. 그러나 대부분 우리는 MDP's transition을 모른다. 
 
-$$ \begin{align*} \rho^T_t = \cfrac{\prod^{T-1}_{k=t} \pi(A_k\mid S_k) p(S_{k+1} \mid S_k, A_k)}{\prod^{T-1}_{k=t} \mu(A_k\mid S_k) p(S_{k+1} \mid S_k, A_k)} = \prod^{T-1}_{k=t} \cfrac{\pi(A_k\mid S_k)}{\mu(A_k\mid S_k)}  \end{align*} $$
+$$ \begin{align*} \rho^T_t = \cfrac{\prod^{T-1}_{k=t} \pi(A_k\mid S_k) p(S_{k+1} \mid S_k, A_k)}{\prod^{T-1}_{k=t} \mu(A_k\mid S_k) p(S_{k+1} \mid S_k, A_k)} = \prod^{T-1}_{k=t} \cfrac{\pi(A_k\mid S_k)}{\mu(A_k\mid S_k)} \tag{3} \end{align*} $$
 
 <br>
 
-### 5.5.3 Importance Sampling using Batch of Episode
+### 5.5.3 Ordinary Importance Sampling (Batch of Episode)
 
-따라서 우리는 
+따라서 우리는 $v_\pi(s)$를 estimate하기 위해 $\mu$로부터 관찰된 batch of episode를 사용한다. 한 episode가 종료된 다음 time step부터 다음 episode를 시작하면, 특정 episode의 특정 step을 의미하여 time step number를 사용 할 수 있다. first-visit 방법으로는 state $s$를 episode 내 처음으로 방문한 time step를 $\mathcal{T}(s)$로 표기한다. $T(s)$는 $t$ 이후에 첫 번째 termination을, $G_t$는 $t$ 방문 이후 $T(s)$까지의 return을 의미한다. $\{G_t \}_{t \in \mathcal{T}(s)}$는 state $s$에 관련된 return, $\{\rho^{T(t)}_t \}_{t \in \mathcal{T}(s)}$ importance-sampling ratios이다. $v_\pi(s)$를 estimate하기 위해서는 return을 ratio에 따라 scale하고 average하면 된다. simple average한다면 보통 ordinary importance sampling이라고 부른다. 
+
+$$ \begin{align*} V(s) = \cfrac{\sum_{t\in \mathcal{T}(s)} \rho^{T(t)}_t G_t}{\mid \mathcal{T}(s)\mid}\tag{4} \end{align*} $$
+
+<br>
+
+### 5.5.3 Weighted Importance Sampling (Batch of Episode)
+
+아래와 같이 weihgted average를 사용하는 weighted importance sampling도 있다.
+
+$$ \begin{align*} V(s) = \cfrac{\sum_{t\in \mathcal{T}(s)} \rho^{T(t)}_t G_t}{\sum_{t\in \mathcal{T}(s)} \rho^{T(t)}_t}\tag{5} \end{align*} $$
+혹은 만약 분모가 0인 경우에는 0이다. single return에 대한 ratio $\rho^{T(t)}_t$는 1이므로 비율과 무관하게 observed return과 동일하다. 만약 ratio가 10, behavior policy에서 trajectory가 10번 관측되었다고 가정한다. 
+
+<br>
+
+두 importance sampline 방법의 차이는 variance이다. ordinary의 경우 ratio가 unbounded하기 때문에 variance 또한 unbounded되지만, weighted의 경우 single return에서 가장 큰 weight가 1이다. weighted importance sampline에서 실제로 ratio의 variance가 unbounded하다고 해도, variance는 0으로 수렴한다. 따라 variance가 매우 낮아 일반적으로 weighted 방법이 주로 사용된다. 
+
+<br>
+
+## 5.6 Incremental Implementation
+
