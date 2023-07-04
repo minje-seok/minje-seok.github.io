@@ -74,7 +74,7 @@ env의 완벽한 dynamics를 알고 있더라도, value function 계산에 DP �
 
 <br>
 
-## 5.2. Monte Carlo Estimation of Action Values
+## 5.2 Monte Carlo Estimation of Action Values
 
 만약 DP에서처럼 model이 존재한다면 state-value만 사용하면, one-step 뒤의 reward와 next state의 조합을 통해 어떤 action이 좋은지 알 수 있었다. 그러나 model이 없다면, state-value로는 명시적인 action value의 estimate로 policy를 생성 하기 부족하므로 MC로 $q_\ast$를 추정하고자 한다. 우리는 action value를 위해 policy evaluation 고려한다.   
 
@@ -87,7 +87,7 @@ state-action pair $s,a$는 state $s$에서 action $a$를 수행한 episode라고
 
 <br>
 
-## 5.3. Monte Carlo Control
+## 5.3 Monte Carlo Control
 
 MC estimate를 진행하였으니, 이제 DP chapter에서의 GPI의 아이디어를 이용하여, optimal policy를 approximate하는 MC control이 가능하다. 반복을 통해, value function은 current policy에 가깝게 approximate되고, policy는 current value function을 통해 향상된다. 
 
@@ -140,7 +140,7 @@ Monte Carlo ES에서, 각 state-action pair에 대한 모든 returns는 어떤 p
 
 <br>
 
-## 5.4. Monte Carlo Control without Exploring Starts
+## 5.4 Monte Carlo Control without Exploring Starts
 
 그러나 언급했듯이 exploring start가 현실적이지 못한 상황이 훨씬 많다. 일반적인 방법으로는 무한하게 action을 선택하는 것이지만, 이를 보장하는 on-policy, off-policy 방법이 존재한다. on-policy는 policy를 evaluate & improve하지만, off-policy는 데이터 생성에 사용되는 policy와 다른 policy를 evaluate & improve한다. Monte Carlo ES는 on-policy에 속한다. 
 
@@ -154,7 +154,7 @@ on-policy control 방법은 일반적으로 $\pi(a \mid s) > 0 $ for all $s \in 
 
 모든 $q_\pi$에 대한 $\epsilon$-greedy poilcy는 policy improvement theorem에 따라 어떤 $\epsilon$-$soft$ policy보다 향상됨을 보장한다. $\pi'$가 $\epsilon$-greedy policy라고 할 때, policy improvement theorem의 $\forall s \in \mathcal{S}$에서의 조건은 다음과 같이 적용된다. 
 
-$$ \begin{align*} q_{\pi_k}(s, \pi'(s)) &= \sum_a \pi'(a \mid s)q_\pi(s,a) 
+$$ \begin{align*} q_{\pi}(s, \pi'(s)) &= \sum_a \pi'(a \mid s)q_\pi(s,a) 
 \\ &= \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a q_\pi(s,a) + (1- \epsilon) \max_a q_\pi (s,a) 
 \\ &\ge \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a q_\pi(s,a) + (1- \epsilon) \sum_a \cfrac{\pi(a \mid s)-\cfrac{\epsilon}{|\mathcal{A}(s)|}}{1-\epsilon} \ q_\pi(s,a) 
 \\&= \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a q_\pi(s,a) - \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a q_\pi(s,a) + \sum_a \pi(a \mid s)q_\pi(s,a) 
@@ -164,4 +164,41 @@ $$ \begin{align*} q_{\pi_k}(s, \pi'(s)) &= \sum_a \pi'(a \mid s)q_\pi(s,a)
 <br>
 
 policy improvement theorem에 의해, $\pi' \ge \pi, \forall s\in \mathcal{S}$를 만족한다. 이를 통해, 우리는 $\epsilon$-$soft$ policy 중에서 $\pi'$와 $\pi$가 모두 optimal인 경우, 즉 다른 모든 $\epsilon$-$soft$ policy보다 낫거나 같은 경우에만 equality가 유지될 수 있음을 증명 가능하다. 
+
+<br>
+
+$\epsilon$-$soft$ policy는 기존 exploring start가 적용되던 이전 policy에서의 optimal과 같다. $\tilde{v}_\ast$와 $\tilde{q}_\ast$를 explorint starting가 없는 on-policy optimal value function이라고 할 때, $\pi$는 $\epsilon$-$soft$ policy 중에서 $v_\pi = \tilde{v}_\ast$인 경우에만 optimal이다. $\epsilon$-$soft$의 policy $\pi$가 더이상 향상되지 않는다면 $(5.2)$에 근거하여 $v_\pi$와 $\tilde{v}_\ast$가 동등함을 볼 수 있다. 
+
+
+$$ \begin{align*} \tilde{v}_\ast(s) &= (1-\epsilon) \max_a \tilde{q}_\ast(s,a) + \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a \tilde{q}_\ast(s,a) 
+\\ &= (1-\epsilon) \max_a \sum_{s',r} p(s',r \mid s,a)  \left[r + \gamma \tilde{v}_\ast](s')\right] \\ &+  
+ \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a \sum_{s',r} p(s',r\mid s,a ) [r + \gamma \tilde{v}_\ast(s')]  \end{align*} $$
+
+$$ \begin{align*} v_\pi(s) &= (1-\epsilon) \max_a q_\pi(s,a) + \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a q_\pi(s,a) 
+\\ &= (1-\epsilon) \max_a \sum_{s',r} p(s',r \mid s,a) \left[r + \gamma v_\pi(s')\right] \\ &+  
+ \cfrac{\epsilon}{|\mathcal{A}(s)|} \sum_a \sum_{s',r} p(s',r\mid s,a ) [r + \gamma v_\pi(s')]  \end{align*} $$
+
+<br>
+
+이러한 분석은 각 step에서 action-value function이 결정되는 방식과는 무관하지만 정확하게 계산된다고 가정한다. 결과적으로, $\epsilon$-$soft$ policy는 exploring start 없이도 exploring start가 적용했을 때와 같은 optimal을 보장한다. 
+
+<br>
+
+<center><img src="" width="70%" height="70%"></center>
+
+<br>
+
+## 5.5 Off-policy Predictio nvia Importance Sampling
+
+여기까지는 해당 policy에서의 infinite episode를 사용해서 value function을 estimate하였다. 그러나 각기 다른 policy들로부터 생성된 episode를 가지고있다고 있다고 가정해본다. 우리는 $\pi$를 따르는 target policy를 estimate하고 싶지만, behavior policy $\mu$를 따르는 episode만 가지고 있다. target policy는 learning process에서 목적하는 value function을 지니고, behavior policy는 agent를 조종하고 behavior를 생성한다. 이처럼 target과 behavior policy가 다르기 때문에 off-policy라고 부른다. 
+
+<br>
+
+### 5.5.1 Assumption of Converage
+
+$\mu$를 따르는 episode로부터 $\pi$의 value를 estimate하기 위해서는, $\pi$로부터 수행된 모든 action이 최소한 $\mu$에서도 취해져야한다$(\pi(a\mid s)>0, \mu(a \mid s)>0)$. 만약 $\pi$가 deterministic하다 하더라도, $\mu$는 stochastic해야 한다. 이러한 구조는 stochastic behavior policy가 exploration을 진행하고, target policy가 current action-value function에 근거하여 deterministic하게 움직이는 이전에 언급했던 $\epsilon$-greedy policy의 기반이 된다. 
+
+<br>
+
+### 5.5.2 Importance Sampling
 
