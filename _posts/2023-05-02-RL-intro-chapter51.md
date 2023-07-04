@@ -235,5 +235,24 @@ $$ \begin{align*} V(s) = \cfrac{\sum_{t\in \mathcal{T}(s)} \rho^{T(t)}_t G_t}{\s
 
 <br>
 
+### 5.5.4 Off-policy Estimation of a Blackjack State Value
+
+off-policy data에서 single blackjack state의 value를 estimate해본다. 여기서는 dealer가 deuce를 보이고, player card의 sum이 13, player가 usable ace를 지닌 state를 고려한다. data는 해당 state에서 hit or stick하는 action을 random equal probability로 선택하는 behavior policy로 생성된다. target policy는 이전에서와 같이 sum이 20 혹은 21일 때만 stick한다. 
+
+<br>
+
+<center><img src="" width="70%" height="70%"></center>
+
+
+위 그림에서 보면 1000 episode 이후, 두 off-policy(behavior policy) 방법 모두 동일하게 수렴한다. weighted 방법은 ordinary보다 전체적으로 error 폭이 훨씬 낮은 것을 볼 수 있다. 
+
+<br>
+
+### 5.5.5 Infinte Variance
+
+<center><img src="" width="70%" height="70%"></center>
+
+<br>
+
 ## 5.6 Incremental Implementation
 
