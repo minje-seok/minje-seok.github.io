@@ -148,7 +148,7 @@ Monte Carlo ES에서, 각 state-action pair에 대한 모든 returns는 어떤 p
 
 ### 5.4.1 On-policy Monte Carlo Control
 
-on-policy control 방법은 일반적으로 $\pi(a \mid s) > 0 $ for all $s \in \mathcal{S}, a \in \mathcal{A}(s)$를 충족하는 $soft$하다고 하며, 거의 deterministic optimal policy에 가깝다고 볼 수 있다. chapter 2에서 보았던 $\epsilon$-greedy policy의 모든 non-greedy action들은 선택될 minimal probability $\cfrac{\epsilon}{|\mathcal{A}(s)|}$로, 그리고 나머지 greedy action은 $1-\epsilon+\cfrac{\epsilon}{|\mathcal{A}(s)|}$ probability로 선택된다. $\epsilon$-greedy는 $\pi(a \mid s) \ge \cfrac{\epsilon}{|\mathcal{A}(s)|}, \epsilon > 0$로 정의되는 $\epsilon$-$soft$ policy라고 할 수 있다. $\epsilon$-$soft$ 중, $\epsilon$-greeedy는 가장 greedy에 가깝다고 볼 수 있다.  
+on-policy control 방법은 일반적으로 $\pi(a \mid s) > 0 $ for all $s \in \mathcal{S}, a \in \mathcal{A}(s)$를 충족하는 $soft$하다고 하며, 거의 deterministic optimal policy에 가깝다고 볼 수 있다. chapter 2에서 보았던 $\epsilon$-greedy policy의 모든 non-greedy action들은 선택될 minimal probability $\cfrac{\epsilon}{\mid\mathcal{A}(s)\mid}$로, 그리고 나머지 greedy action은 $1-\epsilon+\cfrac{\epsilon}{\mid\mathcal{A}(s)\mid}$ probability로 선택된다. $\epsilon$-greedy는 $\pi(a \mid s) \ge \cfrac{\epsilon}{\mid\mathcal{A}(s)\mid}, \epsilon > 0$로 정의되는 $\epsilon$-$soft$ policy라고 할 수 있다. $\epsilon$-$soft$ 중, $\epsilon$-greeedy는 가장 greedy에 가깝다고 볼 수 있다.  
 
 <br>
 
@@ -180,7 +180,7 @@ $$ \begin{align*} v_\pi(s) &= (1-\epsilon) \max_a q_\pi(s,a) + \cfrac{\epsilon}{
 
 <br>
 
-이러한 분석은 각 step에서 action-value function이 결정되는 방식과는 무관하지만 정확하게 계산된다고 가정한다. 결과적으로, $\epsilon$-$soft$ policy는 exploring start 없이도 exploring start가 적용했을 때와 같은 optimal을 보장한다. 
+이러한 분석은 각 step에서 action-value function이 결정되는 방법과는 무관하지만 정확하게 계산된다고 가정한다. 결과적으로, $\epsilon$-$soft$ policy는 exploring start 없이도 exploring start가 적용했을 때와 같은 optimal을 보장한다. 
 
 <br>
 
@@ -200,5 +200,20 @@ $\mu$를 따르는 episode로부터 $\pi$의 value를 estimate하기 위해서�
 
 <br>
 
-### 5.5.2 Importance Sampling
+### 5.5.2 Importance Sampling using Transition Probability
 
+importance sampling은 다른 distribution으로부터 주어진 sample을 통해 distribution을 estimate하는 일반적인 방법이다. 우리는 importance sampline ratio라고 불리는 target과 behavior policy에서 발생하는 trajectory에 대한 relative probability에 따라 return을 weight하는 off-policy learning을 적용한다. 아래는 subsequent state-action trajectory의 probability를 나타낸다. 
+
+$$ \begin{align*} \prod^{T-1}_{k=t} \pi(A_k\mid S_k) p(S_{k+1} \mid S_k, A_k)  \end{align*} $$
+
+<br>
+
+따라, target과 behavior policy를 따르는 trajectory에 대한 relative probability인 importance sampline ratio는 아래와 같다. 그러나 대부분 우리는 MDP's transition을 모른다. 
+
+$$ \begin{align*} \rho^T_t = \cfrac{\prod^{T-1}_{k=t} \pi(A_k\mid S_k) p(S_{k+1} \mid S_k, A_k)}{\prod^{T-1}_{k=t} \mu(A_k\mid S_k) p(S_{k+1} \mid S_k, A_k)} = \prod^{T-1}_{k=t} \cfrac{\pi(A_k\mid S_k)}{\mu(A_k\mid S_k)}  \end{align*} $$
+
+<br>
+
+### 5.5.3 Importance Sampling using Batch of Episode
+
+따라서 우리는 
