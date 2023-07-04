@@ -250,7 +250,15 @@ off-policy data에서 single blackjack state의 value를 estimate해본다. 여�
 
 ### 5.5.5 Infinte Variance
 
+ordinary importance sampling의 estimate는 일반적으로 infinite variance를 가지고 convergence에 좋지 않다. 이는 종종 off-policy 방법에서 trajectory가 loop를 가질 때 발생한다. 아래 예제에서는 nonterminal state $s$와 $end$와 $back$ 총 두가지 action만이 존재한다. $end$는 deterministic하게 termination으로, $back$은 0.9 probability로 $s$로 되돌아가거나 0.1로 termination으로 전환된다. reward는 후자의 transition에서 $+1$ 그렇지 않으면 0이다. 
+
+target policy는 항상 $back$을 선택하므로, 해당 policy를 따르는 $s$의 value는 1이다. off-policy data 생성을 위한 behavior policy는 $end$와 $back$을 같은 probability로 선택한다. $(5.8)$는 ordinary importance sampling을 사용한 10개의 독립적인 first-visit MC 알고리즘을 보여준다. millions episodes 이후에도 estimate는 1로 converge하는데 실패한다. 반면 weighted importance sampling은 target policy와 일치하는 ($back$으로 terminate된) 첫 번째 episode 이후에 정확히 1의 estimate를 제공한다. 알고리즘이 target policy와 일치하는 return의 weight average를 생성하기 때문에 모두 정확히 1이된다. 
+
 <center><img src="" width="70%" height="70%"></center>
+
+<br>
+
+
 
 <br>
 
